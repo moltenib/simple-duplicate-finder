@@ -9,7 +9,7 @@ This app looks for duplicate files based on their checksum, name or size. Once i
 Run this from a terminal:
 
 ```shell
-git clone https://github.com/stamby/maun
+git clone https://github.com/moltenib/maun
 cd maun
 ./maun.pyw
 ```
