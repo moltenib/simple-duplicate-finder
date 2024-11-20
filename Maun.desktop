@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Maun
+Comment=
+Exec=./maun.pyw
+Icon=art.png
+Path=/home/bruno/Source/2019/maun-master
+Terminal=false
+StartupNotify=false
