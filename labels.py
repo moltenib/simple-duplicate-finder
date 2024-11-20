@@ -30,6 +30,7 @@ if language.startswith('es'):
 
     CONFIRM_DELETION_ONE = '¿Está seguro de borrar el siguiente archivo?\n\n{}'
     CONFIRM_DELETION_MANY = '¿Está seguro de borrar los siguientes archivos?\n\n{}'
+    CANNOT_DELETE = 'Se debe cancelar la búsqueda antes de borrar un archivo'
     FILES_DELETED = 'Se han borrado archivos'
 
     SETTINGS = 'Configuraciones'
@@ -78,6 +79,7 @@ else:
 
     CONFIRM_DELETION_ONE = 'Are you sure you want to delete the following file?\n\n{}'
     CONFIRM_DELETION_MANY = 'Are you sure you want to delete the following files?\n\n{}'
+    CANNOT_DELETE = 'The search must be cancelled before deleting a file'
     FILES_DELETED = 'Files have been deleted'
 
     SETTINGS = 'Settings'
