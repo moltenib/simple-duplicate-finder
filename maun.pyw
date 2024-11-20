@@ -179,6 +179,7 @@ class MainWindow(Gtk.Window):
             if self.started:
                 self.status_bar.push(1,
                         AppLabels.CANNOT_DELETE)
+                return
 
             rows = self.hash_tree_view.get_selection().get_selected_rows()
 
