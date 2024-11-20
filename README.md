@@ -1,18 +1,12 @@
 # Maun
 
-This app looks for duplicate files in your PC based on their checksum, name or size. Once it finds one, it then shows the two or more files it finds to be repeated on a tree view.
-
-<p align="center">
-  <img
-       width="400"
-       src="https://cdn.discordapp.com/attachments/408747840135757854/572259829461024771/unknown.png">
-</p>
+This app looks for duplicate files based on their checksum, name or size. Once it finds one, it then shows the two or more files it finds to be repeated on a tree view.
 
 ## How to install
 
 ### Linux
 
-Run this from your terminal:
+Run this from a terminal:
 
 ```shell
 git clone https://github.com/stamby/maun
@@ -30,7 +24,7 @@ Because the latest installer for PyGObject on Windows doesn't work with newer ve
 
 - Get [Python 3.3 or 3.4](https://www.python.org/downloads/release/python-340/) and [PyGObject for Windows](https://sourceforge.net/projects/pygobjectwin32), after downloading this repo to some folder.
 
-- Now you can run the script `maun.pyw` by double clicking it. Enjoy.
+- Now you can run the script `maun.pyw` by double clicking it.
 
 #### Less easy way
 
