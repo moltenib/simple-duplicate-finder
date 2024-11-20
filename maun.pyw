@@ -219,7 +219,7 @@ class MainWindow(Gtk.Window):
 
                     self.hash_tree_model.remove(rows[i])
 
-                    if not self.hash_tree_model.iter_has_child(parent):
+                    if self.hash_tree_model.iter_n_children(parent) < 2:
                         self.hash_tree_model.remove(parent)
 
                     self.status_bar.push(1,
