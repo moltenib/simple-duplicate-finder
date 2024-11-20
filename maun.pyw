@@ -176,6 +176,10 @@ class MainWindow(Gtk.Window):
             self.start_button.grab_focus()
 
         if ev.keyval == 65535 and not AppStatus.cancelling:
+            if self.started:
+                self.status_bar.push(1,
+                        AppLabels.CANNOT_DELETE)
+
             rows = self.hash_tree_view.get_selection().get_selected_rows()
 
             if rows is None:
