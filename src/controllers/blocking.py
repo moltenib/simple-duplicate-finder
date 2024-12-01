@@ -3,7 +3,6 @@ from utils.dict_to_class import DictToClass
 from collections import deque, defaultdict
 
 class AppStatus:
-    # In a C++ application, this would be accessed with a mutex
     cancelling = False
 
 def blocking(settings_dict, signal_handler):
@@ -31,6 +30,7 @@ def blocking(settings_dict, signal_handler):
         try:
             # List the directory contents
             dir_listing = os_functions.list_dir(item_dirname)
+
         except PermissionError:
             signal_handler.emit('insufficient-permissions', item_dirname, '')
             continue
@@ -80,9 +80,6 @@ def blocking(settings_dict, signal_handler):
                     code = hashing.size(item_path)
                 elif settings.method == 3:
                     code = item_basename
-                else:
-                    # Unrecognized method (unlikely)
-                    continue
 
                 # Only look up the item once
                 current_hash_dict_item = hash_dict[code]
@@ -97,8 +94,8 @@ def blocking(settings_dict, signal_handler):
                         'append-parent',
                         code,
                         current_hash_dict_item[0],
-                        current_hash_dict_item[1]
-                    )
+                        current_hash_dict_item[1])
+
                 elif len(current_hash_dict_item) > 2:
                     signal_handler.emit('append-child', code, item_path)
 
