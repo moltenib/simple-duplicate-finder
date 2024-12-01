@@ -3,7 +3,7 @@ from utils.dict_to_class import DictToClass
 from collections import deque, defaultdict
 
 class AppStatus:
-    # In a C application, this would be accessed with a mutex
+    # In a C++ application, this would be accessed with a mutex
     cancelling = False
 
 def blocking(settings_dict, signal_handler):
@@ -18,6 +18,7 @@ def blocking(settings_dict, signal_handler):
     total_iterations = 0
     total_files = 0
 
+    # Use a queue for breadth-first search
     directory_queue = deque([settings.path])
 
     while directory_queue:
@@ -83,20 +84,22 @@ def blocking(settings_dict, signal_handler):
                     # Unrecognized method (unlikely)
                     continue
 
-                # Append the item path to the hash_dict
-                hash_dict[code].append(item_path)
-                len_group = len(hash_dict[code])
+                # Only look up the item once
+                current_hash_dict_item = hash_dict[code]
+
+                # Append it to the current hash_dict item
+                current_hash_dict_item.append(item_path)
 
                 # A parent can only be added along with two files
-                if len_group == 2:
+                if len(current_hash_dict_item) == 2:
                     total_iterations += 1
                     signal_handler.emit(
                         'append-parent',
                         code,
-                        hash_dict[code][0],
-                        hash_dict[code][1]
+                        current_hash_dict_item[0],
+                        current_hash_dict_item[1]
                     )
-                elif len_group > 2:
+                elif len(current_hash_dict_item) > 2:
                     signal_handler.emit('append-child', code, item_path)
 
                 total_files += 1
