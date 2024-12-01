@@ -1,12 +1,11 @@
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
+from gi.repository import Gtk, Gdk
 
+from .about_dialog import AboutDialog
 from utils.settings import load_default_settings, settings
 
 from gettext import gettext as _
-
-from .about import AboutDialog
 
 class SettingsWindow(Gtk.Window):
     def __init__(self, parent=None):
@@ -15,7 +14,7 @@ class SettingsWindow(Gtk.Window):
         self.set_border_width(6)
         self.set_transient_for(parent)
         self.set_modal(True)
-        self.set_type_hint(1)
+        self.set_type_hint(Gdk.WindowTypeHint.DIALOG)
         self.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
         self.set_destroy_with_parent(True)
         self.parent = parent
@@ -76,8 +75,10 @@ class SettingsWindow(Gtk.Window):
         self.file_limit_spinbutton.set_value(settings['limit'])
         file_limit_hbox = Gtk.Box(
                 orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
-        file_limit_hbox.pack_start(self.file_limit_button, True, True, 0)
-        file_limit_hbox.pack_start(self.file_limit_spinbutton, False, True, 0)
+        file_limit_hbox.pack_start(
+                self.file_limit_button, True, True, 0)
+        file_limit_hbox.pack_start(
+                self.file_limit_spinbutton, False, True, 0)
 
         behaviour_vbox = Gtk.Box(
             orientation=Gtk.Orientation.VERTICAL, spacing=6)
@@ -94,14 +95,15 @@ class SettingsWindow(Gtk.Window):
         behaviour_frame = Gtk.Frame(label=_('Behaviour'))
         behaviour_frame.add(behaviour_vbox)
 
-        hbox_top = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+        hbox_top = Gtk.Box(
+                orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         hbox_top.pack_start(interface_frame, False, True, 0)
         hbox_top.pack_start(ask_frame, True, True, 0)
 
         about_button = Gtk.Button(
-            label=_('About'))
+                label=_('About'))
         load_default_button = Gtk.Button(
-            label=_('Load defaults'))
+                label=_('Load defaults'))
 
         hbox_bottom = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         hbox_bottom.pack_start(about_button, False, False, 0)
@@ -163,12 +165,14 @@ class SettingsWindow(Gtk.Window):
                 settings['read-dotted-directories'])
         self.read_dotted_files_button.set_active(
                 settings['read-dotted-files'])
+
         if settings['limit'] == 0:
             self.file_limit_button.set_active(False)
             self.file_limit_spinbutton.set_sensitive(False)
         else:
             self.file_limit_button.set_active(True)
             self.file_limit_spinbutton.set_sensitive(True)
+
         self.file_limit_spinbutton.set_value(settings['limit'])
 
         self.parent.method_combo.set_active(
@@ -225,5 +229,7 @@ class SettingsWindow(Gtk.Window):
         self.load_settings()
 
     def on_key_press(self, window, ev):
+        # Escape
         if ev.keyval == 65307:
             self.destroy()
+
