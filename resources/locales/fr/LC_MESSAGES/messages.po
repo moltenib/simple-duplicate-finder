@@ -1,0 +1,107 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: fr\n"
+
+msgid "To begin, please choose a directory from the top bar."
+msgstr "Pour commencer, veuillez choisir un répertoire dans la barre supérieure."
+
+msgid "Choose path"
+msgstr "Choisir un chemin"
+
+msgid "Settings"
+msgstr "Paramètres"
+
+msgid "{} repetitions found within {} files"
+msgstr "{} répétitions trouvées dans {} fichiers"
+
+msgid "{} repetitions found before reaching limit of {} files"
+msgstr "{} répétitions trouvées avant d'atteindre la limite de {} fichiers"
+
+msgid "{} repetitions found before cancelling; {} files processed"
+msgstr "{} répétitions trouvées avant annulation ; {} fichiers traités"
+
+msgid "Working..."
+msgstr "En cours..."
+
+msgid "Not enough permissions to read '{}'"
+msgstr "Pas assez d'autorisations pour lire '{}'"
+
+msgid "'{}' opened"
+msgstr "'{}' ouvert"
+
+msgid "Unable to open '{}'"
+msgstr "Impossible d'ouvrir '{}'"
+
+msgid "'{}', {} file, {} {}"
+msgstr "'{}', fichier {}, {} {}"
+
+msgid "Error: routine '{}' has failed"
+msgstr "Erreur : la routine '{}' a échoué"
+
+msgid "Are you sure you want to delete the following file?\n\n{}"
+msgstr "Êtes-vous sûr de vouloir supprimer le fichier suivant ?\n\n{}"
+
+msgid "Are you sure you want to delete the following files?\n\n{}"
+msgstr "Êtes-vous sûr de vouloir supprimer les fichiers suivants ?\n\n{}"
+
+msgid "The search must be cancelled before deleting a file"
+msgstr "La recherche doit être annulée avant de supprimer un fichier"
+
+msgid "Files have been deleted"
+msgstr "Les fichiers ont été supprimés"
+
+msgid "Simple Duplicate Finder"
+msgstr "Simple Recherche de Duplicatas"
+
+msgid "A simple program to help you find duplicates"
+msgstr "Un programme simple pour vous aider à trouver des doublons."
+
+msgid "Website"
+msgstr "Site Web"
+
+msgid "Expand rows as they appear"
+msgstr "Étendre les lignes au fur et à mesure"
+
+msgid "Scroll to inserted rows"
+msgstr "Faire défiler jusqu'aux lignes insérées"
+
+msgid "Expand one row at once"
+msgstr "Étendre une ligne à la fois"
+
+msgid "Send notifications"
+msgstr "Envoyer des notifications"
+
+msgid "Interface"
+msgstr "Interface"
+
+msgid "One file"
+msgstr "Un fichier"
+
+msgid "Multiple files"
+msgstr "Plusieurs fichiers"
+
+msgid "Ask before deleting"
+msgstr "Demander avant de supprimer"
+
+msgid "Follow symbolic links"
+msgstr "Suivre les liens symboliques"
+
+msgid "Read dotted directories"
+msgstr "Lire les répertoires cachés"
+
+msgid "Read dotted files"
+msgstr "Lire les fichiers cachés"
+
+msgid "Stop when a file limit is reached"
+msgstr "Arrêter lorsque la limite de fichiers est atteinte"
+
+msgid "Behaviour"
+msgstr "Comportement"
+
+msgid "About"
+msgstr "À propos"
+
+msgid "Load defaults"
+msgstr "Charger les paramètres par défaut"
+

@@ -1,30 +1,17 @@
-from settings import (
-        load_default_settings,
-        settings as AppSettings)
-import labels as AppLabels
-from strictly_gobject_related import Gtk
-from not_gui import Copying
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 
-class AboutDialog(Gtk.AboutDialog):
-    def __init__(self, parent=None):
-        Gtk.AboutDialog.__init__(self,
-                title=AppLabels.ABOUT,
-                parent=parent,
-                version=Copying.version,
-                comments=Copying.app_comment,
-                copyright=Copying.copyright,
-                website=Copying.website)
-        self.set_program_name(Copying.app_name)
-        self.set_license_type(Copying.licence_type)
-        self.set_website_label(Copying.website_label)
-        logo_pixbuf = self.get_logo().scale_simple(128, 128, 0)
-        self.set_logo(logo_pixbuf)
-        self.set_resizable(False)
+from utils.settings import load_default_settings, settings
+
+from gettext import gettext as _
+
+from .about import AboutDialog
 
 class SettingsWindow(Gtk.Window):
     def __init__(self, parent=None):
         Gtk.Window.__init__(
-                self, title=AppLabels.SETTINGS, resizable=False)
+                self, title=_('Settings'), resizable=False)
         self.set_border_width(6)
         self.set_transient_for(parent)
         self.set_modal(True)
@@ -35,13 +22,13 @@ class SettingsWindow(Gtk.Window):
 
         # Interface
         self.expand_rows_as_inserted_button = Gtk.CheckButton(
-                label=AppLabels.EXPAND_ROWS_AS_INSERTED)
+                label=_('Expand rows as they appear'))
         self.scroll_to_inserted_rows_button = Gtk.CheckButton(
-                label=AppLabels.SCROLL_TO_INSERTED_ROWS)
+                label=_('Scroll to inserted rows'))
         self.expand_one_row_at_once_button = Gtk.CheckButton(
-                label=AppLabels.EXPAND_ONE_ROW_AT_ONCE)
+                label=_('Expand one row at once'))
         self.send_notifications_button = Gtk.CheckButton(
-                label=AppLabels.SEND_NOTIFICATIONS)
+                label=_('Send notifications'))
 
         interface_vbox = Gtk.Box(
                 orientation=Gtk.Orientation.VERTICAL, spacing=6)
@@ -55,38 +42,38 @@ class SettingsWindow(Gtk.Window):
         interface_vbox.pack_start(
                 self.send_notifications_button, False, True, 0)
 
-        interface_frame = Gtk.Frame(label=AppLabels.INTERFACE)
+        interface_frame = Gtk.Frame(label=_('Interface'))
         interface_frame.add(interface_vbox)
 
         # Ask before deleting
         self.ask_file_one = Gtk.CheckButton(
-                label=AppLabels.ASK_BEFORE_DELETING_ONE)
+                label=_('One file'))
         self.ask_file_many = Gtk.CheckButton(
-                label=AppLabels.ASK_BEFORE_DELETING_MANY)
+                label=_('Multiple files'))
 
         ask_vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         ask_vbox.set_border_width(6)
         ask_vbox.pack_start(self.ask_file_one, False, True, 0)
         ask_vbox.pack_start(self.ask_file_many, False, True, 0)
 
-        ask_frame = Gtk.Frame(label=AppLabels.ASK_BEFORE_DELETING)
+        ask_frame = Gtk.Frame(label=_('Ask before deleting'))
         ask_frame.add(ask_vbox)
 
         # Behaviour
         self.follow_links_button = Gtk.CheckButton( 
-                label=AppLabels.FOLLOW_LINKS)
+                label=_('Follow symbolic links'))
 
         self.read_dotted_directories_button = Gtk.CheckButton(
-                label=AppLabels.READ_DOTTED_DIRECTORIES)
+                label=_('Read dotted directories'))
         self.read_dotted_files_button = Gtk.CheckButton(
-                label=AppLabels.READ_DOTTED_FILES)
+                label=_('Read dotted files'))
 
         self.file_limit_button = Gtk.CheckButton(
-                label=AppLabels.FILE_LIMIT)
+                label=_('Stop when a file limit is reached'))
         self.file_limit_spinbutton = Gtk.SpinButton.new_with_range(
                 0.0, 999999.0, 1.0)
         self.file_limit_spinbutton.set_digits(0)
-        self.file_limit_spinbutton.set_value(AppSettings['limit'])
+        self.file_limit_spinbutton.set_value(settings['limit'])
         file_limit_hbox = Gtk.Box(
                 orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         file_limit_hbox.pack_start(self.file_limit_button, True, True, 0)
@@ -104,7 +91,7 @@ class SettingsWindow(Gtk.Window):
         behaviour_vbox.pack_start(
             file_limit_hbox, True, True, 0)
 
-        behaviour_frame = Gtk.Frame(label=AppLabels.BEHAVIOUR)
+        behaviour_frame = Gtk.Frame(label=_('Behaviour'))
         behaviour_frame.add(behaviour_vbox)
 
         hbox_top = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
@@ -112,9 +99,9 @@ class SettingsWindow(Gtk.Window):
         hbox_top.pack_start(ask_frame, True, True, 0)
 
         about_button = Gtk.Button(
-            label=AppLabels.ABOUT)
+            label=_('About'))
         load_default_button = Gtk.Button(
-            label=AppLabels.LOAD_DEFAULT_SETTINGS)
+            label=_('Load defaults'))
 
         hbox_bottom = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         hbox_bottom.pack_start(about_button, False, False, 0)
@@ -161,60 +148,60 @@ class SettingsWindow(Gtk.Window):
 
     def load_settings(self):
         self.expand_rows_as_inserted_button.set_active(
-                AppSettings['expand-rows-as-inserted'])
+                settings['expand-rows-as-inserted'])
         self.scroll_to_inserted_rows_button.set_active(
-                AppSettings['scroll-to-inserted-rows'])
+                settings['scroll-to-inserted-rows'])
         self.expand_one_row_at_once_button.set_active(
-                AppSettings['expand-one-row-at-once'])
+                settings['expand-one-row-at-once'])
         self.send_notifications_button.set_active(
-                AppSettings['send-notifications'])
-        self.ask_file_one.set_active(AppSettings['ask-before-deleting-one'])
-        self.ask_file_many.set_active(AppSettings['ask-before-deleting-many'])
+                settings['send-notifications'])
+        self.ask_file_one.set_active(settings['ask-before-deleting-one'])
+        self.ask_file_many.set_active(settings['ask-before-deleting-many'])
         self.follow_links_button.set_active(
-                AppSettings['follow-symbolic-links'])
+                settings['follow-symbolic-links'])
         self.read_dotted_directories_button.set_active(
-                AppSettings['read-dotted-directories'])
+                settings['read-dotted-directories'])
         self.read_dotted_files_button.set_active(
-                AppSettings['read-dotted-files'])
-        if AppSettings['limit'] == 0:
+                settings['read-dotted-files'])
+        if settings['limit'] == 0:
             self.file_limit_button.set_active(False)
             self.file_limit_spinbutton.set_sensitive(False)
         else:
             self.file_limit_button.set_active(True)
             self.file_limit_spinbutton.set_sensitive(True)
-        self.file_limit_spinbutton.set_value(AppSettings['limit'])
+        self.file_limit_spinbutton.set_value(settings['limit'])
 
         self.parent.method_combo.set_active(
-                AppSettings['method'])
+                settings['method'])
         self.parent.folder_button.set_filename(
-                AppSettings['path'])
+                settings['path'])
 
     def on_expand_one_row_at_once_toggled(self, button):
-        AppSettings['expand-one-row-at-once'] = button.get_active()
+        settings['expand-one-row-at-once'] = button.get_active()
 
     def on_expand_rows_as_inserted_toggled(self, button):
-        AppSettings['expand-rows-as-inserted'] = button.get_active()
+        settings['expand-rows-as-inserted'] = button.get_active()
 
     def on_scroll_to_inserted_toggled(self, button):
-        AppSettings['scroll-to-inserted-rows'] = button.get_active()
+        settings['scroll-to-inserted-rows'] = button.get_active()
 
     def on_send_notifications_toggled(self, button):
-        AppSettings['send-notifications'] = button.get_active()
+        settings['send-notifications'] = button.get_active()
 
     def on_ask_file_one_toggled(self, button):
-        AppSettings['ask-before-deleting-one'] = button.get_active()
+        settings['ask-before-deleting-one'] = button.get_active()
 
     def on_ask_file_many_toggled(self, button):
-        AppSettings['ask-before-deleting-many'] = button.get_active()
+        settings['ask-before-deleting-many'] = button.get_active()
 
     def on_follow_links_toggled(self, button):
-        AppSettings['follow-symbolic-links'] = button.get_active()
+        settings['follow-symbolic-links'] = button.get_active()
 
     def on_read_dotted_directories_toggled(self, button):
-        AppSettings['read-dotted-directories'] = button.get_active()
+        settings['read-dotted-directories'] = button.get_active()
 
     def on_read_dotted_files_toggled(self, button):
-        AppSettings['read-dotted-files'] = button.get_active()
+        settings['read-dotted-files'] = button.get_active()
 
     def on_file_limit_toggled(self, button):
         if button.get_active():
@@ -225,7 +212,7 @@ class SettingsWindow(Gtk.Window):
             self.file_limit_spinbutton.set_value(0)
 
     def on_file_limit_changed(self, button):
-        AppSettings['limit'] = button.get_value_as_int()
+        settings['limit'] = button.get_value_as_int()
 
     def on_about_clicked(self, button):
         self.destroy()

@@ -1,36 +1,48 @@
-#!/usr/bin/python3
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk, GLib
 
 from threading import Thread
 
-import labels as AppLabels
-from settings import settings as AppSettings, save_settings 
-from strictly_gobject_related import Gtk, GLib
-from blocking import AppStatus, messy_code_block
-from gui_widgets import TreeModel, TreeView
-from gui_windows import SettingsWindow
-from not_gui import Copying, AppAndOs
-import gui_queue as AppQueue
+from utils.settings import settings
+from utils import os_functions
+from controllers.blocking import AppStatus, messy_code_block
+from views.gui_widgets import TreeModel, TreeView
+from views.gui_windows import SettingsWindow
+from views import gui_queue as AppQueue
+
+from gettext import gettext as _
+
+import os
 
 class MainWindow(Gtk.Window):
     def __init__(self):
-        Gtk.Window.__init__(self, title=Copying.app_name)
+        Gtk.Window.__init__(self, title=_('Simple Duplicate Finder'))
+
+        logo_path = os.path.join(
+                os.path.dirname(os.path.abspath(__file__)),
+                '../../resources/icons/app_icon.png')
+
         self.set_position(Gtk.WindowPosition.CENTER)
-        self.set_default_icon_from_file(Copying.image_file)
+        self.set_default_icon_from_file(
+                logo_path)
         self.set_size_request(800, 600)
         self.set_border_width(6)
 
         self.method_combo = Gtk.ComboBoxText()
-        for method in AppLabels.AVAILABLE_METHODS:
-            self.method_combo.append_text(method)
-        self.method_combo.set_active(AppSettings['method'])
+        for method in ('SHA-1', 'Adler-32', 'File size', 'File name'):
+            self.method_combo.append_text(
+                    _(method))
+
+        self.method_combo.set_active(settings['method'])
 
         self.folder_button = Gtk.FileChooserButton(
                 action=Gtk.FileChooserAction.SELECT_FOLDER,
-                title=AppLabels.CHOOSE_PATH)
-        self.folder_button.set_filename(AppSettings['path'])
+                title=_('Choose path'))
+        self.folder_button.set_filename(settings['path'])
 
         self.start_button = Gtk.Button(
-                label=AppLabels.START)
+                label=_('Start'))
         self.start_button.set_size_request(75, 0)
 
         settings_image = Gtk.Image(
@@ -102,7 +114,7 @@ class MainWindow(Gtk.Window):
         self.connect(
                 'destroy', self.on_destruction)
 
-        self.status_bar.push(1, AppLabels.WELCOME)
+        self.status_bar.push(1, _('To begin, please choose a directory from the top bar.'))
 
         self.start_button.grab_focus()
 
@@ -115,7 +127,7 @@ class MainWindow(Gtk.Window):
                 name='worker-thread',
                 target=messy_code_block,
                 daemon=False,
-                args=(AppSettings.copy(), AppQueue.signal_handler))
+                args=(settings.copy(), AppQueue.signal_handler))
         self.thread.start()
 
     def thread_cancel(self):
@@ -130,19 +142,19 @@ class MainWindow(Gtk.Window):
         self.settings_button.set_sensitive(False)
         self.hash_tree_model.clear_all()
         self.hash_tree_view.columns_autosize()
-        self.start_button.set_label(AppLabels.CANCEL)
+        self.start_button.set_label(_('Cancel'))
 
     def gui_stop(self):
-        self.start_button.set_label(AppLabels.START)
+        self.start_button.set_label(_('Start'))
         self.settings_button.set_sensitive(True)
         self.folder_button.set_sensitive(True)
         self.method_combo.set_sensitive(True)
 
     def on_method_changed(self, combo):
-        AppSettings['method'] = combo.get_active()
+        settings['method'] = combo.get_active()
 
     def on_folder_set(self, folder_button):
-        AppSettings['path'] = folder_button.get_filename()
+        settings['path'] = folder_button.get_filename()
 
     def start(self):
         self.gui_start()
@@ -178,7 +190,7 @@ class MainWindow(Gtk.Window):
         if ev.keyval == 65535 and not AppStatus.cancelling:
             if self.started:
                 self.status_bar.push(1,
-                        AppLabels.CANNOT_DELETE)
+                        _('The search must be cancelled before deleting a file'))
                 return
 
             rows = self.hash_tree_view.get_selection().get_selected_rows()
@@ -191,23 +203,23 @@ class MainWindow(Gtk.Window):
                 # Get a list of iters to delete
                 rows = [self.hash_tree_model.get_iter(row) for row in rows[1] if row.get_depth() == 2]
 
-            if AppSettings['ask-before-deleting-one'] and len(selected_files) == 1:
+            if settings['ask-before-deleting-one'] and len(selected_files) == 1:
                 dialog = Gtk.MessageDialog(
                         buttons=Gtk.ButtonsType.OK_CANCEL,
                         parent=self,
-                        text=AppLabels.CONFIRM_DELETION_ONE.format('\n'.join(selected_files)))
+                        text=_('Are you sure you want to delete the following file?\n\n{}').format(selected_files[0]))
 
-                response = dialog.run() == -5
+                response = dialog.run() == Gtk.ResponseType.OK
 
                 dialog.destroy()
-            elif AppSettings['ask-before-deleting-many'] and len(selected_files) > 1:
+            elif settings['ask-before-deleting-many'] and len(selected_files) > 1:
                 dialog = Gtk.MessageDialog(
                         buttons=Gtk.ButtonsType.OK_CANCEL,
                         parent=self,
-                        text=AppLabels.CONFIRM_DELETION_MANY.format(
+                        text=_('Are you sure you want to delete the following files?\n\n{}').format(
                             '\n'.join(selected_files)))
     
-                response = dialog.run() == -5
+                response = dialog.run() == Gtk.ResponseType.OK
 
                 dialog.destroy()
             else:
@@ -219,7 +231,7 @@ class MainWindow(Gtk.Window):
             i = 0
 
             while i < len(selected_files):
-                if AppAndOs.file_remove(selected_files[i]):
+                if os_functions.file_remove(selected_files[i]):
                     parent = self.hash_tree_model.iter_parent(rows[i])
 
                     self.hash_tree_model.remove(rows[i])
@@ -228,21 +240,21 @@ class MainWindow(Gtk.Window):
                         self.hash_tree_model.remove(parent)
 
                     self.status_bar.push(1,
-                            AppLabels.FILES_DELETED)
+                            _('Files have been deleted'))
 
                 i += 1
 
     def notify_os(self, message):
-        if AppSettings['send-notifications']:
-            if not AppAndOs.notify_os(message):
-                print(AppLabels.ROUTINE_FAILED.format('send-notifications'))
+        if settings['send-notifications']:
+            if not os_functions.notify_os(message):
+                print(_('Error: routine \'{}\' has failed').format('send-notifications'))
 
     def on_row_inserted(self, model, path, iter_):
-        if AppSettings['expand-one-row-at-once']:
+        if settings['expand-one-row-at-once']:
             self.hash_tree_view.collapse_all()
-        if AppSettings['expand-rows-as-inserted']:
+        if settings['expand-rows-as-inserted']:
             self.hash_tree_view.expand_to_path(path)
-        if AppSettings['scroll-to-inserted-rows']:
+        if settings['scroll-to-inserted-rows']:
             self.hash_tree_view.scroll_to_cell(
                     path, None, False, 0.0, 0.0)
 
@@ -250,7 +262,7 @@ class MainWindow(Gtk.Window):
         depth = path.get_depth()
         if depth == 1:
             row_was_expanded = tree_view.row_expanded(path)
-            if AppSettings['expand-one-row-at-once']:
+            if settings['expand-one-row-at-once']:
                 tree_view.collapse_all()
             if row_was_expanded:
                 tree_view.collapse_row(path)
@@ -259,21 +271,16 @@ class MainWindow(Gtk.Window):
         elif depth == 2:
             iter_ = self.hash_tree_model.get_iter(path)
             file_ = self.hash_tree_model[iter_][0]
-            if AppAndOs.open_in_os(file_):
+            if os_functions.open_in_os(file_):
                 self.status_bar.push(1,
-                    AppLabels.FILE_OPENED.format(
-                        AppAndOs.get_pretty_name(file_)))
+                    _('\'{}\' opened').format(
+                        os_functions.get_pretty_name(file_)))
             else:
                 self.status_bar.push(1,
-                        AppLabels.FILE_NOT_OPENED.format(
-                            AppAndOs.get_pretty_name(file_)))
+                        _('\'{}\', {}, {} {}').format( # Name, type, size, size unit
+                            os_functions.get_pretty_name(file_)))
 
     def on_destruction(self, window):
         AppQueue.destroy()
         self.thread_cancel()
 
-w = MainWindow()
-w.connect_after('destroy', Gtk.main_quit)
-w.show_all()
-Gtk.main()
-save_settings()
