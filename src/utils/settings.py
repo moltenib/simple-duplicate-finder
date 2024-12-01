@@ -37,3 +37,4 @@ else:
 def save_settings():
     with open(settings_file, 'w') as f:
         json.dump(settings, f, indent=4)
+
