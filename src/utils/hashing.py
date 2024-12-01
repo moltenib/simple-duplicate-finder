@@ -1,5 +1,5 @@
 from hashlib import sha1 as sha1_imported
-from zlib import adler32
+from zlib import adler32 as adler32_imported
 
 ### One function for each method
 
@@ -21,7 +21,7 @@ def adler32(file_):
             data = f.read(4096)
             if not data:
                 break
-            sum_ = adler32(data, sum_)
+            sum_ = adler32_imported(data, sum_)
     return '%x' % (sum_ & 0xffffffff)
 
 def size(file_):
