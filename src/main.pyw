@@ -13,11 +13,8 @@ def main():
     set_up_translations()
 
     w = MainWindow()
-
     w.connect_after('destroy', Gtk.main_quit)
-
     w.show_all()
-
     Gtk.main()
 
     save_settings()
