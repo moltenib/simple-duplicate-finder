@@ -1,3 +1,5 @@
+import os
+
 from hashlib import sha1 as sha1_imported
 from zlib import adler32 as adler32_imported
 
