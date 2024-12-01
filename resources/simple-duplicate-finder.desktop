@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Simple Duplicate Finder
+Comment=A program to help you find duplicates
+Exec=sh -c 'cd "$(dirname "$(realpath %k)")/.."; ./main.pyw'
+Icon=/home/bruno/Desktop/simple-duplicate-finder/resources/icons/app_icon.png
+Terminal=false
+StartupNotify=false
+Path=
+

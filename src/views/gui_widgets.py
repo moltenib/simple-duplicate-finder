@@ -1,5 +1,8 @@
-from settings import settings as AppSettings
-from strictly_gobject_related import Gtk
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+
+from utils.settings import settings
 
 class TreeModel(Gtk.TreeStore):
     def __init__(self):
@@ -25,7 +28,7 @@ class TreeView(Gtk.TreeView):
     def __init__(self):
         Gtk.TreeView.__init__(self)
         renderer = Gtk.CellRendererText(
-                font=AppSettings['font'])
+                font=settings['font'])
         hash_tree_column = Gtk.TreeViewColumn(
             'Codes', renderer, text=0)
         self.append_column(hash_tree_column)

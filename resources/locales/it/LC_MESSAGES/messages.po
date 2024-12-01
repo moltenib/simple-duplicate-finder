@@ -1,0 +1,107 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: it\n"
+
+msgid "To begin, please choose a directory from the top bar."
+msgstr "Per iniziare, seleziona una directory dalla barra superiore."
+
+msgid "Choose path"
+msgstr "Scegli percorso"
+
+msgid "Settings"
+msgstr "Impostazioni"
+
+msgid "{} repetitions found within {} files"
+msgstr "{} ripetizioni trovate in {} file"
+
+msgid "{} repetitions found before reaching limit of {} files"
+msgstr "{} ripetizioni trovate prima di raggiungere il limite di {} file"
+
+msgid "{} repetitions found before cancelling; {} files processed"
+msgstr "{} ripetizioni trovate prima di annullare; {} file elaborati"
+
+msgid "Working..."
+msgstr "Lavorando..."
+
+msgid "Not enough permissions to read '{}'"
+msgstr "Permessi insufficienti per leggere '{}'"
+
+msgid "'{}' opened"
+msgstr "'{}' aperto"
+
+msgid "Unable to open '{}'"
+msgstr "Impossibile aprire '{}'"
+
+msgid "'{}', {} file, {} {}"
+msgstr "'{}', {} file, {} {}"
+
+msgid "Error: routine '{}' has failed"
+msgstr "Errore: routine '{}' non riuscita"
+
+msgid "Are you sure you want to delete the following file?\n\n{}"
+msgstr "Sei sicuro di voler eliminare il seguente file?\n\n{}"
+
+msgid "Are you sure you want to delete the following files?\n\n{}"
+msgstr "Sei sicuro di voler eliminare i seguenti file?\n\n{}"
+
+msgid "The search must be cancelled before deleting a file"
+msgstr "La ricerca deve essere annullata prima di eliminare un file"
+
+msgid "Files have been deleted"
+msgstr "I file sono stati eliminati"
+
+msgid "Simple Duplicate Finder"
+msgstr "Semplice Trova Duplicati"
+
+msgid "A simple program to help you find duplicates"
+msgstr "Un semplice programma per aiutarti a trovare duplicati."
+
+msgid "Website"
+msgstr "Sito Web"
+
+msgid "Expand rows as they appear"
+msgstr "Espandi le righe man mano che appaiono"
+
+msgid "Scroll to inserted rows"
+msgstr "Scorri fino alle righe inserite"
+
+msgid "Expand one row at once"
+msgstr "Espandi una riga alla volta"
+
+msgid "Send notifications"
+msgstr "Invia notifiche"
+
+msgid "Interface"
+msgstr "Interfaccia"
+
+msgid "One file"
+msgstr "Un file"
+
+msgid "Multiple files"
+msgstr "Più file"
+
+msgid "Ask before deleting"
+msgstr "Chiedi prima di eliminare"
+
+msgid "Follow symbolic links"
+msgstr "Segui i collegamenti simbolici"
+
+msgid "Read dotted directories"
+msgstr "Leggi le directory nascoste"
+
+msgid "Read dotted files"
+msgstr "Leggi i file nascosti"
+
+msgid "Stop when a file limit is reached"
+msgstr "Interrompi quando si raggiunge un limite di file"
+
+msgid "Behaviour"
+msgstr "Comportamento"
+
+msgid "About"
+msgstr "Informazioni"
+
+msgid "Load defaults"
+msgstr "Carica valori predefiniti"
+

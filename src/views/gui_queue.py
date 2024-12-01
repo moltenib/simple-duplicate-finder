@@ -1,5 +1,6 @@
-import labels as AppLabels
-from strictly_gobject_related import GUISignalHandler
+from .strictly_gobject_related import GUISignalHandler
+
+from gettext import gettext as _
 
 class Enum:
     PARENT = 0
@@ -26,18 +27,18 @@ def run(window):
         elif i[0] == Enum.MESSAGE:
             window.status_bar.push(1, i[1])
         elif i[0] == Enum.CANCEL:
-            message = AppLabels.CANCELLED.format(i[1], i[2])
+            message = _('{} repetitions found before cancelling; {} files processed').format(i[1], i[2])
             window.notify_os(message)
             window.status_bar.push(1, message)
             return False
         elif i[0] == Enum.LIMIT_REACHED:
-            message = AppLabels.LIMIT_REACHED.format(i[1], i[2])
+            message = _('{} repetitions found before reaching limit of {} files').format(i[1], i[2])
             window.notify_os(message)
             window.status_bar.push(1, message)
             window.finish()
             return False
         elif i[0] == Enum.FINISH:
-            message = AppLabels.FINISHED.format(i[1], i[2])
+            message = _('{} repetitions found within {} files').format(i[1], i[2])
             window.notify_os(message)
             window.status_bar.push(1, message)
             window.finish()
@@ -51,7 +52,7 @@ def on_append_child(signal_handler, hash_, file_):
     queue.append((Enum.CHILD, hash_, file_))
 
 def on_started(signal_handler):
-    queue.append((Enum.MESSAGE, AppLabels.STARTED))
+    queue.append((Enum.MESSAGE, _('Working...')))
 
 def on_cancelled(signal_handler, total_iterations, total_files):
     queue.append((Enum.CANCEL, total_iterations, total_files))

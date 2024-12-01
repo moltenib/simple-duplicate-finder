@@ -1,4 +1,4 @@
-from not_gui import AppAndOs, AppMath
+from utils import hashing, os_functions
 
 class AppStatus:
     cancelling = False
@@ -13,53 +13,53 @@ def messy_code_block(settings, signal_handler):
     while len(directory_queue) > 0:
         item_dirname = directory_queue.pop(0)
         # Descend into new directory
-        AppAndOs.chdir(item_dirname)
-        for item_basename in AppAndOs.list_current_dir():
+        os_functions.chdir(item_dirname)
+        for item_basename in os_functions.list_current_dir():
             if AppStatus.cancelling:
-                AppAndOs.chdir(old_dir)
+                os_functions.chdir(old_dir)
                 signal_handler.emit(
                         'cancelled',
                         total_iterations,
                         total_files)
                 return
-            item = AppAndOs.abspath(item_basename)
+            item = os_functions.abspath(item_basename)
             if (not settings['follow-symbolic-links']
-                    and AppAndOs.is_link(item)):
+                    and os_functions.is_link(item)):
 #                signal_handler.emit(
 #                        'ignored-link', item_dirname, item_basename)
                 continue
-            if AppAndOs.is_dir(item):
+            if os_functions.is_dir(item):
                 if (not settings['read-dotted-directories']
                         and item_basename.startswith('.')):
 #                    signal_handler.emit(
 #                            'ignored-dotted-dir',
 #                            item_dirname, item_basename)
                     continue
-                if not AppAndOs.dir_perms_OK(item):
+                if not os_functions.dir_perms_OK(item):
                     signal_handler.emit(
                             'insufficient-permissions',
                             item_dirname, item_basename)
                     continue
                 # Essential
                 directory_queue.append(item)
-            elif AppAndOs.is_file(item):
+            elif os_functions.is_file(item):
                 if (not settings['read-dotted-files']
                         and item_basename.startswith('.')):
 #                    signal_handler.emit(
 #                            'ignored-dotted-file',
 #                            item_dirname, item_basename)
                     continue
-                if not AppAndOs.file_perms_R_OK(item):
+                if not os_functions.file_perms_R_OK(item):
                     signal_handler.emit(
                             'insufficient-permissions',
                             item_dirname, item_basename)
                     continue
                 if settings['method'] == 0:
-                    code_ = AppMath.sha1(item)
+                    code_ = hashing.sha1(item)
                 elif settings['method'] == 1:
-                    code_ = AppMath.adler32(item)
+                    code_ = hashing.adler32(item)
                 elif settings['method'] == 2:
-                    code_ = AppMath.size(item)
+                    code_ = hashing.size(item)
                 elif settings['method'] == 3:
                     code_ = item_basename
                 if hash_dict.__contains__(code_):
@@ -81,13 +81,13 @@ def messy_code_block(settings, signal_handler):
                 total_files += 1
                 if settings['limit'] != 0:
                     if total_files >= settings['limit']:
-                        AppAndOs.chdir(old_dir)
+                        os_functions.chdir(old_dir)
                         signal_handler.emit(
                                 'limit-reached',
                                 total_iterations,
                                 total_files)
                         return
-    AppAndOs.chdir(old_dir)
+    os_functions.chdir(old_dir)
     signal_handler.emit(
             'finished',
             total_iterations,
