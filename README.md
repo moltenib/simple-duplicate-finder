@@ -24,7 +24,7 @@ Because the latest installer for PyGObject on Windows doesn't work with newer ve
 
 - Get [Python 3.3 or 3.4](https://www.python.org/downloads/release/python-340/) and [PyGObject for Windows](https://sourceforge.net/projects/pygobjectwin32), after downloading this repo to some folder.
 
-- Now you can run the script `maun.pyw` by double clicking it.
+- Now you can run the script `main.pyw` by double clicking it.
 
 #### Less easy way
 
