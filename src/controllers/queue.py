@@ -1,4 +1,4 @@
-from .strictly_gobject_related import GUISignalHandler
+from .signal_handler import SignalHandler
 
 from gettext import gettext as _
 
@@ -10,7 +10,7 @@ class Enum:
     LIMIT_REACHED = 4
     FINISH = 5
 
-signal_handler = GUISignalHandler()
+signal_handler = SignalHandler()
 queue = []
 handler_list = []
 

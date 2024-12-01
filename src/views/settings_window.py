@@ -11,6 +11,7 @@ class SettingsWindow(Gtk.Window):
     def __init__(self, parent=None):
         Gtk.Window.__init__(
                 self, title=_('Settings'), resizable=False)
+
         self.set_border_width(6)
         self.set_transient_for(parent)
         self.set_modal(True)
@@ -157,8 +158,10 @@ class SettingsWindow(Gtk.Window):
                 settings['expand-one-row-at-once'])
         self.send_notifications_button.set_active(
                 settings['send-notifications'])
-        self.ask_file_one.set_active(settings['ask-before-deleting-one'])
-        self.ask_file_many.set_active(settings['ask-before-deleting-many'])
+        self.ask_file_one.set_active(
+                settings['ask-before-deleting-one'])
+        self.ask_file_many.set_active(
+                settings['ask-before-deleting-many'])
         self.follow_links_button.set_active(
                 settings['follow-symbolic-links'])
         self.read_dotted_directories_button.set_active(
