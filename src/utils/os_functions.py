@@ -66,16 +66,17 @@ def file_move(file_, file_or_dir):
     return False
 
 def notify_os(message_):
-    if os.name == 'posix':
-        if '\'' in message_:
-            quote_char = '"'
-        else:
-            quote_char = '\''
-        return os.system('notify-send' +
-            ' -i ' + quote_char + Copying.image_file + quote_char +
-            ' -a ' + quote_char +
-            'Maun' + quote_char + ' ' + 'Maun' +
-            ' ' + quote_char + message_ + quote_char) == 0
+# TODO
+#    if os.name == 'posix':
+#        if '\'' in message_:
+#            quote_char = '"'
+#        else:
+#            quote_char = '\''
+#        return os.system('notify-send' +
+#            ' -i ' + quote_char + Copying.image_file + quote_char +
+#            ' -a ' + quote_char +
+#            'Maun' + quote_char + ' ' + 'Maun' +
+#            ' ' + quote_char + message_ + quote_char) == 0
     return False
 
 def get_pretty_name(file_or_dir):

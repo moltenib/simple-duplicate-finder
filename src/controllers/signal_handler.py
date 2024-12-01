@@ -1,8 +1,6 @@
-import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, GObject, GLib
+from gi.repository import GObject
 
-class GUISignalHandler(GObject.GObject):
+class SignalHandler(GObject.GObject):
     def __init__(self):
         GObject.GObject.__init__(self)
 

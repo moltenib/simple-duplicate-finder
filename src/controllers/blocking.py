@@ -2,8 +2,6 @@ from utils import hashing, os_functions
 from utils.dict_to_class import DictToClass
 from collections import deque, defaultdict
 
-import threading
-
 class AppStatus:
     # In a C++ application, this would be accessed with a mutex
     cancelling = False

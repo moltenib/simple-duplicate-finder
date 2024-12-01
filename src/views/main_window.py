@@ -4,12 +4,14 @@ from gi.repository import Gtk, GLib
 
 from threading import Thread
 
-from utils.settings import settings
-from utils import os_functions
+from controllers import queue as AppQueue
 from controllers.blocking import AppStatus, blocking
+
+from utils import os_functions
+from utils.settings import settings
+
 from views.main_window_tree import TreeModel, TreeView
 from views.settings_window import SettingsWindow
-from views import gui_queue as AppQueue
 
 from gettext import gettext as _
 
