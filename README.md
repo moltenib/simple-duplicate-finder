@@ -1,6 +1,6 @@
 # Simple Duplicate Finder
 
-This app looks for duplicate files based on their checksum, name or size. Once it finds one, it then shows the two or more files it finds to be repeated on a tree view.
+This app looks for duplicate files based on their checksum, name or size. Once it finds one, it will arrange the two or more files it finds to be repeated on a tree view.
 
 ## How to install
 
@@ -14,7 +14,7 @@ cd simple-duplicate-finder
 ./main.pyw
 ```
 
-Note that PyGObject and Python should be installed beforehand.
+Note that PyGObject and Python must be installed beforehand.
 
 ### Windows
 
