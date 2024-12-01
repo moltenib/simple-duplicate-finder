@@ -6,7 +6,7 @@ from threading import Thread
 
 from utils.settings import settings
 from utils import os_functions
-from controllers.blocking import AppStatus, messy_code_block
+from controllers.blocking import AppStatus, blocking
 from views.gui_widgets import TreeModel, TreeView
 from views.gui_windows import SettingsWindow
 from views import gui_queue as AppQueue
@@ -125,7 +125,7 @@ class MainWindow(Gtk.Window):
     def thread_start(self):
         self.thread = Thread(
                 name='worker-thread',
-                target=messy_code_block,
+                target=blocking,
                 daemon=False,
                 args=(settings.copy(), AppQueue.signal_handler))
         self.thread.start()
