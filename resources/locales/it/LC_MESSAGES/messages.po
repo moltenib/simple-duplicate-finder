@@ -6,6 +6,12 @@ msgstr ""
 msgid "To begin, please choose a directory from the top bar."
 msgstr "Per iniziare, seleziona una directory dalla barra superiore."
 
+msgid "File size"
+msgstr "Dimensione del file"
+
+msgid "File name"
+msgstr "Nome del file"
+
 msgid "Choose path"
 msgstr "Scegli percorso"
 
