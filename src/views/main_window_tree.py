@@ -25,7 +25,7 @@ class TreeModel(Gtk.TreeStore):
         self.hash_to_iter.clear()
 
 class TreeView(Gtk.TreeView):
-    def __init__(self):
+    def __init__(self, model=None):
         Gtk.TreeView.__init__(self)
         renderer = Gtk.CellRendererText(
                 font=settings['font'])
@@ -34,4 +34,5 @@ class TreeView(Gtk.TreeView):
         self.append_column(hash_tree_column)
         self.set_headers_visible(False)
         self.get_selection().set_mode(Gtk.SelectionMode.MULTIPLE)
+        self.set_model(model)
 

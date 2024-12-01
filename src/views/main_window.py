@@ -7,8 +7,8 @@ from threading import Thread
 from utils.settings import settings
 from utils import os_functions
 from controllers.blocking import AppStatus, blocking
-from views.gui_widgets import TreeModel, TreeView
-from views.gui_windows import SettingsWindow
+from views.main_window_tree import TreeModel, TreeView
+from views.settings_window import SettingsWindow
 from views import gui_queue as AppQueue
 
 from gettext import gettext as _
