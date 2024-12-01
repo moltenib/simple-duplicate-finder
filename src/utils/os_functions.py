@@ -1,4 +1,5 @@
 import os
+from os.path import join as path_join
 
 ### OS-related functions, return True if successful
 
@@ -14,9 +15,6 @@ def open_in_os(file_or_dir):
                 'xdg-open ' + quote_char + file_or_dir + quote_char) == 0 
     return False
 
-def chdir(dir_):
-    os.chdir(dir_)
-
 def is_dir(dir_):
     return os.path.isdir(dir_)
 
@@ -26,8 +24,8 @@ def is_file(file_):
 def is_link(file_):
     return os.path.islink(file_)
 
-def list_current_dir():
-    return os.listdir('.')
+def list_dir(dir_):
+    return os.listdir(dir_)
 
 def abspath(file_or_dir):
     return os.path.abspath(file_or_dir)
