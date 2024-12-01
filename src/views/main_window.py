@@ -124,54 +124,11 @@ class MainWindow(Gtk.Window):
         self.started = False
         self.idle_source = 0
 
-    def thread_start(self):
-        self.thread = Thread(
-                name='worker-thread',
-                target=blocking,
-                daemon=False,
-                args=(settings.copy(), AppQueue.signal_handler))
-        self.thread.start()
-
-    def thread_cancel(self):
-        if self.thread is not None:
-            AppStatus.cancelling = True
-            self.thread.join()
-            AppStatus.cancelling = False
-
-    def gui_start(self):
-        self.method_combo.set_sensitive(False)
-        self.folder_button.set_sensitive(False)
-        self.settings_button.set_sensitive(False)
-        self.hash_tree_model.clear_all()
-        self.hash_tree_view.columns_autosize()
-        self.start_button.set_label(_('Cancel'))
-
-    def gui_stop(self):
-        self.start_button.set_label(_('Start'))
-        self.settings_button.set_sensitive(True)
-        self.folder_button.set_sensitive(True)
-        self.method_combo.set_sensitive(True)
-
     def on_method_changed(self, combo):
         settings['method'] = combo.get_active()
 
     def on_folder_set(self, folder_button):
         settings['path'] = folder_button.get_filename()
-
-    def start(self):
-        self.gui_start()
-        self.idle_source = GLib.idle_add(AppQueue.run, self)
-        self.thread_start()
-        self.started = True
-
-    def cancel(self):
-        self.thread_cancel()
-        self.gui_stop()
-        self.started = False
-
-    def finish(self):
-        self.started = False
-        self.gui_stop()
 
     def on_settings_button_click(self, button):
         SettingsWindow(parent=self).show_all()
@@ -182,6 +139,54 @@ class MainWindow(Gtk.Window):
                 self.start()
             else:
                 self.cancel()
+
+    def start(self):
+        # GUI
+        self.method_combo.set_sensitive(False)
+        self.folder_button.set_sensitive(False)
+        self.settings_button.set_sensitive(False)
+        self.hash_tree_model.clear_all()
+        self.hash_tree_view.columns_autosize()
+        self.start_button.set_label(_('Cancel'))
+
+        self.idle_source = GLib.idle_add(AppQueue.run, self)
+
+        # Thread
+        self.thread = Thread(
+                name='worker-thread',
+                target=blocking,
+                daemon=False,
+                args=(settings.copy(), AppQueue.signal_handler))
+        self.thread.start()
+
+        self.started = True
+
+    def thread_cancel(self):
+        if self.thread is not None:
+            AppStatus.cancelling = True
+            self.thread.join()
+            AppStatus.cancelling = False
+
+        self.started = False
+
+    def cancel(self):
+        # Thread
+        self.thread_cancel()
+
+        # GUI
+        self.start_button.set_label(_('Start'))
+        self.settings_button.set_sensitive(True)
+        self.folder_button.set_sensitive(True)
+        self.method_combo.set_sensitive(True)
+
+    def finish(self):
+        self.started = False
+
+        # GUI
+        self.start_button.set_label(_('Start'))
+        self.settings_button.set_sensitive(True)
+        self.folder_button.set_sensitive(True)
+        self.method_combo.set_sensitive(True)
 
     def on_key_press(self, window, ev):
         # Escape
