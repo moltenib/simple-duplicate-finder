@@ -5,8 +5,8 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 from utils.settings import settings, save_settings
+from utils.translations import set_up_translations
 
-from views.translations import set_up_translations
 from views.main_window import MainWindow
 
 def main():
