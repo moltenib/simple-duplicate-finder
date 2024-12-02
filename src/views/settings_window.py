@@ -65,6 +65,7 @@ class SettingsWindow(Gtk.Window):
 
         self.read_dotted_directories_button = Gtk.CheckButton(
                 label=_('Read dotted directories'))
+
         self.read_dotted_files_button = Gtk.CheckButton(
                 label=_('Read dotted files'))
 

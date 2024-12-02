@@ -21,41 +21,58 @@ class MainWindow(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self, title=_('Simple Duplicate Finder'))
 
+        # Define the logo
         logo_path = os.path.join(
                 os.path.dirname(os.path.abspath(__file__)),
                 '../../resources/icons/app_icon.png')
 
-        self.set_position(Gtk.WindowPosition.CENTER)
         self.set_default_icon_from_file(
                 logo_path)
+
+        self.set_position(Gtk.WindowPosition.CENTER)
         self.set_size_request(800, 600)
         self.set_border_width(6)
 
+        ## Top bar
+
+        # Method combo
+
         self.method_combo = Gtk.ComboBoxText()
+
         for method in ('SHA-1', 'Adler-32', 'File size', 'File name'):
             self.method_combo.append_text(
                     _(method))
 
         self.method_combo.set_active(settings['method'])
 
+        # Folder choosing button
+
         self.folder_button = Gtk.FileChooserButton(
                 action=Gtk.FileChooserAction.SELECT_FOLDER,
                 title=_('Choose path'))
+
         self.folder_button.set_filename(settings['path'])
 
-        self.start_button = Gtk.Button(
-                label=_('Start'))
-        self.start_button.set_size_request(75, 0)
+        # Settings icon
 
         settings_image = Gtk.Image(
                 pixbuf=Gtk.IconTheme.get_default().load_icon(
                     'preferences-system', 16,
                     Gtk.IconLookupFlags.FORCE_SIZE))
+
         self.settings_button = Gtk.Button(image=settings_image)
 
+        # Start button
+
+        self.start_button = Gtk.Button(
+                label=_('Start'))
+
+        self.start_button.set_size_request(75, 0)
+
+        # Tree view
+
         self.hash_tree_model = TreeModel()
-        self.hash_tree_view = TreeView()
-        self.hash_tree_view.set_model(self.hash_tree_model)
+        self.hash_tree_view = TreeView(self.hash_tree_model)
 
         hash_tree_selection = self.hash_tree_view.get_selection()
 
@@ -63,6 +80,8 @@ class MainWindow(Gtk.Window):
         hash_tree_scrolled.set_policy(
             Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
         hash_tree_scrolled.add(self.hash_tree_view)
+
+        # Status bar
 
         self.status_bar = Gtk.Statusbar()
 
@@ -76,16 +95,10 @@ class MainWindow(Gtk.Window):
         top_hbox.pack_start(self.settings_button, False, True, 0)
         top_hbox.pack_end(self.start_button, False, True, 0)
 
-#        middle_right_vbox = Gtk.Box(
-#                orientation=Gtk.Orientation.HORIZONTAL,
-#                spacing=6)
-#        middle_right_vbox.pack_start(Gtk.Image(), True, True, 0)
-
         middle_hbox = Gtk.Box(
                 orientation=Gtk.Orientation.HORIZONTAL,
                 spacing=6)
         middle_hbox.pack_start(hash_tree_scrolled, True, True, 0)
-#        middle_hbox.pack_end(middle_right_vbox, False, True, 0)
 
         vbox = Gtk.Box(
                 orientation=Gtk.Orientation.VERTICAL,
@@ -119,6 +132,8 @@ class MainWindow(Gtk.Window):
         self.status_bar.push(1, _('To begin, please choose a directory from the top bar.'))
 
         self.start_button.grab_focus()
+
+        # TODO: Improve threading logic
 
         self.thread = None
         self.started = False
@@ -194,6 +209,7 @@ class MainWindow(Gtk.Window):
             self.cancel()
             self.start_button.grab_focus()
 
+        # Delete
         if ev.keyval == 65535 and not AppStatus.cancelling:
             if self.started:
                 self.status_bar.push(1,
@@ -204,6 +220,7 @@ class MainWindow(Gtk.Window):
 
             if rows is None:
                 return
+
             elif len(rows) > 1:
                 # Get a list of files to delete, excluding hash rows
                 selected_files = [self.hash_tree_model[row][0] for row in rows[1] if row.get_depth() == 2]
@@ -214,7 +231,9 @@ class MainWindow(Gtk.Window):
                 dialog = Gtk.MessageDialog(
                         buttons=Gtk.ButtonsType.OK_CANCEL,
                         parent=self,
-                        text=_('Are you sure you want to delete the following file?\n\n{}').format(selected_files[0]))
+                        text=_(
+                            'Are you sure you want to delete the following file?\n\n{}').format(
+                                selected_files[0]))
 
                 response = dialog.run() == Gtk.ResponseType.OK
 
@@ -223,16 +242,18 @@ class MainWindow(Gtk.Window):
                 dialog = Gtk.MessageDialog(
                         buttons=Gtk.ButtonsType.OK_CANCEL,
                         parent=self,
-                        text=_('Are you sure you want to delete the following files?\n\n{}').format(
+                        text=_(
+                            'Are you sure you want to delete the following files?\n\n{}').format(
                             '\n'.join(selected_files)))
     
                 response = dialog.run() == Gtk.ResponseType.OK
 
                 dialog.destroy()
+
             else:
                 response = True
 
-            if response == False:
+            if not response:
                 return
 
             i = 0
@@ -267,17 +288,24 @@ class MainWindow(Gtk.Window):
 
     def on_row_activated(self, tree_view, path, column):
         depth = path.get_depth()
+
+        # Parent (code)
         if depth == 1:
-            row_was_expanded = tree_view.row_expanded(path)
             if settings['expand-one-row-at-once']:
                 tree_view.collapse_all()
-            if row_was_expanded:
+
+            if tree_view.row_expanded(path):
                 tree_view.collapse_row(path)
             else:
                 tree_view.expand_row(path, False)
+
+        # Child (file)
         elif depth == 2:
+            # Get the file name from the tree view
             iter_ = self.hash_tree_model.get_iter(path)
             file_ = self.hash_tree_model[iter_][0]
+
+            # Open the file
             if os_functions.open_in_os(file_):
                 self.status_bar.push(1,
                     _('\'{}\' opened').format(
