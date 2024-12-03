@@ -1,13 +1,11 @@
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, GLib
+gi.require_version('Gio', '2.0')
+from gi.repository import GLib, Gio, Gtk
 
-from threading import Thread
+from controllers.blocking import blocking
 
-from controllers import queue as AppQueue
-from controllers.blocking import AppStatus, blocking
-
-from utils import os_functions
+import utils.os_functions
 from utils.settings import settings
 
 from views.main_window_tree import TreeModel, TreeView
@@ -23,8 +21,9 @@ class MainWindow(Gtk.Window):
 
         # Define the logo
         logo_path = os.path.join(
-                os.path.dirname(os.path.abspath(__file__)),
-                '../../resources/icons/app_icon.png')
+                os.path.dirname(
+                    os.path.abspath(__file__)),
+                    '../../resources/icons/app_icon.png')
 
         self.set_default_icon_from_file(
                 logo_path)
@@ -133,11 +132,12 @@ class MainWindow(Gtk.Window):
 
         self.start_button.grab_focus()
 
-        # TODO: Improve threading logic
+        # Use GObject threading techniques
+        self.task = None
+        self.cancellable = None
 
-        self.thread = None
+        # Use this flag for GUI state changes
         self.started = False
-        self.idle_source = 0
 
     def on_method_changed(self, combo):
         settings['method'] = combo.get_active()
@@ -149,11 +149,10 @@ class MainWindow(Gtk.Window):
         SettingsWindow(parent=self).show_all()
 
     def on_start_button_click(self, button):
-        if not AppStatus.cancelling:
-            if not self.started:
-                self.start()
-            else:
-                self.cancel()
+        if not self.started:
+            self.start()
+        else:
+            self.cancel()
 
     def start(self):
         # GUI
@@ -164,40 +163,37 @@ class MainWindow(Gtk.Window):
         self.hash_tree_view.columns_autosize()
         self.start_button.set_label(_('Cancel'))
 
-        self.idle_source = GLib.idle_add(AppQueue.run, self)
+        # Create a Gio.Cancellable and assign it to a Gio.Task
+        self.cancellable = Gio.Cancellable()
+        self.task = Gio.Task.new(None, self.cancellable, None)
 
-        # Thread
-        self.thread = Thread(
-                name='worker-thread',
-                target=blocking,
-                daemon=False,
-                args=(settings.copy(), AppQueue.signal_handler))
-        self.thread.start()
+        self.task.run_in_thread(
+            # run_in_thread() expects a function with these parameters
+            lambda task, source_object, task_data=None, cancellable=None:
+                blocking(task, settings.copy(), self.handle_signal))
 
         self.started = True
 
-    def thread_cancel(self):
-        if self.thread is not None:
-            AppStatus.cancelling = True
-            self.thread.join()
-            AppStatus.cancelling = False
+    def cancel(self):
+        # Cancel the Gio.Task
+        self.cancellable.cancel()
 
+        # Prepare the GUI to appear as "not started" again
         self.started = False
 
-    def cancel(self):
-        # Thread
-        self.thread_cancel()
-
         # GUI
-        self.start_button.set_label(_('Start'))
-        self.settings_button.set_sensitive(True)
-        self.folder_button.set_sensitive(True)
-        self.method_combo.set_sensitive(True)
+        self.gui_stop()
 
     def finish(self):
         self.started = False
 
-        # GUI
+        self.cancellable = None
+        self.task = None
+
+        # Same updates to the GUI as with self.cancel()
+        self.gui_stop()
+
+    def gui_stop(self):
         self.start_button.set_label(_('Start'))
         self.settings_button.set_sensitive(True)
         self.folder_button.set_sensitive(True)
@@ -316,6 +312,63 @@ class MainWindow(Gtk.Window):
                             os_functions.get_pretty_name(file_)))
 
     def on_destruction(self, window):
-        AppQueue.destroy()
-        self.thread_cancel()
+        if self.started:
+            self.cancel()
 
+    def handle_signal(self, signal_name, *args):
+        if signal_name == 'started':
+            self.status_bar.push(1, _('Working...'))
+
+        elif signal_name == 'append-parent':
+            # This signal expects three arguments
+            code, file_1, file_2 = args
+
+            self.hash_tree_model.add_parent(code)
+            self.hash_tree_model.add_child(code, file_1)
+            self.hash_tree_model.add_child(code, file_2)
+
+        elif signal_name == 'append-child':
+            code, file_ = args
+
+            self.hash_tree_model.add_child(code, file_)
+
+        elif signal_name == 'cancelled':
+            total_iterations, total_files = args
+
+            message = _(
+                    '{} repetitions found before cancelling; {} files processed').format(
+                            total_iterations, total_files)
+
+            self.notify_os(message)
+            self.status_bar.push(1, message)
+            self.cancel()
+
+        elif signal_name == 'limit-reached':
+            total_iterations, total_files = args
+
+            message = _(
+                    '{} repetitions found before reaching limit of {} files').format(
+                            total_iterations, total_files)
+
+            self.notify_os(message)
+            self.status_bar.push(1, message)
+            self.stop()
+
+        elif signal_name == 'finished':
+            total_iterations, total_files = args
+
+            message = _('{} repetitions found within {} files').format(total_iterations, total_files)
+
+            self.notify_os(message)
+            self.status_bar.push(1, message)
+            self.stop()
+
+        elif signal_name == 'insufficient-permissions':
+            item_dirname, item_basename = args
+
+            message = _('Not enough permissions to open \'{}\'').format(
+                    os.path.join(item_dirname, item_basename))
+            self.status_bar.push(1, message)
+
+        # Cancel the idle_add call
+        return False

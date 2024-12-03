@@ -15,6 +15,9 @@ def open_in_os(file_or_dir):
                 'xdg-open ' + quote_char + file_or_dir + quote_char) == 0 
     return False
 
+def dirname(path):
+    return os.path.dirname(path)
+
 def is_dir(dir_):
     return os.path.isdir(dir_)
 
