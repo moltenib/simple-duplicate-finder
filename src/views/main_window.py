@@ -48,7 +48,7 @@ class MainWindow(Gtk.Window):
 
         self.method_combo = Gtk.ComboBoxText()
 
-        for method in ('SHA-1', 'Adler-32', 'Modif. date', 'File name'):
+        for method in ('SHA-1', 'Adler-32', 'Modif. time', 'File name'):
             self.method_combo.append_text(
                     _(method))
 
