@@ -386,7 +386,7 @@ class MainWindow(Gtk.Window):
 
             self.notify_os(message)
             self.status_bar.push(1, message)
-            self.stop()
+            self.finish()
 
         elif signal_name == 'finished':
             total_iterations, total_files = args
@@ -395,7 +395,7 @@ class MainWindow(Gtk.Window):
 
             self.notify_os(message)
             self.status_bar.push(1, message)
-            self.stop()
+            self.finish()
 
         elif signal_name == 'insufficient-permissions':
             item_dirname, item_basename = args

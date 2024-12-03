@@ -39,8 +39,11 @@ msgstr "'{}' ouvert"
 msgid "Unable to open '{}'"
 msgstr "Impossible d'ouvrir '{}'"
 
-msgid "'{}', {} file, {} {}"
-msgstr "'{}', fichier {}, {} {}"
+msgid "Start"
+msgstr "Commencer"
+
+msgid "Cancel"
+msgstr "Annuler"
 
 msgid "Error: routine '{}' has failed"
 msgstr "Erreur : la routine '{}' a échoué"
