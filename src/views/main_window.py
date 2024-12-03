@@ -5,7 +5,7 @@ from gi.repository import GLib, Gio, Gtk
 
 from controllers.blocking import blocking
 
-import utils.os_functions
+from utils import os_functions
 from utils.settings import settings
 
 from views.main_window_tree import TreeModel, TreeView
@@ -201,12 +201,12 @@ class MainWindow(Gtk.Window):
 
     def on_key_press(self, window, ev):
         # Escape
-        if ev.keyval == 65307 and not AppStatus.cancelling:
+        if ev.keyval == 65307 and self.task is not None:
             self.cancel()
             self.start_button.grab_focus()
 
         # Delete
-        if ev.keyval == 65535 and not AppStatus.cancelling:
+        if ev.keyval == 65535 and self.task is not None:
             if self.started:
                 self.status_bar.push(1,
                         _('The search must be cancelled before deleting a file'))
