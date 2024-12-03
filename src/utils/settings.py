@@ -9,13 +9,12 @@ def load_default_settings():
     settings['expand-one-row-at-once'] = False
     settings['expand-rows-as-inserted'] = True
     settings['scroll-to-inserted-rows'] = True
-    settings['send-notifications'] = True
     settings['ask-before-deleting-one'] = True
     settings['ask-before-deleting-many'] = True
     settings['follow-symbolic-links'] = False
     settings['read-dotted-directories'] = False
     settings['read-dotted-files'] = False
-    settings['limit'] = 0.0
+    settings['limit'] = 50000.0
 
 if os.name == 'nt':
     settings_dir = os.path.join(

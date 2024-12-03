@@ -27,8 +27,6 @@ class SettingsWindow(Gtk.Window):
                 label=_('Scroll to inserted rows'))
         self.expand_one_row_at_once_button = Gtk.CheckButton(
                 label=_('Expand one row at once'))
-        self.send_notifications_button = Gtk.CheckButton(
-                label=_('Send notifications'))
 
         interface_vbox = Gtk.Box(
                 orientation=Gtk.Orientation.VERTICAL, spacing=6)
@@ -39,8 +37,6 @@ class SettingsWindow(Gtk.Window):
                 self.expand_rows_as_inserted_button, False, True, 0)
         interface_vbox.pack_start(
                 self.scroll_to_inserted_rows_button, False, True, 0)
-        interface_vbox.pack_start(
-                self.send_notifications_button, False, True, 0)
 
         interface_frame = Gtk.Frame(label=_('Interface'))
         interface_frame.add(interface_vbox)
@@ -126,8 +122,6 @@ class SettingsWindow(Gtk.Window):
                 'toggled', self.on_expand_rows_as_inserted_toggled)
         self.scroll_to_inserted_rows_button.connect(
                 'toggled', self.on_scroll_to_inserted_toggled)
-        self.send_notifications_button.connect(
-                'toggled', self.on_send_notifications_toggled)
 
         self.ask_file_one.connect('toggled', self.on_ask_file_one_toggled)
         self.ask_file_many.connect('toggled', self.on_ask_file_many_toggled)
@@ -157,8 +151,6 @@ class SettingsWindow(Gtk.Window):
                 settings['scroll-to-inserted-rows'])
         self.expand_one_row_at_once_button.set_active(
                 settings['expand-one-row-at-once'])
-        self.send_notifications_button.set_active(
-                settings['send-notifications'])
         self.ask_file_one.set_active(
                 settings['ask-before-deleting-one'])
         self.ask_file_many.set_active(
@@ -192,9 +184,6 @@ class SettingsWindow(Gtk.Window):
 
     def on_scroll_to_inserted_toggled(self, button):
         settings['scroll-to-inserted-rows'] = button.get_active()
-
-    def on_send_notifications_toggled(self, button):
-        settings['send-notifications'] = button.get_active()
 
     def on_ask_file_one_toggled(self, button):
         settings['ask-before-deleting-one'] = button.get_active()

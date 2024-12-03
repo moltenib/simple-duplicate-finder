@@ -292,11 +292,6 @@ class MainWindow(Gtk.Window):
             for parent in parents_to_remove:
                 self.hash_tree_model.remove(parent)
 
-    def notify_os(self, message):
-        if settings['send-notifications']:
-            if not os_functions.notify_os(message):
-                print(_('Error: routine \'{}\' has failed').format('send-notifications'))
-
     def on_hash_tree_selection_changed(self, hash_tree_selection):
         count = hash_tree_selection.count_selected_rows()
 
@@ -405,7 +400,6 @@ class MainWindow(Gtk.Window):
                     '{} repetitions found before cancelling; {} files processed').format(
                             total_iterations, total_files)
 
-            self.notify_os(message)
             self.status_bar.push(1, message)
             self.cancel()
 
@@ -416,7 +410,6 @@ class MainWindow(Gtk.Window):
                     '{} repetitions found before reaching limit of {} files').format(
                             total_iterations, total_files)
 
-            self.notify_os(message)
             self.status_bar.push(1, message)
             self.finish()
 
@@ -425,7 +418,6 @@ class MainWindow(Gtk.Window):
 
             message = _('{} repetitions found within {} files').format(total_iterations, total_files)
 
-            self.notify_os(message)
             self.status_bar.push(1, message)
             self.finish()
 
