@@ -3,6 +3,8 @@ from utils.dict_to_class import DictToClass
 from collections import deque, defaultdict
 from gi.repository import GLib
 
+from os import name as os_name
+
 def blocking(task, settings_dict, callback):
     # Avoid dictionary lookups
     settings = DictToClass(settings_dict)
@@ -58,14 +60,6 @@ def blocking(task, settings_dict, callback):
                 if not settings.read_dotted_directories and item_basename.startswith('.'):
                     continue
 
-                if not os_functions.dir_perms_OK(item_path):
-                    GLib.idle_add(
-                            callback,
-                            'insufficient-permissions',
-                            item_dirname,
-                            item_basename)
-                    continue
-
                 # Essential
                 directory_queue.append(item_path)
 
@@ -75,23 +69,26 @@ def blocking(task, settings_dict, callback):
                     continue
 
                 # Check file permissions
-                if not os_functions.file_perms_R_OK(item_path):
+                # os.access() does not work on NT
+                try:
+                   # Hashing based on the selected method
+                   if settings.method == 0:
+                       code = hashing.sha1(item_path)
+                   elif settings.method == 1:
+                       code = hashing.adler32(item_path)
+                   elif settings.method == 2:
+                       code = hashing.size(item_path)
+                   elif settings.method == 3:
+                       code = item_basename
+
+                except PermissionError:
                     GLib.idle_add(
                             callback,
                             'insufficient-permissions',
                             item_dirname,
                             item_basename)
-                    continue
 
-                # Hashing based on the selected method
-                if settings.method == 0:
-                    code = hashing.sha1(item_path)
-                elif settings.method == 1:
-                    code = hashing.adler32(item_path)
-                elif settings.method == 2:
-                    code = hashing.size(item_path)
-                elif settings.method == 3:
-                    code = item_basename
+                    continue
 
                 # Only look up the item once
                 current_hash_dict_item = hash_dict[code]
