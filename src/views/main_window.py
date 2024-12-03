@@ -364,6 +364,9 @@ class MainWindow(Gtk.Window):
             self.hash_tree_model.add_child(code, file_)
 
         elif signal_name == 'cancelled':
+            if self.task is None:
+                return
+
             total_iterations, total_files = args
 
             message = _(
@@ -403,3 +406,4 @@ class MainWindow(Gtk.Window):
 
         # Cancel the idle_add call
         return False
+
