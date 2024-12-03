@@ -28,7 +28,13 @@ msgid "{} repetitions found before cancelling; {} files processed"
 msgstr "{} Wiederholungen gefunden, bevor abgebrochen wurde; {} Dateien verarbeitet"
 
 msgid "Working..."
-msgstr "Arbeiten..."
+msgstr "Es läuft..."
+
+msgid "Start"
+msgstr "Beginnen"
+
+msgid "Cancel"
+msgstr "Abbrechen"
 
 msgid "Not enough permissions to read '{}'"
 msgstr "Nicht genügend Berechtigungen, um '{}' zu lesen"
@@ -38,9 +44,6 @@ msgstr "'{}' geöffnet"
 
 msgid "Unable to open '{}'"
 msgstr "Kann '{}' nicht öffnen"
-
-msgid "'{}', {} file, {} {}"
-msgstr "'{}', {} Datei, {} {}"
 
 msgid "Error: routine '{}' has failed"
 msgstr "Fehler: Routine '{}' ist fehlgeschlagen"

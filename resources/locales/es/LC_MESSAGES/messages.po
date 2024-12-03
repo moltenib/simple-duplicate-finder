@@ -30,6 +30,12 @@ msgstr "{} repeticiones encontradas antes de cancelar; {} archivos analizados"
 msgid "Working..."
 msgstr "Trabajando..."
 
+msgid "Start"
+msgstr "Iniciar"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
 msgid "Not enough permissions to read '{}'"
 msgstr "Permisos insuficientes para leer '{}'"
 
@@ -38,9 +44,6 @@ msgstr "'{}' abierto"
 
 msgid "Unable to open '{}'"
 msgstr "No se puede abrir '{}'"
-
-msgid "'{}', {} file, {} {}"
-msgstr "'{}', archivo {}, {} {}"
 
 msgid "Error: routine '{}' has failed"
 msgstr "Error: la rutina '{}' ha fallado"
