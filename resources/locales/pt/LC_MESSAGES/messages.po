@@ -111,3 +111,6 @@ msgstr "Sobre"
 msgid "Load defaults"
 msgstr "Carregar padrões"
 
+msgid "Not enough permissions to open '{}'"
+msgstr "Permissões insuficientes para abrir '{}'"
+
