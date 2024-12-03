@@ -3,9 +3,6 @@ import locale
 import os
 
 def set_up_translations():
-    # Choose the system locale, if available
-    system_locale = locale.get_locale()
-
     if os.name == 'nt':
         language = 'en'
 
