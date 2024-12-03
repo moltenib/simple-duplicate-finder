@@ -18,13 +18,19 @@ def load_default_settings():
     settings['limit'] = 0.0
 
 if os.name == 'nt':
-    settings_dir = os.path.expanduser('%LOCALAPPDATA%\\maun\\')
+    settings_dir = os.path.join(
+        os.environ.get('LOCALAPPDATA'),
+        'simple-duplicate-finder')
+
 elif os.name == 'posix':
     settings_dir = os.path.expanduser('~/.config/maun/')
+
 else:
     settings_dir = os.path.expanduser('~' + os.path.sep)
 
-settings_file = settings_dir + 'maun.json'
+settings_file = os.path.join(
+    settings_dir,
+    'settings.json')
 
 if os.path.exists(settings_file):
     with open(settings_file, 'r') as f:

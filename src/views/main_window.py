@@ -14,14 +14,23 @@ from views.settings_window import SettingsWindow
 from gettext import gettext as _
 
 from datetime import datetime
-import os
+import os, sys
 
 class MainWindow(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self, title=_('Simple Duplicate Finder'))
 
-        # Define the logo
-        logo_path = os.path.join(
+        # Define the logo path
+
+        if hasattr(sys, '_MEIPASS'):
+            logo_path = os.path.join(
+                    sys._MEIPASS,
+                    'resources',
+                    'icons',
+                    'app_icon.png')
+
+        else:
+            logo_path = os.path.join(
                 os.path.dirname(
                     os.path.abspath(__file__)),
                     '../../resources/icons/app_icon.png')
