@@ -14,9 +14,9 @@ windows:
 ifeq ($(findstring MINGW,$(OS)),)
 	@echo 'Skipping Windows compilation.'
 else
-	pyinstaller --onefile --name simple-duplicate-finder \
+	time pyinstaller --onefile --name simple-duplicate-finder \
 		--add-data "resources;resources" \
-	       	--icon=resources/icons/app_icon.ico \
+		--icon=resources/icons/app_icon.ico \
 		src/main.pyw
 endif
 
