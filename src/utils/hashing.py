@@ -27,5 +27,5 @@ def adler32(file_):
     return '%x' % (sum_ & 0xffffffff)
 
 def modification_time(file_):
-    return os.path.getmtime(file_)
+    return str(os.path.getmtime(file_))
 
