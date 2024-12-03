@@ -114,3 +114,6 @@ msgstr "Cargar valores predeterminados"
 msgid "Not enough permissions to open '{}'"
 msgstr "Permisos insuficientes para abrir '{}'"
 
+msgid "'{}'; modified on {}"
+msgstr "'{}'; modificado el {}"
+

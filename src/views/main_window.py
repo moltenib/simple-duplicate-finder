@@ -13,6 +13,7 @@ from views.settings_window import SettingsWindow
 
 from gettext import gettext as _
 
+from datetime import datetime
 import os
 
 class MainWindow(Gtk.Window):
@@ -73,7 +74,8 @@ class MainWindow(Gtk.Window):
         self.hash_tree_model = TreeModel()
         self.hash_tree_view = TreeView(self.hash_tree_model)
 
-        hash_tree_selection = self.hash_tree_view.get_selection()
+        self.hash_tree_view.get_selection().connect(
+                'changed', self.on_hash_tree_selection_changed)
 
         hash_tree_scrolled = Gtk.ScrolledWindow()
         hash_tree_scrolled.set_policy(
@@ -260,6 +262,7 @@ class MainWindow(Gtk.Window):
 
                     self.hash_tree_model.remove(rows[i])
 
+                    # If the parent is out of children, remove the parent
                     if self.hash_tree_model.iter_n_children(parent) < 2:
                         self.hash_tree_model.remove(parent)
 
@@ -272,6 +275,38 @@ class MainWindow(Gtk.Window):
         if settings['send-notifications']:
             if not os_functions.notify_os(message):
                 print(_('Error: routine \'{}\' has failed').format('send-notifications'))
+
+    def on_hash_tree_selection_changed(self, hash_tree_selection):
+        count = hash_tree_selection.count_selected_rows()
+
+        if count == 0:
+            self.status_bar.push(
+                    1, _('Selection cleared').format(count))
+
+        elif count == 1:
+            row = hash_tree_selection.get_selected_rows()[1]
+            row_content = self.hash_tree_model[row[0]][0]
+
+            # If it is a file
+            if row[0].get_depth() == 2:
+                self.status_bar.push(1,
+                        _("'{}'; modified on {}").format(
+                            os_functions.get_pretty_name(row_content),
+                            datetime.fromtimestamp(
+                                os.path.getmtime(row_content)).strftime(
+                                    '%Y-%m-%d, %H:%M:%S')))
+
+            else:
+                iter_ = self.hash_tree_model.get_iter(row[0])
+
+                self.status_bar.push(1,
+                        _("{} ({})").format(
+                            row_content,
+                            self.hash_tree_model.iter_n_children(iter_)))
+
+        elif count > 1:
+            self.status_bar.push(
+                    1, _('{} rows selected').format(count))
 
     def on_row_inserted(self, model, path, iter_):
         if settings['expand-one-row-at-once']:
@@ -306,10 +341,6 @@ class MainWindow(Gtk.Window):
                 self.status_bar.push(1,
                     _('\'{}\' opened').format(
                         os_functions.get_pretty_name(file_)))
-            else:
-                self.status_bar.push(1,
-                        _('\'{}\', {}, {} {}').format( # Name, type, size, size unit
-                            os_functions.get_pretty_name(file_)))
 
     def on_destruction(self, window):
         if self.started:

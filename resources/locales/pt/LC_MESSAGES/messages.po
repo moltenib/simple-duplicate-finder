@@ -114,3 +114,12 @@ msgstr "Carregar padrões"
 msgid "Not enough permissions to open '{}'"
 msgstr "Permissões insuficientes para abrir '{}'"
 
+msgid "Selection cleared"
+msgstr "Seleção apagada"
+
+msgid "'{}'; modified on {}"
+msgstr "'{}'; modificado em {}"
+
+msgid "{} rows selected"
+msgstr "{} linhas selecionadas"
+
