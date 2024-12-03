@@ -4,7 +4,13 @@ import os
 
 def set_up_translations():
     # Choose the system locale, if available
-    language = locale.getlocale()[0][:2]
+    system_locale = locale.get_locale()
+
+    if system_locale is None:
+        language = 'en'
+
+    else:
+        language = locale.getlocale()[0][:2]
 
     locale_path = os.path.join(
             os.path.dirname(__file__),

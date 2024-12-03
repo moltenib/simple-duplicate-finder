@@ -2,9 +2,9 @@
 OS := $(shell uname)
 
 all:
-	@echo "Choose 'make gettext' or 'make windows'"
+	@echo "Please choose 'make translations' or 'make windows'."
 
-gettext:
+translations:
 	@for i in resources/locales/*/LC_MESSAGES; do \
 		echo "Compiling '$$i/messages.po' to '$$i/messages.mo'"; \
 		msgfmt $$i/messages.po -o $$i/messages.mo; \
