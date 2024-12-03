@@ -58,7 +58,7 @@ msgid "Files have been deleted"
 msgstr "Se han borrado los archivos"
 
 msgid "Simple Duplicate Finder"
-msgstr "Buscador de Duplicados"
+msgstr "Buscador Simple de Duplicados"
 
 msgid "A simple program to help you find duplicates"
 msgstr "Un sencillo programa para ayudarle a buscar archivos duplicados."
