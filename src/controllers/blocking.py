@@ -1,15 +1,13 @@
 from utils import hashing, os_functions
 from utils.dict_to_class import DictToClass
 from collections import deque, defaultdict
+from gi.repository import GLib
 
-class AppStatus:
-    cancelling = False
-
-def blocking(settings_dict, signal_handler):
+def blocking(task, settings_dict, callback):
     # Avoid dictionary lookups
     settings = DictToClass(settings_dict)
 
-    signal_handler.emit('started')
+    GLib.idle_add(callback, 'started')
 
     # Use defaultdict instead of a normal dictionary
     hash_dict = defaultdict(list)
@@ -20,9 +18,13 @@ def blocking(settings_dict, signal_handler):
     # Use a queue for breadth-first search
     directory_queue = deque([settings.path])
 
+    # Use GObject threading techniques
+    cancellable = task.get_cancellable()
+
     while directory_queue:
-        if AppStatus.cancelling:
-            signal_handler.emit('cancelled', total_iterations, total_files)
+        if cancellable.is_cancelled():
+            GLib.idle_add(
+                    callback, 'cancelled', total_iterations, total_files)
             return
 
         item_dirname = directory_queue.popleft()
@@ -32,13 +34,15 @@ def blocking(settings_dict, signal_handler):
             dir_listing = os_functions.list_dir(item_dirname)
 
         except PermissionError:
-            signal_handler.emit('insufficient-permissions', item_dirname, '')
+            GLib.idle_add(
+                    callback, 'insufficient-permissions', item_dirname, '')
             continue
 
         for item_basename in dir_listing:
             # Check for cancellation during iteration
-            if AppStatus.cancelling:
-                signal_handler.emit('cancelled', total_iterations, total_files)
+            if cancellable.is_cancelled():
+                GLib.idle_add(
+                        callback, 'cancelled', total_iterations, total_files)
                 return
 
             # Construct the full path once
@@ -55,7 +59,11 @@ def blocking(settings_dict, signal_handler):
                     continue
 
                 if not os_functions.dir_perms_OK(item_path):
-                    signal_handler.emit('insufficient-permissions', item_dirname, item_basename)
+                    GLib.idle_add(
+                            callback,
+                            'insufficient-permissions',
+                            item_dirname,
+                            item_basename)
                     continue
 
                 # Essential
@@ -68,7 +76,11 @@ def blocking(settings_dict, signal_handler):
 
                 # Check file permissions
                 if not os_functions.file_perms_R_OK(item_path):
-                    signal_handler.emit('insufficient-permissions', item_dirname, item_basename)
+                    GLib.idle_add(
+                            callback,
+                            'insufficient-permissions',
+                            item_dirname,
+                            item_basename)
                     continue
 
                 # Hashing based on the selected method
@@ -90,21 +102,26 @@ def blocking(settings_dict, signal_handler):
                 # A parent can only be added along with two files
                 if len(current_hash_dict_item) == 2:
                     total_iterations += 1
-                    signal_handler.emit(
+                    GLib.idle_add(
+                        callback,
                         'append-parent',
                         code,
                         current_hash_dict_item[0],
                         current_hash_dict_item[1])
 
                 elif len(current_hash_dict_item) > 2:
-                    signal_handler.emit('append-child', code, item_path)
+                    GLib.idle_add(
+                            callback, 'append-child', code, item_path)
 
                 total_files += 1
 
                 # Check if the file limit has been reached
                 if settings.limit != 0 and total_files >= settings.limit:
-                    signal_handler.emit(
-                            'limit-reached', total_iterations, total_files)
+                    GLib.idle_add(
+                            callback,
+                            'limit-reached',
+                            total_iterations,
+                            total_files)
                     return
 
-    signal_handler.emit('finished', total_iterations, total_files)
+    GLib.idle_add(callback, 'finished', total_iterations, total_files)
