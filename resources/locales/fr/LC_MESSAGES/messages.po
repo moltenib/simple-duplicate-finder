@@ -6,7 +6,7 @@ msgstr ""
 msgid "To begin, please choose a directory from the top bar."
 msgstr "Pour commencer, veuillez choisir un répertoire dans la barre supérieure."
 
-msgid "Modif. date"
+msgid "Modif. time"
 msgstr "Modification"
 
 msgid "File name"
