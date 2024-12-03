@@ -114,3 +114,12 @@ msgstr "Carica valori predefiniti"
 msgid "Not enough permissions to open '{}'"
 msgstr "Permessi insufficienti per aprire '{}'"
 
+msgid "Selection cleared"
+msgstr "Selezione cancellata"
+
+msgid "'{}'; modified on {}"
+msgstr "'{}'; modificato a {}"
+
+msgid "{} rows selected"
+msgstr "{} righe selezionate"
+

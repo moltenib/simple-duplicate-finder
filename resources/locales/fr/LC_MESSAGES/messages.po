@@ -114,3 +114,12 @@ msgstr "Charger les paramètres par défaut"
 msgid "Not enough permissions to open '{}'"
 msgstr "Pas assez d'autorisations pour ouvrir « {} »"
 
+msgid "Selection cleared"
+msgstr "Sélection effacée"
+
+msgid "'{}'; modified on {}"
+msgstr "'{}'; modifié à {}"
+
+msgid "{} rows selected"
+msgstr "{} lignes sélectionnées"
+

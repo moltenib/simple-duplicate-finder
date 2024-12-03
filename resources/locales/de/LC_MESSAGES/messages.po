@@ -114,3 +114,12 @@ msgstr "Standardeinstellungen laden"
 msgid "Not enough permissions to open '{}'"
 msgstr "Nicht genügend Berechtigungen zum Öffnen von „{}“"
 
+msgid "Selection cleared"
+msgstr "Auswahl gelöscht"
+
+msgid "'{}'; modified on {}"
+msgstr "'{}'; geändert am {}"
+
+msgid "{} rows selected"
+msgstr "{} Zeilen ausgewählt"
+
