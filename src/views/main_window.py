@@ -272,6 +272,7 @@ class MainWindow(Gtk.Window):
                 return
 
             i = 0
+            parents_to_remove = set()
 
             while i < len(selected_files):
                 if os_functions.file_remove(selected_files[i]):
@@ -279,14 +280,17 @@ class MainWindow(Gtk.Window):
 
                     self.hash_tree_model.remove(rows[i])
 
-                    # If the parent is out of children, remove the parent
-                    if self.hash_tree_model.iter_n_children(parent) < 2:
-                        self.hash_tree_model.remove(parent)
+                    # If the parent is out of children, flag it for removal
+                    if self.hash_tree_model.iter_n_children(parent) == 2:
+                        parents_to_remove.add(parent)
 
                     self.status_bar.push(1,
                             _('Files have been deleted'))
 
                 i += 1
+
+            for parent in parents_to_remove:
+                self.hash_tree_model.remove(parent)
 
     def notify_os(self, message):
         if settings['send-notifications']:
