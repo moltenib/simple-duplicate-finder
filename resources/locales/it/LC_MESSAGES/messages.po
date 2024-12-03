@@ -111,3 +111,6 @@ msgstr "Informazioni"
 msgid "Load defaults"
 msgstr "Carica valori predefiniti"
 
+msgid "Not enough permissions to open '{}'"
+msgstr "Permessi insufficienti per aprire '{}'"
+
