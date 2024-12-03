@@ -6,8 +6,8 @@ msgstr ""
 msgid "To begin, please choose a directory from the top bar."
 msgstr "Para começar, escolha um diretório na barra superior."
 
-msgid "File size"
-msgstr "Tamanho do arquivo"
+msgid "Modif. date"
+msgstr "Modificação"
 
 msgid "File name"
 msgstr "Nome do arquivo"

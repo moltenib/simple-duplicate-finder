@@ -77,7 +77,7 @@ def blocking(task, settings_dict, callback):
                    elif settings.method == 1:
                        code = hashing.adler32(item_path)
                    elif settings.method == 2:
-                       code = hashing.size(item_path)
+                       code = hashing.modification_time(item_path)
                    elif settings.method == 3:
                        code = item_basename
 

@@ -26,6 +26,6 @@ def adler32(file_):
             sum_ = adler32_imported(data, sum_)
     return '%x' % (sum_ & 0xffffffff)
 
-def size(file_):
-    return '%x' % os.path.getsize(file_)
+def modification_time(file_):
+    return os.path.getmtime(file_)
 
