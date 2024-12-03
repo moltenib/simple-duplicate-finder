@@ -126,3 +126,6 @@ msgstr "'{}'; modifié à {}"
 msgid "{} rows selected"
 msgstr "{} lignes sélectionnées"
 
+msgid "{} ({} files)"
+msgstr "{} ({} fichiers)"
+
