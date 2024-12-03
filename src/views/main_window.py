@@ -177,6 +177,8 @@ class MainWindow(Gtk.Window):
         self.started = True
 
     def cancel(self):
+        # self.status_bar.push(1, _('Cancelling...'))
+
         # Cancel the Gio.Task
         self.cancellable.cancel()
 
@@ -203,14 +205,20 @@ class MainWindow(Gtk.Window):
 
     def on_key_press(self, window, ev):
         # Escape
-        if ev.keyval == 65307 and self.task is not None:
-            self.cancel()
+        if ev.keyval == 65307:
+            if self.started:
+                self.cancel()
+
+            else:
+                self.hash_tree_view.get_selection().unselect_all()
+
             self.start_button.grab_focus()
 
         # Delete
-        if ev.keyval == 65535 and self.task is not None:
+        if ev.keyval == 65535:
             if self.started:
-                self.status_bar.push(1,
+                self.status_bar.push(
+                        1,
                         _('The search must be cancelled before deleting a file'))
                 return
 
@@ -323,10 +331,21 @@ class MainWindow(Gtk.Window):
         # Parent (code)
         if depth == 1:
             if settings['expand-one-row-at-once']:
-                tree_view.collapse_all()
+                if tree_view.row_expanded(path):
+                    tree_view.collapse_all()
+                else:
+                    # Any change to the tree makes all paths go obsolete
+                    old_path_iter = self.hash_tree_model.get_iter(path)
 
-            if tree_view.row_expanded(path):
+                    tree_view.collapse_all()
+
+                    new_path = self.hash_tree_model.get_path(old_path_iter)
+
+                    tree_view.expand_row(new_path, False)
+
+            elif tree_view.row_expanded(path):
                 tree_view.collapse_row(path)
+
             else:
                 tree_view.expand_row(path, False)
 
