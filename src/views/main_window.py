@@ -8,6 +8,12 @@ from controllers.blocking import blocking
 from utils import os_functions
 from utils.settings import settings
 
+from views.main_window_misc import (
+        MethodCombo,
+        FolderButton,
+        SettingsButton,
+        StartButton,
+        ExportButton)
 from views.main_window_tree import TreeModel, TreeView
 from views.settings_window import SettingsWindow
 
@@ -21,7 +27,7 @@ class MainWindow(Gtk.Window):
         Gtk.Window.__init__(self, title=_('Simple Duplicate Finder'))
 
         # Define the logo path
-
+        # Running under MSYS2
         if hasattr(sys, '_MEIPASS'):
             logo_path = os.path.join(
                     sys._MEIPASS,
@@ -29,6 +35,7 @@ class MainWindow(Gtk.Window):
                     'icons',
                     'app_icon.png')
 
+        # Linux or Unix-based
         else:
             logo_path = os.path.join(
                 os.path.dirname(
@@ -44,47 +51,18 @@ class MainWindow(Gtk.Window):
 
         ## Top bar
 
-        # Method combo
+        self.method_combo = MethodCombo()
 
-        self.method_combo = Gtk.ComboBoxText()
+        self.folder_button = FolderButton()
 
-        for method in ('SHA-1', 'Adler-32', 'Modif. time', 'File name'):
-            self.method_combo.append_text(
-                    _(method))
+        self.settings_button = SettingsButton()
 
-        self.method_combo.set_active(settings['method'])
-
-        # Folder choosing button
-
-        self.folder_button = Gtk.FileChooserButton(
-                action=Gtk.FileChooserAction.SELECT_FOLDER,
-                title=_('Choose path'))
-
-        self.folder_button.set_filename(settings['path'])
-
-        # Settings icon
-
-        settings_image = Gtk.Image(
-                pixbuf=Gtk.IconTheme.get_default().load_icon(
-                    'preferences-system', 16,
-                    Gtk.IconLookupFlags.FORCE_SIZE))
-
-        self.settings_button = Gtk.Button(image=settings_image)
-
-        # Start button
-
-        self.start_button = Gtk.Button(
-                label=_('Start'))
-
-        self.start_button.set_size_request(75, 0)
+        self.start_button = StartButton()
 
         # Tree view
 
         self.hash_tree_model = TreeModel()
         self.hash_tree_view = TreeView(self.hash_tree_model)
-
-        self.hash_tree_view.get_selection().connect(
-                'changed', self.on_hash_tree_selection_changed)
 
         hash_tree_scrolled = Gtk.ScrolledWindow()
         hash_tree_scrolled.set_policy(
@@ -94,6 +72,10 @@ class MainWindow(Gtk.Window):
         # Status bar
 
         self.status_bar = Gtk.Statusbar()
+
+        # Export button
+
+        self.export_button = ExportButton()
 
         # Pack everything in boxes
 
@@ -110,12 +92,18 @@ class MainWindow(Gtk.Window):
                 spacing=6)
         middle_hbox.pack_start(hash_tree_scrolled, True, True, 0)
 
+        bottom_hbox = Gtk.Box(
+                orientation=Gtk.Orientation.HORIZONTAL,
+                spacing=6)
+        bottom_hbox.pack_start(self.status_bar, True, True, 0)
+        bottom_hbox.pack_end(self.export_button, False, True, 0)
+
         vbox = Gtk.Box(
                 orientation=Gtk.Orientation.VERTICAL,
                 spacing=6)
         vbox.pack_start(top_hbox, False, True, 0)
         vbox.pack_start(middle_hbox, True, True, 0)
-        vbox.pack_end(self.status_bar, False, True, 0)
+        vbox.pack_end(bottom_hbox, False, True, 0)
 
         self.add(vbox)
 
@@ -126,20 +114,28 @@ class MainWindow(Gtk.Window):
         self.folder_button.connect(
                 'file-set', self.on_folder_set)
         self.settings_button.connect(
-                'clicked', self.on_settings_button_click)
+                'clicked', self.on_settings_button_clicked)
         self.start_button.connect(
-                'clicked', self.on_start_button_click)
+                'clicked', self.on_start_button_clicked)
         self.hash_tree_model.connect(
                 'row-inserted', self.on_row_inserted)
         self.hash_tree_view.connect(
                 'row-activated', self.on_row_activated)
+
+        self.hash_tree_view.get_selection().connect(
+                'changed', self.on_hash_tree_selection_changed)
+
+        self.export_button.connect(
+                'clicked', self.on_export_button_clicked)
 
         self.connect(
                 'key-press-event', self.on_key_press)
         self.connect(
                 'destroy', self.on_destruction)
 
-        self.status_bar.push(1, _('To begin, please choose a directory from the top bar.'))
+        self.status_bar.push(
+                1,
+                _('To begin, please choose a directory from the top bar.'))
 
         self.start_button.grab_focus()
 
@@ -156,20 +152,57 @@ class MainWindow(Gtk.Window):
     def on_folder_set(self, folder_button):
         settings['path'] = folder_button.get_filename()
 
-    def on_settings_button_click(self, button):
-        SettingsWindow(parent=self).show_all()
+    def on_settings_button_clicked(self, button):
+        SettingsWindow(self).show_all()
 
-    def on_start_button_click(self, button):
+    def on_start_button_clicked(self, button):
         if not self.started:
             self.start()
         else:
             self.cancel()
+
+    def on_export_button_clicked(self, button):
+        dialog = Gtk.FileChooserDialog(
+                parent=self,
+                action=Gtk.FileChooserAction.SAVE,
+                title=_('Choose path'),
+                buttons=(
+                    _('Cancel'), Gtk.ResponseType.CANCEL,
+                    _('Save'), Gtk.ResponseType.ACCEPT),
+                do_overwrite_confirmation=True)
+
+        file_filter = Gtk.FileFilter()
+        file_filter.set_name('Comma-Separated Values (CSV)')
+        file_filter.add_pattern('*.csv')
+        file_filter.add_mime_type('text/csv')
+
+        dialog.add_filter(file_filter)
+
+        dialog.set_current_name(
+                '{}-{}.csv'.format(
+                    _('Simple Duplicate Finder').replace(' ', '-'),
+                    datetime.now().strftime('%Y-%m-%d-%H-%M-%S')))
+
+        if dialog.run() == Gtk.ResponseType.ACCEPT:
+            file_name = dialog.get_filename()
+
+            if not file_name.lower().endswith('.csv'):
+                file_name += '*.csv'
+            
+            self.hash_tree_model.print_to_file(file_name)
+
+            self.status_bar.push(
+                    1,
+                    _("Exported to '{}'").format(file_name))
+
+        dialog.destroy()
 
     def start(self):
         # GUI
         self.method_combo.set_sensitive(False)
         self.folder_button.set_sensitive(False)
         self.settings_button.set_sensitive(False)
+        self.export_button.set_sensitive(False)
         self.hash_tree_model.clear_all()
         self.hash_tree_view.columns_autosize()
         self.start_button.set_label(_('Cancel'))
@@ -208,6 +241,7 @@ class MainWindow(Gtk.Window):
 
     def gui_stop(self):
         self.start_button.set_label(_('Start'))
+        self.export_button.set_sensitive(True)
         self.settings_button.set_sensitive(True)
         self.folder_button.set_sensitive(True)
         self.method_combo.set_sensitive(True)

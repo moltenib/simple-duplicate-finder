@@ -24,6 +24,28 @@ class TreeModel(Gtk.TreeStore):
         self.clear()
         self.hash_to_iter.clear()
 
+    def print_to_file(self, file_name):
+        with open(file_name, 'w') as f:
+            # This assumes the first row is a parent
+            parent_iter = self.get_iter_first()
+
+            while parent_iter:
+                current_hash = self[parent_iter][0]
+
+                # Iterate through its children
+                child_iter = self.iter_children(parent_iter)
+
+                while child_iter:
+                    current_file = self[child_iter][0]
+
+                    # Using tab as a separator
+                    f.write('{}\t{}\n'.format(current_hash, current_file))
+
+                    child_iter = self.iter_next(child_iter)
+
+                parent_iter = self.iter_next(parent_iter)
+
+
 class TreeView(Gtk.TreeView):
     def __init__(self, model):
         Gtk.TreeView.__init__(self)

@@ -8,7 +8,7 @@ from utils.settings import load_default_settings, settings
 from gettext import gettext as _
 
 class SettingsWindow(Gtk.Window):
-    def __init__(self, parent=None):
+    def __init__(self, parent):
         Gtk.Window.__init__(
                 self, title=_('Settings'), resizable=False)
 

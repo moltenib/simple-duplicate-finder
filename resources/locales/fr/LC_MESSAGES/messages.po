@@ -12,11 +12,26 @@ msgstr "Modification"
 msgid "File name"
 msgstr "Nom du fichier"
 
+msgid "Method"
+msgstr "Méthode"
+
+msgid "Starting path"
+msgstr "Chemin de départ"
+
 msgid "Choose path"
 msgstr "Choisir un chemin"
 
 msgid "Settings"
 msgstr "Paramètres"
+
+msgid "Export as CSV"
+msgstr "Exporter en CSV"
+
+msgid "Exported to '{}'"
+msgstr "Exporté vers '{}'"
+
+msgid "Save"
+msgstr "Enregistrer"
 
 msgid "{} repetitions found within {} files"
 msgstr "{} répétitions trouvées dans {} fichiers"

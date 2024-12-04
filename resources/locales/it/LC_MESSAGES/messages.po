@@ -12,11 +12,26 @@ msgstr "Tempo modif."
 msgid "File name"
 msgstr "Nome del file"
 
+msgid "Method"
+msgstr "Metodo"
+
+msgid "Starting path"
+msgstr "Percorso iniziale"
+
 msgid "Choose path"
 msgstr "Scegli percorso"
 
 msgid "Settings"
 msgstr "Impostazioni"
+
+msgid "Export as CSV"
+msgstr "Esporta come CSV"
+
+msgid "Exported to '{}'"
+msgstr "Esportato in '{}'"
+
+msgid "Save"
+msgstr "Salva"
 
 msgid "{} repetitions found within {} files"
 msgstr "{} ripetizioni trovate in {} file"

@@ -36,8 +36,9 @@ def blocking(task, settings_dict, callback):
             dir_listing = os_functions.list_dir(item_dirname)
 
         except PermissionError:
-            GLib.idle_add(
-                    callback, 'insufficient-permissions', item_dirname, '')
+            # This appears to flood the interface with events
+            #GLib.idle_add(
+            #        callback, 'insufficient-permissions', item_dirname, '')
             continue
 
         for item_basename in dir_listing:
@@ -82,12 +83,12 @@ def blocking(task, settings_dict, callback):
                        code = item_basename
 
                 except PermissionError:
-                    GLib.idle_add(
-                            callback,
-                            'insufficient-permissions',
-                            item_dirname,
-                            item_basename)
-
+                    # This appears to flood the interface with events
+                    #GLib.idle_add(
+                    #        callback,
+                    #        'insufficient-permissions',
+                    #        item_dirname,
+                    #        item_basename)
                     continue
 
                 # Only look up the item once
