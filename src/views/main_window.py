@@ -278,11 +278,11 @@ class MainWindow(Gtk.Window):
                 if os_functions.file_remove(selected_files[i]):
                     parent = self.hash_tree_model.iter_parent(rows[i])
 
-                    self.hash_tree_model.remove(rows[i])
-
-                    # If the parent is out of children, flag it for removal
+                    # If the parent is about to be out of children, flag it for removal
                     if self.hash_tree_model.iter_n_children(parent) == 2:
                         parents_to_remove.add(parent)
+                    
+                    self.hash_tree_model.remove(rows[i])
 
                     self.status_bar.push(1,
                             _('Files have been deleted'))
