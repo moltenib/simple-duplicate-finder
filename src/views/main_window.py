@@ -77,6 +77,9 @@ class MainWindow(Gtk.Window):
 
         self.export_button = ExportButton()
 
+        # TODO: Add CSV import
+        self.export_button.set_sensitive(False)
+
         # Pack everything in boxes
 
         top_hbox = Gtk.Box(
@@ -165,7 +168,7 @@ class MainWindow(Gtk.Window):
         dialog = Gtk.FileChooserDialog(
                 parent=self,
                 action=Gtk.FileChooserAction.SAVE,
-                title=_('Choose path'),
+                title=_('Export as CSV'),
                 buttons=(
                     _('Cancel'), Gtk.ResponseType.CANCEL,
                     _('Save'), Gtk.ResponseType.ACCEPT),
