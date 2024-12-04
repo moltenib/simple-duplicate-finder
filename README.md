@@ -11,7 +11,7 @@ This program is intended to find and display files that share one of these featu
 
 Choosing SHA-1 and Adler-32 will open all files in the file system under the chosen directory, altering their access dates, but checking the modification time or file name will only use the file's metadata, which is much faster to retrieve.
 
-- SHA-1 was originally intended as a cryptographic hashing algorithm and is the only method that is almost guaranteed to return a reliable result. It is also the slowest.
+- SHA-1 was originally intended as a cryptographic hashing algorithm and is the only method that is guaranteed to return duplicates. It is also the slowest.
 - Adler-32 was intended for block parity calculation rather than hashing, and is particularly not reliable for small files.
 - A modification date shared by two or more files is no guarantee that the files are the same. For instance, they could have been decompressed at the same time.
 - If two files share the name, it means just that. This option does not check for anything else.
