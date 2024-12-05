@@ -38,7 +38,8 @@ def blocking(task, settings, callback):
                     callback,
                     'cancelled',
                     total_iterations,
-                    total_files)
+                    total_files,
+                    elapsed_time)
             return
 
         item_dirname = directory_queue.popleft()
