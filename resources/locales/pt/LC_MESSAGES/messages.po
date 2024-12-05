@@ -33,14 +33,14 @@ msgstr "Exportado para '{}'"
 msgid "Save"
 msgstr "Salvar"
 
-msgid "{} repetitions found within {} files"
-msgstr "{} repetições encontradas em {} arquivos"
+msgid "{} repetitions found within {} files; elapsed: {}"
+msgstr "{} repetições encontradas em {} arquivos; tempo total: {}"
 
-msgid "{} repetitions found before reaching limit of {} files"
-msgstr "{} repetições encontradas antes de atingir o limite de {} arquivos"
+msgid "{} repetitions found before reaching limit of {} files; elapsed: {}"
+msgstr "{} repetições encontradas antes de atingir o limite de {} arquivos; tempo total: {}"
 
-msgid "{} repetitions found before cancelling; {} files processed"
-msgstr "{} repetições encontradas antes de cancelar; {} arquivos processados"
+msgid "{} repetitions found before cancelling; {} files processed; elapsed: {}"
+msgstr "{} repetições encontradas antes de cancelar; {} arquivos processados; tempo total: {}"
 
 msgid "Working..."
 msgstr "Trabalhando..."
