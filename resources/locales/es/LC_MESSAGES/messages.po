@@ -34,7 +34,7 @@ msgid "Save"
 msgstr "Guardar"
 
 msgid "{} repetitions found within {} files; elapsed: {}"
-msgstr "{} repeticiones encontradas en {} archivos; tiempo total: {}"
+msgstr "{} repeticiones encontradas en {} archivos; duración: {}"
 
 msgid "{} repetitions found before reaching limit of {} files; elapsed: {}"
 msgstr "{} repeticiones encontradas con un límite de {} archivos; tiempo total: {}"
