@@ -1,14 +1,10 @@
 from utils import hashing, os_functions
-from utils.dict_to_class import DictToClass
 from collections import deque, defaultdict
 from gi.repository import GLib
 
 from os import name as os_name
 
-def blocking(task, settings_dict, callback):
-    # Avoid dictionary lookups
-    settings = DictToClass(settings_dict)
-
+def blocking(task, settings, callback):
     GLib.idle_add(callback, 'started')
 
     # Use defaultdict instead of a normal dictionary

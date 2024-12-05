@@ -3,7 +3,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gdk
 
 from .about_dialog import AboutDialog
-from utils.settings import load_default_settings, settings
+from utils.settings import settings
 
 from gettext import gettext as _
 
@@ -70,7 +70,7 @@ class SettingsWindow(Gtk.Window):
         self.file_limit_spinbutton = Gtk.SpinButton.new_with_range(
                 0.0, 999999.0, 1.0)
         self.file_limit_spinbutton.set_digits(0)
-        self.file_limit_spinbutton.set_value(settings['limit'])
+        self.file_limit_spinbutton.set_value(settings.limit)
         file_limit_hbox = Gtk.Box(
                 orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         file_limit_hbox.pack_start(
@@ -146,59 +146,65 @@ class SettingsWindow(Gtk.Window):
 
     def load_settings(self):
         self.expand_rows_as_inserted_button.set_active(
-                settings['expand-rows-as-inserted'])
+                settings.expand_rows_as_inserted)
         self.scroll_to_inserted_rows_button.set_active(
-                settings['scroll-to-inserted-rows'])
+                settings.scroll_to_inserted_rows)
         self.expand_one_row_at_once_button.set_active(
-                settings['expand-one-row-at-once'])
+                settings.expand_one_row_at_once)
         self.ask_file_one.set_active(
-                settings['ask-before-deleting-one'])
+                settings.ask_before_deleting_one)
         self.ask_file_many.set_active(
-                settings['ask-before-deleting-many'])
+                settings.ask_before_deleting_many)
         self.follow_links_button.set_active(
-                settings['follow-symbolic-links'])
+                settings.follow_symbolic_links)
         self.read_dotted_directories_button.set_active(
-                settings['read-dotted-directories'])
+                settings.read_dotted_directories)
         self.read_dotted_files_button.set_active(
-                settings['read-dotted-files'])
+                settings.read_dotted_files)
 
-        if settings['limit'] == 0:
+        if settings.limit == 0:
             self.file_limit_button.set_active(False)
             self.file_limit_spinbutton.set_sensitive(False)
         else:
             self.file_limit_button.set_active(True)
             self.file_limit_spinbutton.set_sensitive(True)
 
-        self.file_limit_spinbutton.set_value(settings['limit'])
+        self.file_limit_spinbutton.set_value(settings.limit)
 
         self.parent.method_combo.set_active(
-                settings['method'])
+                settings.method)
         self.parent.folder_button.set_filename(
-                settings['path'])
+                settings.path)
 
     def on_expand_one_row_at_once_toggled(self, button):
-        settings['expand-one-row-at-once'] = button.get_active()
+        settings.expand_one_row_at_once = button.get_active()
 
     def on_expand_rows_as_inserted_toggled(self, button):
-        settings['expand-rows-as-inserted'] = button.get_active()
+        settings.expand_rows_as_inserted = button.get_active()
 
     def on_scroll_to_inserted_toggled(self, button):
-        settings['scroll-to-inserted-rows'] = button.get_active()
+        settings.scroll_to_inserted_rows = button.get_active()
 
     def on_ask_file_one_toggled(self, button):
-        settings['ask-before-deleting-one'] = button.get_active()
+        settings.ask_before_deleting_one = button.get_active()
 
     def on_ask_file_many_toggled(self, button):
-        settings['ask-before-deleting-many'] = button.get_active()
+        settings.ask_before_deleting_many = button.get_active()
 
     def on_follow_links_toggled(self, button):
-        settings['follow-symbolic-links'] = button.get_active()
+        settings.follow_symbolic_links = button.get_active()
 
     def on_read_dotted_directories_toggled(self, button):
-        settings['read-dotted-directories'] = button.get_active()
+        settings.read_dotted_directories = button.get_active()
 
     def on_read_dotted_files_toggled(self, button):
-        settings['read-dotted-files'] = button.get_active()
+        settings.read_dotted_files = button.get_active()
+
+    def on_theme_changed(self, combo):
+        Gtk.Settings = Gtk.Settings.get_default()
+        Gtk.Settings.set_property(
+                'gtk-application-prefer-dark-theme',
+                combo.get_active() == 2 and 'true' or 'false')
 
     def on_file_limit_toggled(self, button):
         if button.get_active():
@@ -209,7 +215,7 @@ class SettingsWindow(Gtk.Window):
             self.file_limit_spinbutton.set_value(0)
 
     def on_file_limit_changed(self, button):
-        settings['limit'] = button.get_value_as_int()
+        settings.limit = button.get_value_as_int()
 
     def on_about_clicked(self, button):
         self.destroy()
@@ -218,7 +224,8 @@ class SettingsWindow(Gtk.Window):
         dialog.destroy()
 
     def on_load_default_clicked(self, button):
-        load_default_settings()
+        settings.load_default()
+
         self.load_settings()
 
     def on_key_press(self, window, ev):

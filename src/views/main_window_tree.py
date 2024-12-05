@@ -50,7 +50,7 @@ class TreeView(Gtk.TreeView):
     def __init__(self, model):
         Gtk.TreeView.__init__(self)
         renderer = Gtk.CellRendererText(
-                font=settings['font'])
+                font=settings.font)
         hash_tree_column = Gtk.TreeViewColumn(
             'Codes', renderer, text=0)
         self.append_column(hash_tree_column)

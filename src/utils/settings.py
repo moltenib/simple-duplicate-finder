@@ -1,45 +1,68 @@
 import json, os
 
-settings = {}
+class SettingsCopy:
+    def __init__(self, dict_):
+        for key, value in dict_.items():
+            attr_name = key.replace('-', '_')
+            setattr(self, attr_name, value)
 
-def load_default_settings():
-    settings['method'] = 1
-    settings['path'] = os.path.expanduser('~')
-    settings['font'] = ''
-    settings['expand-one-row-at-once'] = False
-    settings['expand-rows-as-inserted'] = True
-    settings['scroll-to-inserted-rows'] = True
-    settings['ask-before-deleting-one'] = True
-    settings['ask-before-deleting-many'] = True
-    settings['follow-symbolic-links'] = False
-    settings['read-dotted-directories'] = False
-    settings['read-dotted-files'] = False
-    settings['limit'] = 50000.0
+class Settings:
+    def __init__(self):
+        self.load_default()
 
-if os.name == 'nt':
-    settings_dir = os.path.join(
-        os.environ.get('LOCALAPPDATA'),
-        'simple-duplicate-finder')
+        self.file = self.find_settings_file()
 
-elif os.name == 'posix':
-    settings_dir = os.path.expanduser('~/.config/maun/')
+        self.load()
 
-else:
-    settings_dir = os.path.expanduser('~' + os.path.sep)
+    def load_default(self):
+        self.method = 1
+        self.path = os.path.expanduser('~')
+        self.font = ''
+        self.theme = 'dark'
+        self.expand_one_row_at_once = False
+        self.expand_rows_as_inserted = True
+        self.scroll_to_inserted_rows = True
+        self.ask_before_deleting_one = True
+        self.ask_before_deleting_many = True
+        self.follow_symbolic_links = False
+        self.read_dotted_directories = False
+        self.read_dotted_files = False
+        self.limit = 50000.0
 
-settings_file = os.path.join(
-    settings_dir,
-    'settings.json')
+    def find_settings_file(self):
+        if os.name == 'nt':
+            settings_dir = os.path.join(
+                os.environ.get('LOCALAPPDATA'),
+                'simple-duplicate-finder')
 
-if os.path.exists(settings_file):
-    with open(settings_file, 'r') as f:
-        settings = json.load(f)
-else:
-    if not os.path.isdir(settings_dir):
-        os.makedirs(settings_dir)
-    load_default_settings()
+        elif os.name == 'posix':
+            settings_dir = os.path.expanduser('~/.config/maun/')
 
-def save_settings():
-    with open(settings_file, 'w') as f:
-        json.dump(settings, f, indent=4)
+        else:
+            settings_dir = os.path.expanduser('~' + os.path.sep)
+
+        return os.path.join(
+            settings_dir,
+            'settings.json')
+
+    def load(self):
+        if os.path.exists(self.file):
+            with open(self.file, 'r') as f:
+                settings = json.load(f)
+
+            for key, value in settings.items():
+                attr_name = key.replace('-', '_')
+                setattr(self, attr_name, value)
+        else:
+            if not os.path.isdir(settings_dir):
+                os.makedirs(settings_dir)
+
+    def save(self):
+        with open(self.file, 'w') as f:
+            json.dump(self.__dict__, f, indent=4)
+
+    def copy(self):
+        return SettingsCopy(self.__dict__.copy())
+
+settings = Settings()
 

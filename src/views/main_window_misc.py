@@ -17,7 +17,7 @@ class MethodCombo(Gtk.ComboBoxText):
                 'File name'):
             self.append_text(_(method))
 
-        self.set_active(settings['method'])
+        self.set_active(settings.method)
 
         self.set_tooltip_text(_('Method'))
 
@@ -28,7 +28,7 @@ class FolderButton(Gtk.FileChooserButton):
                 action=Gtk.FileChooserAction.SELECT_FOLDER,
                 title=_('Choose path'))
 
-        self.set_filename(settings['path'])
+        self.set_filename(settings.path)
 
         self.set_tooltip_text(_('Starting path'))
 

@@ -150,10 +150,10 @@ class MainWindow(Gtk.Window):
         self.started = False
 
     def on_method_changed(self, combo):
-        settings['method'] = combo.get_active()
+        settings.method = combo.get_active()
 
     def on_folder_set(self, folder_button):
-        settings['path'] = folder_button.get_filename()
+        settings.path = folder_button.get_filename()
 
     def on_settings_button_clicked(self, button):
         SettingsWindow(self).show_all()
@@ -279,7 +279,7 @@ class MainWindow(Gtk.Window):
                 # Get a list of iters to delete
                 rows = [self.hash_tree_model.get_iter(row) for row in rows[1] if row.get_depth() == 2]
 
-            if settings['ask-before-deleting-one'] and len(selected_files) == 1:
+            if settings.ask_before_deleting_one and len(selected_files) == 1:
                 dialog = Gtk.MessageDialog(
                         buttons=Gtk.ButtonsType.OK_CANCEL,
                         parent=self,
@@ -290,7 +290,7 @@ class MainWindow(Gtk.Window):
                 response = dialog.run() == Gtk.ResponseType.OK
 
                 dialog.destroy()
-            elif settings['ask-before-deleting-many'] and len(selected_files) > 1:
+            elif settings.ask_before_deleting_many and len(selected_files) > 1:
                 dialog = Gtk.MessageDialog(
                         buttons=Gtk.ButtonsType.OK_CANCEL,
                         parent=self,
@@ -362,11 +362,11 @@ class MainWindow(Gtk.Window):
                     1, _('{} rows selected').format(count))
 
     def on_row_inserted(self, model, path, iter_):
-        if settings['expand-one-row-at-once']:
+        if settings.expand_one_row_at_once:
             self.hash_tree_view.collapse_all()
-        if settings['expand-rows-as-inserted']:
+        if settings.expand_rows_as_inserted:
             self.hash_tree_view.expand_to_path(path)
-        if settings['scroll-to-inserted-rows']:
+        if settings.scroll_to_inserted_rows:
             self.hash_tree_view.scroll_to_cell(
                     path, None, False, 0.0, 0.0)
 
@@ -375,7 +375,7 @@ class MainWindow(Gtk.Window):
 
         # Parent (code)
         if depth == 1:
-            if settings['expand-one-row-at-once']:
+            if settings.expand_one_row_at_once:
                 if tree_view.row_expanded(path):
                     tree_view.collapse_all()
                 else:
