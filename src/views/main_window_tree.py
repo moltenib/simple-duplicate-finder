@@ -2,6 +2,8 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
+from os import name as os_name
+
 from utils.settings import settings
 
 class TreeModel(Gtk.TreeStore):
@@ -45,16 +47,36 @@ class TreeModel(Gtk.TreeStore):
 
                 parent_iter = self.iter_next(parent_iter)
 
-
 class TreeView(Gtk.TreeView):
     def __init__(self, model):
         Gtk.TreeView.__init__(self)
+
+        if os_name == 'nt':
+            self.monospaced_font = 'Courier New'
+
+        else:
+            self.monospaced_font = 'Monospace'
+
         renderer = Gtk.CellRendererText(
                 font=settings.font)
+
         hash_tree_column = Gtk.TreeViewColumn(
             'Codes', renderer, text=0)
+
+        hash_tree_column.set_cell_data_func(
+                renderer, self.give_format_to_cell)
+
         self.append_column(hash_tree_column)
         self.set_headers_visible(False)
         self.get_selection().set_mode(Gtk.SelectionMode.MULTIPLE)
         self.set_model(model)
+
+    def give_format_to_cell(
+            self, column, cell, model, iter_, data):
+        if model.get_path(iter_).get_depth() == 1:
+            # Parent
+            cell.set_property('font', self.monospaced_font)
+
+        else:
+            cell.set_property('font', '')
 
