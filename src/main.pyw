@@ -10,6 +10,12 @@ from utils.translations import set_up_translations
 from views.main_window import MainWindow
 
 def main():
+    if settings.theme == 'dark':
+        Gtk.Settings = Gtk.Settings.get_default()
+        Gtk.Settings.set_property(
+                'gtk-application-prefer-dark-theme',
+                'true')
+
     set_up_translations()
 
     w = MainWindow()

@@ -31,6 +31,7 @@ class SettingsWindow(Gtk.Window):
                 label=_('Expand one row at once'))
 
         theme_label = Gtk.Label(label=_('Theme:'))
+        theme_label.set_xalign(0)
         self.theme_combo = Gtk.ComboBoxText()
 
         for theme in ('Light', 'Dark'):
@@ -44,6 +45,9 @@ class SettingsWindow(Gtk.Window):
         interface_vbox.pack_start(
                 self.expand_rows_as_inserted_button, False, True, 0)
 
+        interface_vbox.pack_start(
+                self.scroll_to_inserted_rows_button, False, True, 0)
+
         if os_name == 'nt':
             theme_hbox = Gtk.Box(
                     orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
@@ -51,13 +55,10 @@ class SettingsWindow(Gtk.Window):
             theme_hbox.pack_start(
                     theme_label, True, True, 0)
             theme_hbox.pack_start(
-                    self.theme_combo, False, True, 0)
+                    self.theme_combo, True, True, 0)
 
             interface_vbox.pack_start(
-                    self.theme_combo, False, True, 0)
-
-        interface_vbox.pack_start(
-                self.scroll_to_inserted_rows_button, False, True, 0)
+                    theme_hbox, False, True, 0)
 
         interface_frame = Gtk.Frame(label=_('Interface'))
         interface_frame.add(interface_vbox)
@@ -229,11 +230,12 @@ class SettingsWindow(Gtk.Window):
 
     def on_theme_changed(self, combo):
         dark = combo.get_active() == 1
+
         # Change the theme
         Gtk.Settings = Gtk.Settings.get_default()
         Gtk.Settings.set_property(
                 'gtk-application-prefer-dark-theme',
-                dark and 'true' or 'false')
+                dark)
 
         settings.theme = dark and 'dark' or 'light'
 

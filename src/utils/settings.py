@@ -17,7 +17,7 @@ class Settings:
         self.method = 1
         self.path = os.path.expanduser('~')
         self.font = ''
-        self.theme = 'dark'
+        self.theme = 'light'
         self.expand_one_row_at_once = False
         self.expand_rows_as_inserted = True
         self.scroll_to_inserted_rows = True
@@ -53,6 +53,8 @@ class Settings:
                 attr_name = key.replace('-', '_')
                 setattr(self, attr_name, value)
         else:
+            settings_dir = os.path.dirname(self.file)
+
             if not os.path.isdir(settings_dir):
                 os.makedirs(settings_dir)
 
