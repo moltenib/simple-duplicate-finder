@@ -52,10 +52,10 @@ class TreeView(Gtk.TreeView):
         Gtk.TreeView.__init__(self)
 
         if os_name == 'nt':
-            self.monospaced_font = 'Courier New'
+            self.monospaced_font = 'Courier New 8'
 
         else:
-            self.monospaced_font = 'Monospace'
+            self.monospaced_font = 'Monospace 8'
 
         renderer = Gtk.CellRendererText(
                 font=settings.font)
@@ -76,7 +76,21 @@ class TreeView(Gtk.TreeView):
         if model.get_path(iter_).get_depth() == 1:
             # Parent
             cell.set_property('font', self.monospaced_font)
+            print('PARENT')
+            requisition_min, requisition_nat = cell.get_preferred_size(self)
+            print('Minimal {}x{}, natural {}x{}'.format(
+                requisition_min.width,
+                requisition_min.height,
+                requisition_nat.width,
+                requisition_nat.height))
 
         else:
             cell.set_property('font', '')
+            print('CHILD')
+            requisition_min, requisition_nat = cell.get_preferred_size(self)
+            print('Minimal {}x{}, natural {}x{}'.format(
+                requisition_min.width,
+                requisition_min.height,
+                requisition_nat.width,
+                requisition_nat.height))
 
