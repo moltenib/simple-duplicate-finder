@@ -431,29 +431,30 @@ class MainWindow(Gtk.Window):
             if self.task is None:
                 return
 
-            total_iterations, total_files = args
+            total_iterations, total_files, elapsed_time = args
 
             message = _(
-                    '{} repetitions found before cancelling; {} files processed').format(
-                            total_iterations, total_files)
+                    '{} repetitions found before cancelling; {} files processed; elapsed: {}').format(
+                            total_iterations, total_files, elapsed_time)
 
             self.status_bar.push(1, message)
             self.cancel()
 
         elif signal_name == 'limit-reached':
-            total_iterations, total_files = args
+            total_iterations, total_files, elapsed_time = args
 
             message = _(
-                    '{} repetitions found before reaching limit of {} files').format(
-                            total_iterations, total_files)
+                    '{} repetitions found before reaching limit of {} files; elapsed: {}').format(
+                            total_iterations, total_files, elapsed_time)
 
             self.status_bar.push(1, message)
             self.finish()
 
         elif signal_name == 'finished':
-            total_iterations, total_files = args
+            total_iterations, total_files, elapsed_time = args
 
-            message = _('{} repetitions found within {} files').format(total_iterations, total_files)
+            message = _('{} repetitions found within {} files; elapsed: {}').format(
+                    total_iterations, total_files, elapsed_time)
 
             self.status_bar.push(1, message)
             self.finish()

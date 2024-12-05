@@ -2,7 +2,18 @@ from utils import hashing, os_functions
 from collections import deque, defaultdict
 from gi.repository import GLib
 
+from datetime import datetime
+
 from os import name as os_name
+
+def elapsed_time(time_started):
+    elapsed = datetime.now() - time_started
+
+    formatted_time = (datetime(1, 1, 1) + elapsed).strftime('%H:%M:%S')
+
+    milliseconds = int(elapsed.microseconds / 1000)
+
+    return f'{formatted_time}.{milliseconds:03d}'
 
 def blocking(task, settings, callback):
     GLib.idle_add(callback, 'started')
@@ -13,6 +24,8 @@ def blocking(task, settings, callback):
     total_iterations = 0
     total_files = 0
 
+    time_started = datetime.now()
+
     # Use a queue for breadth-first search
     directory_queue = deque([settings.path])
 
@@ -22,7 +35,10 @@ def blocking(task, settings, callback):
     while directory_queue:
         if cancellable.is_cancelled():
             GLib.idle_add(
-                    callback, 'cancelled', total_iterations, total_files)
+                    callback,
+                    'cancelled',
+                    total_iterations,
+                    total_files)
             return
 
         item_dirname = directory_queue.popleft()
@@ -41,7 +57,11 @@ def blocking(task, settings, callback):
             # Check for cancellation during iteration
             if cancellable.is_cancelled():
                 GLib.idle_add(
-                        callback, 'cancelled', total_iterations, total_files)
+                        callback,
+                        'cancelled',
+                        total_iterations,
+                        total_files,
+                        elapsed_time(time_started))
                 return
 
             # Construct the full path once
@@ -115,7 +135,13 @@ def blocking(task, settings, callback):
                             callback,
                             'limit-reached',
                             total_iterations,
-                            total_files)
+                            total_files,
+                            elapsed_time(time_started))
                     return
 
-    GLib.idle_add(callback, 'finished', total_iterations, total_files)
+    GLib.idle_add(
+            callback,
+            'finished',
+            total_iterations,
+            total_files,
+            elapsed_time(time_started))
