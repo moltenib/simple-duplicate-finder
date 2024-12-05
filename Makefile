@@ -17,8 +17,8 @@ else
 	windres resources/version.rc -o resources/version.res
 	time pyinstaller --onefile --name simple-duplicate-finder \
 		--add-data "resources/icons;resources/icons" \
+		--add-data "resources/version.res;version.res" \
 		--add-data "resources/locales;resources/locales" \
-		--add-data "resources/version.res;resources/version.res" \
 		--icon=resources/icons/app_icon.ico \
 		src/main.pyw
 endif
