@@ -60,6 +60,9 @@ class TreeView(Gtk.TreeView):
         renderer = Gtk.CellRendererText(
                 font=settings.font)
 
+        # Force a parent to be the same size as a child (29)
+        renderer.set_fixed_size(-1, 29)
+
         hash_tree_column = Gtk.TreeViewColumn(
             'Codes', renderer, text=0)
 
@@ -76,21 +79,6 @@ class TreeView(Gtk.TreeView):
         if model.get_path(iter_).get_depth() == 1:
             # Parent
             cell.set_property('font', self.monospaced_font)
-            print('PARENT')
-            requisition_min, requisition_nat = cell.get_preferred_size(self)
-            print('Minimal {}x{}, natural {}x{}'.format(
-                requisition_min.width,
-                requisition_min.height,
-                requisition_nat.width,
-                requisition_nat.height))
 
         else:
             cell.set_property('font', '')
-            print('CHILD')
-            requisition_min, requisition_nat = cell.get_preferred_size(self)
-            print('Minimal {}x{}, natural {}x{}'.format(
-                requisition_min.width,
-                requisition_min.height,
-                requisition_nat.width,
-                requisition_nat.height))
-
