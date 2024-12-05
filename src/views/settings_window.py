@@ -5,6 +5,8 @@ from gi.repository import Gtk, Gdk
 from .about_dialog import AboutDialog
 from utils.settings import settings
 
+from os import name as os_name
+
 from gettext import gettext as _
 
 class SettingsWindow(Gtk.Window):
@@ -28,6 +30,12 @@ class SettingsWindow(Gtk.Window):
         self.expand_one_row_at_once_button = Gtk.CheckButton(
                 label=_('Expand one row at once'))
 
+        theme_label = Gtk.Label(label=_('Theme:'))
+        self.theme_combo = Gtk.ComboBoxText()
+
+        for theme in ('Light', 'Dark'):
+            self.theme_combo.append_text(_(theme))
+
         interface_vbox = Gtk.Box(
                 orientation=Gtk.Orientation.VERTICAL, spacing=6)
         interface_vbox.set_border_width(6)
@@ -35,6 +43,19 @@ class SettingsWindow(Gtk.Window):
                 self.expand_one_row_at_once_button, False, True, 0)
         interface_vbox.pack_start(
                 self.expand_rows_as_inserted_button, False, True, 0)
+
+        if os_name == 'nt':
+            theme_hbox = Gtk.Box(
+                    orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+
+            theme_hbox.pack_start(
+                    theme_label, True, True, 0)
+            theme_hbox.pack_start(
+                    self.theme_combo, False, True, 0)
+
+            interface_vbox.pack_start(
+                    self.theme_combo, False, True, 0)
+
         interface_vbox.pack_start(
                 self.scroll_to_inserted_rows_button, False, True, 0)
 
@@ -123,6 +144,10 @@ class SettingsWindow(Gtk.Window):
         self.scroll_to_inserted_rows_button.connect(
                 'toggled', self.on_scroll_to_inserted_toggled)
 
+        if os_name == 'nt':
+            self.theme_combo.connect(
+                    'changed', self.on_theme_changed)
+
         self.ask_file_one.connect('toggled', self.on_ask_file_one_toggled)
         self.ask_file_many.connect('toggled', self.on_ask_file_many_toggled)
 
@@ -151,6 +176,8 @@ class SettingsWindow(Gtk.Window):
                 settings.scroll_to_inserted_rows)
         self.expand_one_row_at_once_button.set_active(
                 settings.expand_one_row_at_once)
+        self.theme_combo.set_active(
+                settings.theme == 'dark' and 1 or 0)
         self.ask_file_one.set_active(
                 settings.ask_before_deleting_one)
         self.ask_file_many.set_active(
@@ -201,10 +228,14 @@ class SettingsWindow(Gtk.Window):
         settings.read_dotted_files = button.get_active()
 
     def on_theme_changed(self, combo):
+        dark = combo.get_active() == 1
+        # Change the theme
         Gtk.Settings = Gtk.Settings.get_default()
         Gtk.Settings.set_property(
                 'gtk-application-prefer-dark-theme',
-                combo.get_active() == 2 and 'true' or 'false')
+                dark and 'true' or 'false')
+
+        settings.theme = dark and 'dark' or 'light'
 
     def on_file_limit_toggled(self, button):
         if button.get_active():

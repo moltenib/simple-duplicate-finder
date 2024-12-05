@@ -3,8 +3,7 @@ import json, os
 class SettingsCopy:
     def __init__(self, dict_):
         for key, value in dict_.items():
-            attr_name = key.replace('-', '_')
-            setattr(self, attr_name, value)
+            setattr(self, key, value)
 
 class Settings:
     def __init__(self):
@@ -42,8 +41,8 @@ class Settings:
             settings_dir = os.path.expanduser('~' + os.path.sep)
 
         return os.path.join(
-            settings_dir,
-            'settings.json')
+                settings_dir,
+                'settings.json')
 
     def load(self):
         if os.path.exists(self.file):

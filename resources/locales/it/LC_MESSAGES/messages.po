@@ -99,6 +99,15 @@ msgstr "Invia notifiche"
 msgid "Interface"
 msgstr "Interfaccia"
 
+msgid "Theme:"
+msgstr "Tema:"
+
+msgid "Light"
+msgstr "Chiaro"
+
+msgid "Dark"
+msgstr "Scuro"
+
 msgid "One file"
 msgstr "Un file"
 
