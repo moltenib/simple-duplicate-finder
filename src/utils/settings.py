@@ -35,10 +35,11 @@ class Settings:
                 'simple-duplicate-finder')
 
         elif os.name == 'posix':
-            settings_dir = os.path.expanduser('~/.config/maun/')
+            settings_dir = os.path.expanduser(
+                    '~/.config/simple-duplicate-finder')
 
         else:
-            settings_dir = os.path.expanduser('~' + os.path.sep)
+            settings_dir = os.path.expanduser('~')
 
         return os.path.join(
                 settings_dir,
