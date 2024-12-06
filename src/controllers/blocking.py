@@ -1,19 +1,11 @@
-from utils import hashing, os_functions
 from collections import deque, defaultdict
 from gi.repository import GLib
+from utils import hashing, os_functions
+from utils.elapsed_time import elapsed_time
 
 from datetime import datetime
 
 from os import name as os_name
-
-def elapsed_time(time_started):
-    elapsed = datetime.now() - time_started
-
-    formatted_time = (datetime(1, 1, 1) + elapsed).strftime('%H:%M:%S')
-
-    milliseconds = int(elapsed.microseconds / 1000)
-
-    return f'{formatted_time}.{milliseconds:03d}'
 
 def blocking(task, settings, callback):
     GLib.idle_add(callback, 'started')
