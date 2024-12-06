@@ -34,8 +34,8 @@ An [executable file](https://github.com/moltenib/simple-duplicate-finder/raw/ref
 
 ## Notes
 
-This program was meant as a replacement for this Linux command, which is actually faster as the `sort` command is only run once, and no GUI is updated live:
+This program was meant as a replacement for the Linux or Unix command below, which is actually faster, as the `sort` command is only run once, but the list of files is not shown until it finishes running.
 
-`find . -type f -exec md5sum {} \; | sort | uniq -w 32`
+`find . -type f -exec shasum {} \; | sort | uniq -w 32`
 
-The same output can be achieved by exporting the tree view on this program as a CSV file.
+A very similar output can be achieved by exporting the tree view on this program as a CSV file, with the bottom-right button.
