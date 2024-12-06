@@ -10,7 +10,8 @@ def sha1(file_):
     with open(file_, 'rb') as f:
         while True:
             # Number is equal to the buffer size in bytes
-            data = f.read(4096)
+            # Read in chunks of 4 MB
+            data = f.read(4194304)
             if not data:
                 break
             sum_.update(data)
@@ -20,7 +21,7 @@ def adler32(file_):
     sum_ = 0
     with open(file_, 'rb') as f:
         while True:
-            data = f.read(4096)
+            data = f.read(4194304)
             if not data:
                 break
             sum_ = adler32_imported(data, sum_)
