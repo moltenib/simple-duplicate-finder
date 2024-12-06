@@ -31,3 +31,9 @@ cd simple-duplicate-finder/src
 ### Windows
 
 An [executable file](https://github.com/moltenib/simple-duplicate-finder/raw/refs/heads/master/dist/simple-duplicate-finder.exe) is included for convenience. It was made with PyInstaller and may take a few seconds to start.
+
+## Notes
+
+This program was meant as a replacement for this Linux command:
+
+`find . -type f -exec md5sum {} \; | sort | uniq -w 32`
