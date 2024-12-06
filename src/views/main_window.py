@@ -40,7 +40,11 @@ class MainWindow(Gtk.Window):
             logo_path = os.path.join(
                 os.path.dirname(
                     os.path.abspath(__file__)),
-                    '../../resources/icons/app_icon.png')
+                    '..',
+                    '..',
+                    'resources',
+                    'icons',
+                    'app_icon.png')
 
         self.set_default_icon_from_file(
                 logo_path)
@@ -85,28 +89,38 @@ class MainWindow(Gtk.Window):
         top_hbox = Gtk.Box(
                 orientation=Gtk.Orientation.HORIZONTAL,
                 spacing=6)
-        top_hbox.pack_start(self.method_combo, False, True, 0)
-        top_hbox.pack_start(self.folder_button, True, True, 0)
-        top_hbox.pack_start(self.settings_button, False, True, 0)
-        top_hbox.pack_end(self.start_button, False, True, 0)
+        top_hbox.pack_start(
+                self.method_combo, False, True, 0)
+        top_hbox.pack_start(
+                self.folder_button, True, True, 0)
+        top_hbox.pack_start(
+                self.settings_button, False, True, 0)
+        top_hbox.pack_end(
+                self.start_button, False, True, 0)
 
         middle_hbox = Gtk.Box(
                 orientation=Gtk.Orientation.HORIZONTAL,
                 spacing=6)
-        middle_hbox.pack_start(hash_tree_scrolled, True, True, 0)
+        middle_hbox.pack_start(
+                hash_tree_scrolled, True, True, 0)
 
         bottom_hbox = Gtk.Box(
                 orientation=Gtk.Orientation.HORIZONTAL,
                 spacing=6)
-        bottom_hbox.pack_start(self.status_bar, True, True, 0)
-        bottom_hbox.pack_end(self.export_button, False, True, 0)
+        bottom_hbox.pack_start(
+                self.status_bar, True, True, 0)
+        bottom_hbox.pack_end(
+                self.export_button, False, True, 0)
 
         vbox = Gtk.Box(
                 orientation=Gtk.Orientation.VERTICAL,
                 spacing=6)
-        vbox.pack_start(top_hbox, False, True, 0)
-        vbox.pack_start(middle_hbox, True, True, 0)
-        vbox.pack_end(bottom_hbox, False, True, 0)
+        vbox.pack_start(
+                top_hbox, False, True, 0)
+        vbox.pack_start(
+                middle_hbox, True, True, 0)
+        vbox.pack_end(
+                bottom_hbox, False, True, 0)
 
         self.add(vbox)
 
