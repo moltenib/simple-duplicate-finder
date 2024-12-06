@@ -38,4 +38,4 @@ This program was meant as a replacement for the Linux or Unix command below, whi
 
 `find . -type f -exec shasum {} \; | sort | uniq -w 32`
 
-A very similar output can be achieved by exporting the tree view on this program as a CSV file, with the bottom-right button.
+A very similar output can be achieved by saving the tree view on this program as a CSV file, with the bottom-right button.
