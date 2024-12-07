@@ -63,11 +63,14 @@ msgstr "Não é possível abrir '{}'"
 msgid "Error: routine '{}' has failed"
 msgstr "Erro: a rotina '{}' falhou"
 
-msgid "Are you sure you want to delete the following file?\n\n{}"
-msgstr "Tem certeza de que deseja excluir o seguinte arquivo?\n\n{}"
+msgid "Confirm deletion"
+msgstr "Confirmar exclusão"
 
-msgid "Are you sure you want to delete the following files?\n\n{}"
-msgstr "Tem certeza de que deseja excluir os seguintes arquivos?\n\n{}"
+msgid "Are you sure you want to delete the following file?"
+msgstr "Tem certeza de que deseja excluir o seguinte arquivo?"
+
+msgid "Are you sure you want to delete the following files?"
+msgstr "Tem certeza de que deseja excluir os seguintes arquivos?"
 
 msgid "The search must be cancelled before deleting a file"
 msgstr "A pesquisa deve ser cancelada antes de excluir um arquivo"
