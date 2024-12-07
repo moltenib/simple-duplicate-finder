@@ -14,7 +14,7 @@ def main():
         Gtk.Settings = Gtk.Settings.get_default()
         Gtk.Settings.set_property(
                 'gtk-application-prefer-dark-theme',
-                'true')
+                True)
 
     set_up_translations()
 
