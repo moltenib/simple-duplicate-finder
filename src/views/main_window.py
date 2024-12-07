@@ -8,12 +8,7 @@ from controllers.blocking import blocking
 from utils import os_functions
 from utils.settings import settings
 
-from views.main_window_misc import (
-        MethodCombo,
-        FolderButton,
-        SettingsButton,
-        StartButton,
-        ExportButton)
+from views.main_window_misc import *
 from views.main_window_tree import TreeModel, TreeView
 from views.settings_window import SettingsWindow
 
@@ -179,26 +174,7 @@ class MainWindow(Gtk.Window):
             self.cancellable.cancel()
 
     def on_export_button_clicked(self, button):
-        dialog = Gtk.FileChooserDialog(
-                parent=self,
-                action=Gtk.FileChooserAction.SAVE,
-                title=_('Export as CSV'),
-                buttons=(
-                    _('Cancel'), Gtk.ResponseType.CANCEL,
-                    _('Save'), Gtk.ResponseType.ACCEPT),
-                do_overwrite_confirmation=True)
-
-        file_filter = Gtk.FileFilter()
-        file_filter.set_name('Comma-Separated Values (CSV)')
-        file_filter.add_pattern('*.csv')
-        file_filter.add_mime_type('text/csv')
-
-        dialog.add_filter(file_filter)
-
-        dialog.set_current_name(
-                '{}-{}.csv'.format(
-                    _('Simple Duplicate Finder').replace(' ', '-'),
-                    datetime.now().strftime('%Y-%m-%d-%H-%M-%S')))
+        dialog = ExportDialog(self)
 
         if dialog.run() == Gtk.ResponseType.ACCEPT:
             file_name = dialog.get_filename()
@@ -226,7 +202,7 @@ class MainWindow(Gtk.Window):
 
         # Create a Gio.Cancellable and assign it to a Gio.Task
         self.cancellable = Gio.Cancellable()
-        self.task = Gio.Task.new(self, self.cancellable, self.on_task_finished)
+        self.task = Gio.Task.new(None, self.cancellable, self.on_task_finished)
 
         self.task.run_in_thread(
                 lambda task, source_object, task_data=None, cancellable=None:
@@ -248,14 +224,13 @@ class MainWindow(Gtk.Window):
         if self.hash_tree_model.get_iter_first():
             self.export_button.set_sensitive(True)
 
-        self.start_button.set_sensitive(True)
         self.start_button.grab_focus()
 
     def on_key_press(self, window, ev):
         # Escape
         if ev.keyval == 65307:
             if self.started:
-                self.cancel()
+                self.cancellable.cancel()
 
             else:
                 self.hash_tree_view.get_selection().unselect_all()
@@ -279,37 +254,19 @@ class MainWindow(Gtk.Window):
             iters_to_delete = []
 
             for row in rows:
-                # Get a list of files and rows to delete, excluding hash rows
+                # Populate the list of files and rows to delete
+                # excluding parents
                 if row.get_depth() == 2:
                     selected_files.append(model[row][0])
 
                     iters_to_delete.append(model.get_iter(row))
 
-            if settings.ask_before_deleting_one and len(selected_files) == 1:
-                dialog = Gtk.MessageDialog(
-                        buttons=Gtk.ButtonsType.OK_CANCEL,
-                        parent=self)
+            if settings.ask_before_deleting_one \
+                    and len(selected_files) == 1 \
+                    or settings.ask_before_deleting_many \
+                    and len(selected_files) > 1:
+                dialog = DeleteDialog(self, selected_files)
 
-                dialog.set_title(_('Confirm deletion'))
-                dialog.set_markup(
-                        _('Are you sure you want to delete the following file?'
-                        + '\n\n<b>{}</b>'.format(selected_files[0])))
-
-                response = dialog.run() == Gtk.ResponseType.OK
-
-                dialog.destroy()
-
-            elif settings.ask_before_deleting_many and len(selected_files) > 1:
-                dialog = Gtk.MessageDialog(
-                        buttons=Gtk.ButtonsType.OK_CANCEL,
-                        parent=self)
-
-                dialog.set_title(_('Confirm deletion'))
-                dialog.set_markup(
-                        _('Are you sure you want to delete the following files?'
-                        + '\n\n·\t<b>{}</b>'.format(
-                            '</b>\n·\t<b>'.join(selected_files))))
-    
                 response = dialog.run() == Gtk.ResponseType.OK
 
                 dialog.destroy()
@@ -453,17 +410,11 @@ class MainWindow(Gtk.Window):
             self.hash_tree_model.add_child(code, file_)
 
         elif signal_name == 'cancelled':
-            if self.task is None:
-                return
-
             total_iterations, total_files, elapsed_time = args
 
             message = _(
                     '{} repetitions found before cancelling; {} files processed; elapsed: {}').format(
                             total_iterations, total_files, elapsed_time)
-
-            # Disallow new tasks until the current one is complete
-            self.start_button.set_sensitive(False)
 
             self.status_bar.remove_all(1)
             self.status_bar.push(1, message)

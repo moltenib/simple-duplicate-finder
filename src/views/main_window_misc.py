@@ -6,6 +6,8 @@ from utils.settings import settings
 
 from gettext import gettext as _
 
+from datetime import datetime
+
 class MethodCombo(Gtk.ComboBoxText):
     def __init__(self):
         Gtk.ComboBoxText.__init__(self)
@@ -59,3 +61,47 @@ class ExportButton(Gtk.Button):
 
         self.set_tooltip_text(_('Export as CSV'))
 
+class ExportDialog(Gtk.FileChooserDialog):
+    def __init__(self, parent):
+        Gtk.FileChooserDialog.__init__(
+                self,
+                parent=parent,
+                action=Gtk.FileChooserAction.SAVE,
+                title=_('Export as CSV'),
+                buttons=(
+                    _('Cancel'), Gtk.ResponseType.CANCEL,
+                    _('Save'), Gtk.ResponseType.ACCEPT),
+                do_overwrite_confirmation=True)
+
+        file_filter = Gtk.FileFilter()
+        file_filter.set_name('Comma-Separated Values (CSV)')
+        file_filter.add_pattern('*.csv')
+        file_filter.add_mime_type('text/csv')
+
+        self.add_filter(file_filter)
+
+        self.set_current_name(
+                '{}-{}.csv'.format(
+                    _('Simple Duplicate Finder').replace(' ', '-'),
+                    datetime.now().strftime(
+                        '%Y-%m-%d-%H-%M-%S')))
+
+class DeleteDialog(Gtk.MessageDialog):
+    def __init__(self, parent, selected_files):
+        Gtk.FileChooserDialog.__init__(
+                self,
+                parent=parent,
+                buttons=Gtk.ButtonsType.OK_CANCEL)
+
+        self.set_title(_('Confirm deletion'))
+
+        if len(selected_files) == 1:
+            self.set_markup(
+                    _('Are you sure you want to delete the following file?'
+                    + '\n\n<b>{}</b>'.format(selected_files[0])))
+
+        else:
+            self.set_markup(
+                    _('Are you sure you want to delete the following files?'
+                    + '\n\n·\t<b>{}</b>'.format(
+                            '</b>\n·\t<b>'.join(selected_files))))
