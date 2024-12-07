@@ -53,6 +53,6 @@ An [executable file](https://github.com/moltenib/repo/raw/refs/heads/master/simp
 
 This program was meant as a replacement for the Linux or Unix command below, which is actually faster, as a `sort` command is only run once, but the list of files is not shown until it finishes running (unlike the tree view that is updated with each file that is found).
 
-`find . -type f -exec shasum {} \; | sort | uniq -w 40`
+`find . -type f -exec shasum {} \; | sort | uniq -w 40 -D`
 
 A very similar output can be achieved by saving the tree view on this program as a CSV file, with the button on the bottom right.
