@@ -39,9 +39,9 @@ Choosing SHA-1 and Adler-32 will open all files in the file system under the cho
 This program will run, provided that all dependencies are installed (e.g. PyGObject), as follows:
 
 ```shell
-make translations # if needed
 git clone # paste the URL to this repository
 cd simple-duplicate-finder/src
+make translations # if needed
 ./main.pyw
 ```
 
