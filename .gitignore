@@ -1,7 +1,4 @@
-__pycache__/
 build
 simple-duplicate-finder.spec
-
-# Gettext files
-#*.po
-
+__pycache__/
+*.mo
