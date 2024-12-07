@@ -2,6 +2,7 @@ import os
 
 from hashlib import sha1 as sha1_imported
 from zlib import adler32 as adler32_imported
+from datetime import datetime
 
 ### One function for each method
 
@@ -28,5 +29,6 @@ def adler32(file_):
     return '%x' % (sum_ & 0xffffffff)
 
 def modification_time(file_):
-    return str(os.path.getmtime(file_))
+    return datetime.fromtimestamp(
+                                  os.path.getmtime(file_)).isoformat(sep=' ')
 
