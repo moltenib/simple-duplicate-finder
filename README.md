@@ -19,7 +19,7 @@ Choosing SHA-1 and Adler-32 will open all files in the file system under the cho
 ## Controls
 
 - Double click: opens a file.
-- _Delete:_ deletes a file.
+- Delete key: deletes a file. By default, there is a confirmation dialog.
 - The tree allows multiple selection, with _Shift + click_ or _Ctrl + click._
 
 ### Coming soon
@@ -27,7 +27,7 @@ Choosing SHA-1 and Adler-32 will open all files in the file system under the cho
 - Context menu on right click with the following options:
   - Open the containing directory (with one file only)
   - Rename (id.)
-  - Swapping file names (with two files only)
+  - Swap file names (with two files only)
   - Delete selected (one to multiple files)
   - Keep the oldest (with two to multiple files)
   - Bulk rename (id.)
@@ -39,6 +39,7 @@ Choosing SHA-1 and Adler-32 will open all files in the file system under the cho
 This program will run, provided that all dependencies are installed (e.g. PyGObject), as follows:
 
 ```shell
+make translations # if needed
 git clone # paste the URL to this repository
 cd simple-duplicate-finder/src
 ./main.pyw
@@ -50,8 +51,8 @@ An [executable file](https://github.com/moltenib/repo/raw/refs/heads/master/simp
 
 ## Notes
 
-This program was meant as a replacement for the Linux or Unix command below, which is actually faster, as the `sort` command is only run once, but the list of files is not shown until it finishes running.
+This program was meant as a replacement for the Linux or Unix command below, which is actually faster, as a `sort` command is only run once, but the list of files is not shown until it finishes running (unlike the tree view that is updated with each file that is found).
 
 `find . -type f -exec shasum {} \; | sort | uniq -w 40`
 
-A very similar output can be achieved by saving the tree view on this program as a CSV file, with the bottom-right button.
+A very similar output can be achieved by saving the tree view on this program as a CSV file, with the button on the bottom right.
