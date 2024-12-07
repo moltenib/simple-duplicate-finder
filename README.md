@@ -2,8 +2,8 @@
 
 ## Controls
 
-- Double click: opens a fil
-- _Delete:_ deletes a file
+- Double click: opens a file.
+- _Delete:_ deletes a file.
 - The tree allows multiple selection, with _Shift + click_ or _Ctrl + click._
 
 ### Coming soon
