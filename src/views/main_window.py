@@ -176,7 +176,7 @@ class MainWindow(Gtk.Window):
         if not self.started:
             self.start()
         else:
-            self.cancel()
+            self.cancellable.cancel()
 
     def on_export_button_clicked(self, button):
         dialog = Gtk.FileChooserDialog(
@@ -226,42 +226,30 @@ class MainWindow(Gtk.Window):
 
         # Create a Gio.Cancellable and assign it to a Gio.Task
         self.cancellable = Gio.Cancellable()
-        self.task = Gio.Task.new(None, self.cancellable, None)
+        self.task = Gio.Task.new(self, self.cancellable, self.on_task_finished)
 
         self.task.run_in_thread(
-            # run_in_thread() expects a function with these parameters
-            lambda task, source_object, task_data=None, cancellable=None:
-                blocking(task, settings.copy(), self.handle_signal))
+                lambda task, source_object, task_data=None, cancellable=None:
+                    blocking(task, settings.copy(), self.handle_signal))
 
         self.started = True
 
-    def cancel(self):
-        self.status_bar.push(1, _('Cancelling...'))
-
-        # Cancel the Gio.Task
-        self.cancellable.cancel()
-
-        # Prepare the GUI to appear as "not started" again
-        self.started = False
-
-        # GUI
-        self.gui_stop()
-
-    def finish(self):
+    def on_task_finished(self, *args):
         self.started = False
 
         self.cancellable = None
         self.task = None
 
-        # Same updates to the GUI as with self.cancel()
-        self.gui_stop()
-
-    def gui_stop(self):
-        self.start_button.set_label(_('Start'))
-        self.export_button.set_sensitive(True)
-        self.settings_button.set_sensitive(True)
-        self.folder_button.set_sensitive(True)
         self.method_combo.set_sensitive(True)
+        self.folder_button.set_sensitive(True)
+        self.settings_button.set_sensitive(True)
+        self.start_button.set_label(_('Start'))
+
+        if self.hash_tree_model.get_iter_first():
+            self.export_button.set_sensitive(True)
+
+        self.start_button.set_sensitive(True)
+        self.start_button.grab_focus()
 
     def on_key_press(self, window, ev):
         # Escape
@@ -442,9 +430,12 @@ class MainWindow(Gtk.Window):
 
     def on_destruction(self, window):
         if self.started:
-            self.cancel()
+            self.cancellable.cancel()
 
     def handle_signal(self, signal_name, *args):
+        if self.task is not None and self.task.get_completed():
+            return
+
         if signal_name == 'started':
             self.status_bar.push(1, _('Working...'))
 
@@ -471,9 +462,11 @@ class MainWindow(Gtk.Window):
                     '{} repetitions found before cancelling; {} files processed; elapsed: {}').format(
                             total_iterations, total_files, elapsed_time)
 
+            # Disallow new tasks until the current one is complete
+            self.start_button.set_sensitive(False)
+
             self.status_bar.remove_all(1)
             self.status_bar.push(1, message)
-            self.cancel()
 
         elif signal_name == 'limit-reached':
             total_iterations, total_files, elapsed_time = args
@@ -482,8 +475,8 @@ class MainWindow(Gtk.Window):
                     '{} repetitions found before reaching limit of {} files; elapsed: {}').format(
                             total_iterations, total_files, elapsed_time)
 
+            self.status_bar.remove_all(1)
             self.status_bar.push(1, message)
-            self.finish()
 
         elif signal_name == 'finished':
             total_iterations, total_files, elapsed_time = args
@@ -493,7 +486,6 @@ class MainWindow(Gtk.Window):
 
             self.status_bar.remove_all(1)
             self.status_bar.push(1, message)
-            self.finish()
 
         elif signal_name == 'insufficient-permissions':
             item_dirname, item_basename = args
