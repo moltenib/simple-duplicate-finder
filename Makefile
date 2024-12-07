@@ -18,6 +18,7 @@ else
 		--add-data "resources/icons;resources/icons" \
 		--add-data "resources/locales;resources/locales" \
 		--distpath=../repo/simple-duplicate-finder/dist \
+		--contents-directory=`mktemp` \
 		--icon=resources/icons/app_icon.ico \
 		--version-file=resources/version.txt \
 		src/main.pyw
