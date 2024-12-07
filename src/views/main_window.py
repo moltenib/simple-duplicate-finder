@@ -327,7 +327,7 @@ class MainWindow(Gtk.Window):
                 self.status_bar.push(1,
                     _("{} ({} files)").format(
                         row_content,
-                        self.hash_tree_model.iter_n_children(
+                        model.iter_n_children(
                             model.get_iter(rows[0]))))
 
         else:
