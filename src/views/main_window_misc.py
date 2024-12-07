@@ -97,11 +97,11 @@ class DeleteDialog(Gtk.MessageDialog):
 
         if len(selected_files) == 1:
             self.set_markup(
-                    _('Are you sure you want to delete the following file?'
-                    + '\n\n<b>{}</b>'.format(selected_files[0])))
+                    _('Are you sure you want to delete the following file?')
+                    + '\n\n<b>{}</b>'.format(selected_files[0]))
 
         else:
             self.set_markup(
-                    _('Are you sure you want to delete the following files?'
+                    _('Are you sure you want to delete the following files?')
                     + '\n\n·\t<b>{}</b>'.format(
-                            '</b>\n·\t<b>'.join(selected_files))))
+                            '</b>\n·\t<b>'.join(selected_files)))
