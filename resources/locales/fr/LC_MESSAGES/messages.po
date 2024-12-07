@@ -81,7 +81,7 @@ msgstr "Les fichiers ont été supprimés"
 msgid "Simple Duplicate Finder"
 msgstr "Simple Recherche de Duplicatas"
 
-msgid "A simple program to help you find duplicates"
+msgid "A program to find duplicates."
 msgstr "Un programme simple pour vous aider à trouver des doublons."
 
 msgid "Website"
