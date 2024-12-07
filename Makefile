@@ -14,12 +14,12 @@ windows:
 ifeq ($(findstring MINGW,$(OS)),)
 	@echo 'Skipping Windows compilation.'
 else
-	windres resources/version.rc -o resources/version.res
 	time pyinstaller --onefile --name simple-duplicate-finder \
 		--add-data "resources/icons;resources/icons" \
-		--add-data "resources/version.res;version.res" \
 		--add-data "resources/locales;resources/locales" \
+		--distpath=../repo/simple-duplicate-finder/dist \
 		--icon=resources/icons/app_icon.ico \
+		--version-file=resources/version.txt \
 		src/main.pyw
 endif
 
