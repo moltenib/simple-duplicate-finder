@@ -1,21 +1,5 @@
 # Simple Duplicate Finder
 
-## Controls
-
-- Double click: opens a file.
-- _Delete:_ deletes a file.
-- The tree allows multiple selection, with _Shift + click_ or _Ctrl + click._
-
-### Coming soon
-
-- Context menu on right click with the following options:
-  - Open the containing directory (with one file only)
-  - Rename (id.)
-  - Swapping file names (with two files only)
-  - Delete selected (one to multiple files)
-  - Keep the oldest (with two to multiple files)
-  - Bulk rename (id.)
-
 ## Introduction
 
 This program can find and display files that share one of these features:
@@ -31,6 +15,22 @@ Choosing SHA-1 and Adler-32 will open all files in the file system under the cho
 - Adler-32 was made for block parity calculation rather than hashing, and is particularly not reliable with small files.
 - A modification date shared by two or more files is no guarantee that the files are the same. For instance, they could have been decompressed at the same time.
 - If two files share the name, it is all that is meant. This option does not check for anything else.
+
+## Controls
+
+- Double click: opens a file.
+- _Delete:_ deletes a file.
+- The tree allows multiple selection, with _Shift + click_ or _Ctrl + click._
+
+### Coming soon
+
+- Context menu on right click with the following options:
+  - Open the containing directory (with one file only)
+  - Rename (id.)
+  - Swapping file names (with two files only)
+  - Delete selected (one to multiple files)
+  - Keep the oldest (with two to multiple files)
+  - Bulk rename (id.)
 
 ## Installation
 
