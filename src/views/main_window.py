@@ -282,35 +282,45 @@ class MainWindow(Gtk.Window):
                         _('The search must be cancelled before deleting a file'))
                 return
 
-            rows = self.hash_tree_view.get_selection().get_selected_rows()
+            model, rows = self.hash_tree_view.get_selection().get_selected_rows()
 
-            if rows is None:
+            if len(rows) == 0:
                 return
 
-            elif len(rows) > 1:
-                # Get a list of files to delete, excluding hash rows
-                selected_files = [self.hash_tree_model[row][0] for row in rows[1] if row.get_depth() == 2]
-                # Get a list of iters to delete
-                rows = [self.hash_tree_model.get_iter(row) for row in rows[1] if row.get_depth() == 2]
+            selected_files = []
+            iters_to_delete = []
+
+            for row in rows:
+                # Get a list of files and rows to delete, excluding hash rows
+                if row.get_depth() == 2:
+                    selected_files.append(model[row][0])
+
+                    iters_to_delete.append(model.get_iter(row))
 
             if settings.ask_before_deleting_one and len(selected_files) == 1:
                 dialog = Gtk.MessageDialog(
                         buttons=Gtk.ButtonsType.OK_CANCEL,
-                        parent=self,
-                        text=_(
-                            'Are you sure you want to delete the following file?\n\n{}').format(
-                                selected_files[0]))
+                        parent=self)
+
+                dialog.set_title(_('Confirm deletion'))
+                dialog.set_markup(
+                        _('Are you sure you want to delete the following file?'
+                        + '\n\n<b>{}</b>'.format(selected_files[0])))
 
                 response = dialog.run() == Gtk.ResponseType.OK
 
                 dialog.destroy()
+
             elif settings.ask_before_deleting_many and len(selected_files) > 1:
                 dialog = Gtk.MessageDialog(
                         buttons=Gtk.ButtonsType.OK_CANCEL,
-                        parent=self,
-                        text=_(
-                            'Are you sure you want to delete the following files?\n\n{}').format(
-                            '\n'.join(selected_files)))
+                        parent=self)
+
+                dialog.set_title(_('Confirm deletion'))
+                dialog.set_markup(
+                        _('Are you sure you want to delete the following files?'
+                        + '\n\n·\t<b>{}</b>'.format(
+                            '</b>\n·\t<b>'.join(selected_files))))
     
                 response = dialog.run() == Gtk.ResponseType.OK
 
@@ -324,56 +334,66 @@ class MainWindow(Gtk.Window):
 
             i = 0
             parents_to_remove = set()
+            deleted = False
 
-            while i < len(selected_files):
+            while i < len(iters_to_delete):
+                # Delete the file
                 if os_functions.file_remove(selected_files[i]):
-                    parent = self.hash_tree_model.iter_parent(rows[i])
+                    # Get the parent
+                    parent = model.iter_parent(iters_to_delete[i])
 
-                    # If the parent is about to be out of children, flag it for removal
-                    if self.hash_tree_model.iter_n_children(parent) == 2:
+                    # If the parent has two children, flag it for removal
+                    # Using '==' and not '<=' because we do not to add it
+                    # twice when reaching one child
+                    if model.iter_n_children(parent) == 2:
                         parents_to_remove.add(parent)
-                    
-                    self.hash_tree_model.remove(rows[i])
 
-                    self.status_bar.push(1,
-                            _('Files have been deleted'))
+                    # Delete the child
+                    model.remove(iters_to_delete[i])
 
-                i += 1
+                    i += 1
+
+            if deleted:
+                self.status_bar.push(1,
+                        _('Files have been deleted'))
 
             for parent in parents_to_remove:
                 self.hash_tree_model.remove(parent)
 
     def on_hash_tree_selection_changed(self, hash_tree_selection):
-        count = hash_tree_selection.count_selected_rows()
+        model, rows = hash_tree_selection.get_selected_rows()
 
-        if count == 0:
+        if len(rows) == 0:
             self.status_bar.push(
-                    1, _('Selection cleared').format(count))
+                    1, _('Selection cleared').format(len(rows)))
 
-        elif count == 1:
-            row = hash_tree_selection.get_selected_rows()[1]
-            row_content = self.hash_tree_model[row[0]][0]
-
+        elif len(rows) == 1:
             # If it is a file
-            if row[0].get_depth() == 2:
+            row_content = model[rows[0]][0]
+
+            if rows[0].get_depth() == 2:
                 self.status_bar.push(1,
                         _("'{}'; modified on {}").format(
                             os_functions.get_pretty_name(row_content),
                             datetime.fromtimestamp(
                                 os.path.getmtime(row_content)).strftime(
                                     '%Y-%m-%d, %H:%M:%S')))
-
             else:
-                iter_ = self.hash_tree_model.get_iter(row[0])
-
                 self.status_bar.push(1,
-                        _("{} ({} files)").format(
-                            row_content,
-                            self.hash_tree_model.iter_n_children(iter_)))
+                    _("{} ({} files)").format(
+                        row_content,
+                        self.hash_tree_model.iter_n_children(
+                            model.get_iter(rows[0]))))
 
-        elif count > 1:
-            self.status_bar.push(
-                    1, _('{} rows selected').format(count))
+        else:
+            # Do not allow parent rows in multiple row selection
+            for row in rows:
+                if row.get_depth() == 1:
+                    hash_tree_selection.unselect_path(row)
+
+                self.status_bar.push(
+                        1, _('{} rows selected').format(
+                            hash_tree_selection.count_selected_rows()))
 
     def on_row_inserted(self, model, path, iter_):
         if settings.expand_one_row_at_once:
