@@ -36,7 +36,7 @@ Choosing SHA-1 and Adler-32 will open all files in the file system under the cho
 
 ### Linux
 
-This program will run, provided that all dependencies are installed (e.g. PyGObject), as follows:
+This program will run, provided that all dependencies are installed (e.g. PyGObject), in this way:
 
 ```shell
 git clone # paste the URL to this repository
