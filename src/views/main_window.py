@@ -236,7 +236,7 @@ class MainWindow(Gtk.Window):
         self.started = True
 
     def cancel(self):
-        # self.status_bar.push(1, _('Cancelling...'))
+        self.status_bar.push(1, _('Cancelling...'))
 
         # Cancel the Gio.Task
         self.cancellable.cancel()
@@ -471,6 +471,7 @@ class MainWindow(Gtk.Window):
                     '{} repetitions found before cancelling; {} files processed; elapsed: {}').format(
                             total_iterations, total_files, elapsed_time)
 
+            self.status_bar.remove_all(1)
             self.status_bar.push(1, message)
             self.cancel()
 
@@ -490,6 +491,7 @@ class MainWindow(Gtk.Window):
             message = _('{} repetitions found within {} files; elapsed: {}').format(
                     total_iterations, total_files, elapsed_time)
 
+            self.status_bar.remove_all(1)
             self.status_bar.push(1, message)
             self.finish()
 
