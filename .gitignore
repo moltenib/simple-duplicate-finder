@@ -1,4 +1,5 @@
-build
-simple-duplicate-finder.spec
+build/
+dist/
 __pycache__/
+simple-duplicate-finder.spec
 *.mo
