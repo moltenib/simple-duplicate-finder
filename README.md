@@ -1,6 +1,22 @@
 # Simple Duplicate Finder
 
-## Before running this program
+## Controls
+
+- Double click: opens a fil
+- _Delete:_ deletes a file
+- The tree allows multiple selection, with _Shift + click_ or _Ctrl + click._
+
+### Coming soon
+
+- Context menu on right click with the following options:
+  - Open the containing directory (with one file only)
+  - Rename (id.)
+  - Swapping file names (with two files only)
+  - Delete selected (one to multiple files)
+  - Keep the oldest (with two to multiple files)
+  - Bulk rename (id.)
+
+## Introduction
 
 This program can find and display files that share one of these features:
 
