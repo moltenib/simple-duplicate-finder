@@ -10,7 +10,7 @@ class AboutDialog(Gtk.AboutDialog):
                 title=_('About'),
                 parent=parent,
                 version='beta',
-                comments=_('A program to find duplicates'),
+                comments=_('A program to find duplicates.'),
                 copyright='© 2018, 2024 Bruno Molteni',
                 website='https://github.com/moltenib/simple-duplicate-finder')
         self.set_program_name(_('Simple Duplicate Finder'))
