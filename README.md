@@ -41,7 +41,7 @@ This program will run, provided that all dependencies are installed (e.g. PyGObj
 ```shell
 git clone # paste the URL to this repository
 cd simple-duplicate-finder/src
-make translations # if needed
+make translations # for German, Italian, Spanish and Portuguese
 ./main.pyw
 ```
 
