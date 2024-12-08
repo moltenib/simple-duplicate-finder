@@ -51,7 +51,7 @@ An [executable file](https://github.com/moltenib/repo/raw/refs/heads/master/simp
 
 ## Notes
 
-This program was meant as a GUI alternative to the Linux or Unix command below, which is actually faster, as a `sort` command is only run once, but the list of files is not shown until it finishes running (unlike the tree view that is updated with each file that is found).
+This program was meant as a GUI alternative to the Unix command below, which is actually faster, as a `sort` command is only run once, but the list of files is not shown until it finishes running (unlike the tree view that is updated with each file that is found).
 
 `find . -type f -exec shasum {} \; | sort | uniq -w 40 -D`
 
