@@ -25,7 +25,7 @@ Choosing SHA-1 and Adler-32 will open all files in the file system under the cho
 ### Coming soon
 
 - Context menu on right click with the options:
-  - _Open the containing directory..._ (with one file only)
+  - _Open the containing directory_ (with one file only)
   - _Rename_ (id.)
   - _Swap file names_ (with two files only)
   - _Move..._ (one to multiple files
