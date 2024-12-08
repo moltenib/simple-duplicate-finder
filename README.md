@@ -25,12 +25,13 @@ Choosing SHA-1 and Adler-32 will open all files in the file system under the cho
 ### Coming soon
 
 - Context menu on right click with the options:
-  - Open the containing directory (with one file only)
-  - Rename (id.)
-  - Swap file names (with two files only)
-  - Delete selected (one to multiple files)
-  - Keep the oldest (with two to multiple files)
-  - Bulk rename (id.)
+  - _Open the containing directory..._ (with one file only)
+  - _Rename_ (id.)
+  - _Swap file names_ (with two files only)
+  - _Move..._ (one to multiple files
+  - _Delete selected_ (one to multiple files)
+  - _Keep the oldest_ (with two to multiple files)
+  - _Bulk rename..._ (id.)
 
 ## Installation
 
