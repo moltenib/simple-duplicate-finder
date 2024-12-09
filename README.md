@@ -48,7 +48,7 @@ make translations # for German, Italian, Spanish and Portuguese
 
 ### Windows
 
-An [executable file](https://github.com/moltenib/repo/raw/refs/heads/master/simple-duplicate-finder/dist/simple-duplicate-finder.exe) is included for convenience. It was made with PyInstaller and may take a few seconds to start.
+An [executable file](https://github.com/moltenib/repo/raw/refs/heads/master/simple-duplicate-finder.zip) is included for convenience. It was made with PyInstaller and may take a few seconds to start.
 
 ## Notes
 
