@@ -14,7 +14,7 @@ class Settings:
         self.load()
 
     def load_default(self):
-        self.method = 1
+        self.method = 0
         self.path = os.path.expanduser('~')
         self.font = ''
         self.theme = 'light'
