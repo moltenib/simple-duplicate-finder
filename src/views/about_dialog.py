@@ -5,7 +5,7 @@ from gi.repository import Gtk
 from gettext import gettext as _
 
 class AboutDialog(Gtk.AboutDialog):
-    def __init__(self, parent=None):
+    def __init__(self, parent):
         Gtk.AboutDialog.__init__(self,
                 title=_('About'),
                 parent=parent,
