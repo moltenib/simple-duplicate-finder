@@ -81,4 +81,5 @@ class TreeView(Gtk.TreeView):
             cell.set_property('font', self.monospaced_font)
 
         else:
-            cell.set_property('font', '')
+            # Choose the default font for file rows
+            cell.set_property('font', settings.font)
