@@ -88,7 +88,7 @@ class ExportDialog(Gtk.FileChooserDialog):
 
 class DeleteDialog(Gtk.MessageDialog):
     def __init__(self, parent, selected_files):
-        Gtk.FileChooserDialog.__init__(
+        Gtk.MessageDialog.__init__(
                 self,
                 parent=parent,
                 buttons=Gtk.ButtonsType.OK_CANCEL)
