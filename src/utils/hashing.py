@@ -30,5 +30,5 @@ def adler32(file_):
 
 def modification_time(file_):
     return datetime.fromtimestamp(
-                                  os.path.getmtime(file_)).isoformat(sep=' ')
+            os.path.getmtime(file_)).isoformat(sep=' ')
 
