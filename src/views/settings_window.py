@@ -252,7 +252,7 @@ class SettingsWindow(Gtk.Window):
 
     def on_about_clicked(self, button):
         self.destroy()
-        dialog = AboutDialog(parent=self.parent)
+        dialog = AboutDialog(self.parent)
         dialog.run()
         dialog.destroy()
 
