@@ -1,8 +1,9 @@
 import gettext
+import locale
 import os
 
 if os.name == 'nt':
-    import ctypes, locale, sys
+    import ctypes, sys
 
 def set_up_translations():
     # Get the language string (two characters)
