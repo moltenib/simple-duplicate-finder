@@ -4,8 +4,6 @@ from gi.repository import Gtk
 
 from utils.settings import settings
 
-from gettext import gettext as _
-
 from datetime import datetime
 
 class MethodCombo(Gtk.ComboBoxText):

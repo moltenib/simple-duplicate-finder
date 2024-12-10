@@ -4,8 +4,6 @@ from gi.repository import Gtk
 
 from utils import os_functions
 
-from gettext import gettext as _
-
 class ContextMenuFileSingle(Gtk.Menu):
     def __init__(self, parent):
         Gtk.Menu.__init__(self, parent=parent)

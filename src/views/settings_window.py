@@ -7,8 +7,6 @@ from utils.settings import settings
 
 from os import name as os_name
 
-from gettext import gettext as _
-
 class SettingsWindow(Gtk.Window):
     def __init__(self, parent):
         Gtk.Window.__init__(

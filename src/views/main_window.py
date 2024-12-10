@@ -12,8 +12,6 @@ from views.main_window_misc import *
 from views.main_window_tree import TreeModel, TreeView
 from views.settings_window import SettingsWindow
 
-from gettext import gettext as _
-
 from datetime import datetime
 import os, sys
 

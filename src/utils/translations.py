@@ -3,7 +3,7 @@ import locale
 import os
 
 if os.name == 'nt':
-    import ctypes, sys
+    import builtins, ctypes, sys
 
 def set_up_translations():
     # Get the language string (two characters)
@@ -49,7 +49,12 @@ def set_up_translations():
                 localedir=locale_path,
                 languages=[language])
 
-        translation.install()
+        if os.name == 'nt':
+            # Manipulate '_'
+            builtins._ = translation.gettext
+            
+        else:
+            translation.install()
 
     except FileNotFoundError:
         # Default
