@@ -24,7 +24,7 @@ def set_up_translations():
         language = language[0][:2] if language else 'en'
 
     # Get the locale path (gettext)
-    if hasattr(sys, '_MEIPASS'):
+    if os.name == 'nt' and hasattr(sys, '_MEIPASS'):
         locale_path = os.path.join(
             sys._MEIPASS,
             'resources',
