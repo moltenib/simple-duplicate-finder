@@ -13,13 +13,14 @@ def set_up_translations():
             language = locale.windows_locale[lcid][:2]
 
         except:
+            # Default to English (Windows)
             language = 'en'
 
     else:
         language = locale.getlocale()
 
-        if language:
-            language = language[0][:2]
+        # Default to English (Linux, others)
+        language = language[0][:2] if language else 'en'
 
     # Get the locale path (gettext)
     if hasattr(sys, '_MEIPASS'):
