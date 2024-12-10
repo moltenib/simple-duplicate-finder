@@ -44,13 +44,14 @@ def set_up_translations():
     gettext.textdomain('messages')
 
     try:
+        # Look for the specified language
         translation = gettext.translation(
                 'messages',
                 localedir=locale_path,
-                languages=[language],
-                fallback=False)
+                languages=[language])
 
         translation.install()
 
     except FileNotFoundError:
+        # Default
         gettext.install('messages', localedir=locale_path)
