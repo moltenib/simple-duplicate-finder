@@ -178,7 +178,7 @@ class MainWindow(Gtk.Window):
             file_name = dialog.get_filename()
 
             if not file_name.lower().endswith('.csv'):
-                file_name += '*.csv'
+                file_name += '.csv'
             
             self.hash_tree_model.print_to_file(file_name)
 
