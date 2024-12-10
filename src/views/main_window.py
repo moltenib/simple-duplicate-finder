@@ -294,6 +294,8 @@ class MainWindow(Gtk.Window):
                     # Delete the child
                     model.remove(iters_to_delete[i])
 
+                    deleted = True
+
                     i += 1
 
             if deleted:
