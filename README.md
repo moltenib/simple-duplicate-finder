@@ -48,7 +48,7 @@ src/main.pyw
 
 ### Windows
 
-An [executable file](https://github.com/moltenib/repo/raw/refs/heads/master/simple-duplicate-finder.zip) is included for convenience. It was made with PyInstaller and may take a few seconds to start.
+An [executable file](https://github.com/moltenib/repo/raw/refs/heads/master/dist/simple-duplicate-finder.exe) is included for convenience. It was made with PyInstaller and may take a few seconds to start.
 
 ## Notes
 
