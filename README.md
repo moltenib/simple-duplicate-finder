@@ -41,14 +41,14 @@ This program will run, provided that all dependencies are installed (e.g. PyGObj
 
 ```shell
 git clone # paste the URL to this repository
-cd simple-duplicate-finder/src
+cd simple-duplicate-finder
 make translations # for German, Italian, Spanish and Portuguese
-./main.pyw
+src/main.pyw
 ```
 
 ### Windows
 
-An [executable file](https://github.com/moltenib/repo/raw/refs/heads/master/simple-duplicate-finder/dist/simple-duplicate-finder.exe) is included for convenience. It was made with PyInstaller and may take a few seconds to start.
+An [executable file](https://github.com/moltenib/repo/raw/refs/heads/master/simple-duplicate-finder.zip) is included for convenience. It was made with PyInstaller and may take a few seconds to start.
 
 ## Notes
 
