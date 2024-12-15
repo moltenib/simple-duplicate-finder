@@ -74,7 +74,6 @@ class MainWindow(Gtk.Window):
 
         self.export_button = ExportButton()
 
-        # TODO: Add CSV import
         self.export_button.set_sensitive(False)
 
         # Pack everything in boxes
@@ -237,73 +236,76 @@ class MainWindow(Gtk.Window):
 
         # Delete
         if ev.keyval == 65535:
-            if self.started:
-                self.status_bar.push(
-                        1,
-                        _('The search must be cancelled before deleting a file'))
-                return
+            self.delete_files_from_selection()
 
-            model, rows = self.hash_tree_view.get_selection().get_selected_rows()
+    def delete_files_from_selection(self):
+        if self.started:
+            self.status_bar.push(
+                    1,
+                    _('The search must be cancelled before deleting a file'))
+            return
 
-            if len(rows) == 0:
-                return
+        model, rows = self.hash_tree_view.get_selection().get_selected_rows()
 
-            selected_files = []
-            iters_to_delete = []
+        if len(rows) == 0:
+            return
 
-            for row in rows:
-                # Populate the list of files and rows to delete
-                # excluding parents
-                if row.get_depth() == 2:
-                    selected_files.append(model[row][0])
+        selected_files = []
+        iters_to_delete = []
 
-                    iters_to_delete.append(model.get_iter(row))
+        for row in rows:
+            # Populate the list of files and rows to delete
+            # excluding parents
+            if row.get_depth() == 2:
+                selected_files.append(model[row][0])
 
-            if settings.ask_before_deleting_one \
-                    and len(selected_files) == 1 \
-                    or settings.ask_before_deleting_many \
-                    and len(selected_files) > 1:
-                dialog = DeleteDialog(self, selected_files)
+                iters_to_delete.append(model.get_iter(row))
 
-                response = dialog.run() == Gtk.ResponseType.OK
+        if settings.ask_before_deleting_one \
+                and len(selected_files) == 1 \
+                or settings.ask_before_deleting_many \
+                and len(selected_files) > 1:
+            dialog = DeleteDialog(self, selected_files)
 
-                dialog.destroy()
+            response = dialog.run() == Gtk.ResponseType.OK
 
-            else:
-                response = True
+            dialog.destroy()
 
-            if not response:
-                return
+        else:
+            response = True
 
-            i = 0
-            parents_to_remove = set()
-            deleted = False
+        if not response:
+            return
 
-            while i < len(iters_to_delete):
-                # Delete the file
-                if os_functions.file_remove(selected_files[i]):
-                    # Get the parent
-                    parent = model.iter_parent(iters_to_delete[i])
+        i = 0
+        parents_to_remove = set()
+        deleted = False
 
-                    # If the parent has two children, flag it for removal
-                    # Using '==' and not '<=' because we do not to add it
-                    # twice when reaching one child
-                    if model.iter_n_children(parent) == 2:
-                        parents_to_remove.add(parent)
+        while i < len(iters_to_delete):
+            # Delete the file
+            if os_functions.file_remove(selected_files[i]):
+                # Get the parent
+                parent = model.iter_parent(iters_to_delete[i])
 
-                    # Delete the child
-                    model.remove(iters_to_delete[i])
+                # If the parent has two children, flag it for removal
+                # Using '==' and not '<=' because we do not to add it
+                # twice when reaching one child
+                if model.iter_n_children(parent) == 2:
+                    parents_to_remove.add(parent)
 
-                    deleted = True
+                # Delete the child
+                model.remove(iters_to_delete[i])
 
-                    i += 1
+                deleted = True
 
-            if deleted:
-                self.status_bar.push(1,
-                        _('Files have been deleted'))
+                i += 1
 
-            for parent in parents_to_remove:
-                self.hash_tree_model.remove(parent)
+        if deleted:
+            self.status_bar.push(1,
+                    _('Files have been deleted'))
+
+        for parent in parents_to_remove:
+            self.hash_tree_model.remove(parent)
 
     def on_hash_tree_selection_changed(self, hash_tree_selection):
         model, rows = hash_tree_selection.get_selected_rows()
