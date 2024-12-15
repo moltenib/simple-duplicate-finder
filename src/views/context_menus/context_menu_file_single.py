@@ -5,8 +5,16 @@ from gi.repository import Gtk
 from utils import os_functions
 
 class ContextMenuFileSingle(Gtk.Menu):
+<<<<<<< HEAD
+    def __init__(self, window, selection):
+        Gtk.Menu.__init__(self)
+
+        self.selection = selection
+        self.window = window
+=======
     def __init__(self):
         Gtk.Menu.__init__(self)
+>>>>>>> d424bf541b3816b4bdabaf28923cf4482dd867b7
 
         open_option = Gtk.MenuItem(
                 label=_('Open'))
@@ -48,6 +56,18 @@ class ContextMenuFileSingle(Gtk.Menu):
                 'activate', self.on_delete_option_activate)
 
     def on_open_option_activate(self, widget):
+<<<<<<< HEAD
+        self.window.open_file(self.selection)
+
+    def on_open_dir_option_activate(self, widget):
+        pass
+
+    def on_rename_option_activate(self, widget):
+        pass
+
+    def on_delete_option_activate(self, widget):
+        window.delete_files_from_selection()
+=======
         pass
 
     def on_open_dir_option_activate(self, widget):
@@ -58,4 +78,5 @@ class ContextMenuFileSingle(Gtk.Menu):
 
     def on_delete_option_activate(self, widget):
         pass
+>>>>>>> d424bf541b3816b4bdabaf28923cf4482dd867b7
 
