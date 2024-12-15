@@ -5,8 +5,6 @@ from utils.elapsed_time import elapsed_time
 
 from datetime import datetime
 
-from os import name as os_name
-
 def blocking(task, settings, callback):
     GLib.idle_add(callback, 'started')
 
