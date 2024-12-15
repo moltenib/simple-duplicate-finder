@@ -156,3 +156,9 @@ msgstr "{} lignes sélectionnées"
 msgid "{} ({} files)"
 msgstr "{} ({} fichiers)"
 
+msgid "Expand all"
+msgstr "Tout déplier"
+
+msgid "Collapse all"
+msgstr "Tout replier"
+

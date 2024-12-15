@@ -156,3 +156,9 @@ msgstr "{} Zeilen ausgewählt"
 msgid "{} ({} files)"
 msgstr "{} ({} Dateien)"
 
+msgid "Expand all"
+msgstr "Alles erweitern"
+
+msgid "Collapse all"
+msgstr "Alles einklappen"
+

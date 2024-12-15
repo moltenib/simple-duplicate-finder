@@ -147,3 +147,9 @@ msgstr "Permisos insuficientes para abrir '{}'"
 msgid "'{}'; modified on {}"
 msgstr "'{}'; modificado el {}"
 
+msgid "Expand all"
+msgstr "Expandir todo"
+
+msgid "Collapse all"
+msgstr "Contraer todo"
+
