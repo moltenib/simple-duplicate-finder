@@ -21,16 +21,16 @@ class MainWindow(Gtk.Window):
         Gtk.Window.__init__(self, title=_('Simple Duplicate Finder'))
 
         # Define the logo path
-        # Running under MSYS2
         if hasattr(sys, '_MEIPASS'):
+            # Running under MSYS2
             logo_path = os.path.join(
                     sys._MEIPASS,
                     'resources',
                     'icons',
                     'app_icon.png')
 
-        # Linux or Unix-based
         else:
+            # Linux or Unix-based
             logo_path = os.path.join(
                 os.path.dirname(
                     os.path.abspath(__file__)),

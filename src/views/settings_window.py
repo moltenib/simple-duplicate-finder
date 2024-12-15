@@ -90,7 +90,7 @@ class SettingsWindow(Gtk.Window):
         self.file_limit_spinbutton = Gtk.SpinButton.new_with_range(
                 0.0, 999999.0, 1.0)
         self.file_limit_spinbutton.set_digits(0)
-        self.file_limit_spinbutton.set_value(settings.limit)
+        self.file_limit_spinbutton.set_value(float(settings.limit))
         file_limit_hbox = Gtk.Box(
                 orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         file_limit_hbox.pack_start(
@@ -123,7 +123,8 @@ class SettingsWindow(Gtk.Window):
         load_default_button = Gtk.Button(
                 label=_('Load defaults'))
 
-        hbox_bottom = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+        hbox_bottom = Gtk.Box(
+                orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         hbox_bottom.pack_start(about_button, False, False, 0)
         hbox_bottom.pack_start(load_default_button, False, False, 0)
 

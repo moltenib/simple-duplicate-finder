@@ -5,7 +5,8 @@ from os.path import join as path_join
 
 def open_in_os(file_or_dir):
     if os.name == 'nt':
-        return os.system('explorer.exe "' + file_or_dir + '"') == 0
+        return os.system(
+            'explorer.exe "' + file_or_dir + '"') == 0
     elif os.name == 'posix':
         if '\'' in file_or_dir:
             quote_char = '"'
@@ -14,9 +15,6 @@ def open_in_os(file_or_dir):
         return os.system(
                 'xdg-open ' + quote_char + file_or_dir + quote_char) == 0 
     return False
-
-def dirname(path):
-    return os.path.dirname(path)
 
 def is_dir(dir_):
     return os.path.isdir(dir_)
@@ -49,29 +47,37 @@ def file_remove(file_):
     return False
 
 def file_move(file_, file_or_dir):
-    if ((os.path.isdir(file_or_dir)
-    and not os.access(file_or_dir, os.W_OK))
-    or (os.path.isfile(file_or_dir)
-    and not os.access(os.path.dirname(file_or_dir), os.W_OK))):
+    if ((os.path.isdir(file_or_dir) \
+            and not os.access(file_or_dir, os.W_OK)) \
+            or (os.path.isfile(file_or_dir)
+                and not os.access(os.path.dirname(file_or_dir), os.W_OK))):
         return False
+
     if os.name == 'nt':
         os.system(
                 'move "' + file_  + '" "' + file_or_dir + '"')
+
         return True
+
     elif os.name == 'posix':
         if '\'' in file_:
             quote_char = '"'
+
         else:
             quote_char = '\''
+
         return os.system(
                 'mv ' + quote_char + file_ + quote_char
                 + quote_char + file_or_dir + quote_char) == 0
+
     return False
 
 def get_pretty_name(file_or_dir):
     name = file_or_dir.split(os.path.sep)
+
     if len(name) > 2:
         return '...' + os.path.sep + name[-2] + os.path.sep + name[-1]
+
     else:
         return file_or_dir
 
