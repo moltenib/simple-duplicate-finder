@@ -191,25 +191,27 @@ class MainWindow(Gtk.Window):
             selection = tree_view.get_selection()
             model, rows = selection.get_selected_rows()
 
+            print(rows)
+            for i in rows:
+                print(i)
+
             if path.get_depth() == 1:
                 # Parent
                 if len(rows) == 1:
                     # Single row
-                    menu = ContextMenuCodeSingle()
+                    menu = ContextMenuCodeSingle(tree_view)
+                    menu.popup_at_pointer(ev)
 
-                else:
-                    # Multiple rows
-                    menu = ContextMenuCodeMultiple()
+                # Selecting multiple parent rows is not permitted
 
             else:
                 if len(rows) == 1:
                     menu = ContextMenuFileSingle()
+                    menu.popup_at_pointer(ev)
 
                 else:
                     menu = ContextMenuFileMultiple()
-
-            menu.popup_at_pointer(ev)
-
+                    menu.popup_at_pointer(ev)
 
     def on_export_button_clicked(self, button):
         dialog = ExportDialog(self)
