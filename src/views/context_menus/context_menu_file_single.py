@@ -5,42 +5,57 @@ from gi.repository import Gtk
 from utils import os_functions
 
 class ContextMenuFileSingle(Gtk.Menu):
-    def __init__(self, parent):
-        Gtk.Menu.__init__(self, parent=parent)
+    def __init__(self):
+        Gtk.Menu.__init__(self)
 
         open_option = Gtk.MenuItem(
-                label=_('Open')
+                label=_('Open'))
         open_dir_option = Gtk.MenuItem(
-                label=_('Open the containing directory')
+                label=_('Open the containing directory'))
         rename_option = Gtk.MenuItem(
-                label=_('Rename')
+                label=_('Rename'))
         delete_option = Gtk.MenuItem(
-                label=_('Delete')
+                label=_('Delete'))
 
-class ContextMenuFileMultiple(Gtk.Menu):
-    def __init__(self, parent):
-        Gtk.Menu.__init__(self, parent=parent)
+        self.attach(
+                open_option,
+                0, 1, 0, 1)
 
-        select_oldest_option = Gtk.MenuItem(
-                label=_('Select the oldest')
-        # Only if there are two of them
-        swap_names_option = Gtk.MenuItem(
-                label=_('Swap names')
-        bulk_rename_option = Gtk.MenuItem(
-                label=_('Bulk rename')
-        delete_selected_option = Gtk.MenuItem(
-                label=_('Delete selected')
+        self.attach(
+                open_dir_option,
+                0, 1, 2, 3)
 
-    #### TODO: MOVE THEM TO A HIGHER-LEVEL WIDGET
-    def on_open_option(self, widget, ev):
+        self.attach(
+                rename_option,
+                0, 1, 4, 5)
+
+        self.attach(
+                delete_option,
+                0, 1, 6, 7)
+
+        self.show_all()
+
+        open_option.connect(
+                'activate', self.on_open_option_activate)
+
+        open_dir_option.connect(
+                'activate', self.on_open_dir_option_activate)
+
+        rename_option.connect(
+                'activate', self.on_rename_option_activate)
+
+        delete_option.connect(
+                'activate', self.on_delete_option_activate)
+
+    def on_open_option_activate(self, widget):
         pass
 
-    def on_open_dir_option(self, widget, ev):
+    def on_open_dir_option_activate(self, widget):
         pass
 
-    def on_rename_option(self, widget, ev):
+    def on_rename_option_activate(self, widget):
         pass
 
-    def on_delete_option(self, widget, ev):
+    def on_delete_option_activate(self, widget):
         pass
 

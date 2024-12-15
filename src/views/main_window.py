@@ -8,6 +8,7 @@ from controllers.blocking import blocking
 from utils import os_functions
 from utils.settings import settings
 
+from views.context_menus import *
 from views.main_window_misc import *
 from views.main_window_tree import TreeModel, TreeView
 from views.settings_window import SettingsWindow
@@ -134,6 +135,10 @@ class MainWindow(Gtk.Window):
         self.hash_tree_view.get_selection().connect(
                 'changed', self.on_hash_tree_selection_changed)
 
+        self.hash_tree_view.connect(
+                'button-press-event',
+                self.on_hash_tree_view_button_pressed)
+
         self.export_button.connect(
                 'clicked', self.on_export_button_clicked)
 
@@ -169,6 +174,43 @@ class MainWindow(Gtk.Window):
             self.start()
         else:
             self.cancellable.cancel()
+
+    def on_hash_tree_view_button_pressed(self, tree_view, ev):
+        if ev.button == 3:
+            # Right click
+            path = tree_view.get_dest_row_at_pos(ev.x, ev.y)
+
+            if path:
+                path = path[0]
+
+            else:
+                return
+
+            # See which options we must add
+            selection = tree_view.get_selection()
+            model, rows = selection.get_selected_rows()
+
+            print(rows)
+            for i in rows:
+                print(i)
+
+            if path.get_depth() == 1:
+                # Parent
+                if len(rows) == 1:
+                    # Single row
+                    menu = ContextMenuCodeSingle(tree_view)
+                    menu.popup_at_pointer(ev)
+
+                # Selecting multiple parent rows is not permitted
+
+            else:
+                if len(rows) == 1:
+                    menu = ContextMenuFileSingle()
+                    menu.popup_at_pointer(ev)
+
+                else:
+                    menu = ContextMenuFileMultiple()
+                    menu.popup_at_pointer(ev)
 
     def on_export_button_clicked(self, button):
         dialog = ExportDialog(self)
@@ -235,6 +277,13 @@ class MainWindow(Gtk.Window):
             self.start_button.grab_focus()
 
         # Delete
+        elif ev.keyval == 65535:
+            if self.started:
+                self.status_bar.push(
+                        1,
+                        _('The search must be cancelled before deleting a file'))
+                return
+
         if ev.keyval == 65535:
             self.delete_files_from_selection()
 
