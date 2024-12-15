@@ -188,15 +188,11 @@ class MainWindow(Gtk.Window):
 
             # See which options we must add
             selection = tree_view.get_selection()
-            model, rows = selection.get_selected_rows()
-
-            print(rows)
-            for i in rows:
-                print(i)
+            count = selection.count_selected_rows()
 
             if path.get_depth() == 1:
                 # Parent
-                if len(rows) == 1:
+                if count == 1:
                     # Single row
                     menu = ContextMenuCodeSingle(tree_view)
                     menu.popup_at_pointer(ev)
@@ -204,8 +200,14 @@ class MainWindow(Gtk.Window):
                 # Selecting multiple parent rows is not permitted
 
             else:
-                if len(rows) == 1:
-                    menu = ContextMenuFileSingle()
+                # TODO: organize context menu functionality in different files
+                return
+
+                if count == 1:
+                    iter_ = self.hash_tree_model.get_iter(path)
+                    file_ = self.hash_tree_model[iter_][0]
+
+                    menu = ContextMenuFileSingle(self, file_)
                     menu.popup_at_pointer(ev)
 
                 else:
@@ -431,10 +433,13 @@ class MainWindow(Gtk.Window):
             file_ = self.hash_tree_model[iter_][0]
 
             # Open the file
-            if os_functions.open_in_os(file_):
-                self.status_bar.push(1,
-                    _('\'{}\' opened').format(
-                        os_functions.get_pretty_name(file_)))
+            self.open(file_)
+
+    def open(self, file_):
+        if os_functions.open_in_os(file_):
+            self.status_bar.push(1,
+                _('\'{}\' opened').format(
+                    os_functions.get_pretty_name(file_)))
 
     def on_destruction(self, window):
         if self.started:
