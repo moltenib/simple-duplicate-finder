@@ -17,11 +17,9 @@ else
 	time pyinstaller --onefile --name simple-duplicate-finder \
 		--add-data "resources/icons;resources/icons" \
 		--add-data "resources/locales;resources/locales" \
-		--distpath=/tmp/dist \
+		--distpath=../repo/dist \
 		--icon=resources/icons/app_icon.ico \
 		--version-file=resources/version.txt \
 		src/main.pyw
-	zip -j -r ../repo/simple-duplicate-finder \
-		/tmp/dist/simple-duplicate-finder.exe
 endif
 
