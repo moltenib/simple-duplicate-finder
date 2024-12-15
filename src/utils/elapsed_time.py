@@ -7,5 +7,6 @@ def elapsed_time(time_started):
 
     milliseconds = int(elapsed.microseconds / 1000)
 
+    # Return time in this format: 00:00:00.000
     return f'{formatted_time}.{milliseconds:03d}'
 

@@ -8,9 +8,11 @@ if os.name == 'nt':
 def set_up_translations():
     # Get the language string (two characters)
     if os.name == 'nt':
-        lcid = ctypes.windll.kernel32.GetUserDefaultUILanguage()
-
+        # The executable does not provide the right locale;
+        # using the LCID from the kernel
         try:
+            lcid = ctypes.windll.kernel32.GetUserDefaultUILanguage()
+
             language = locale.windows_locale[lcid][:2]
 
         except:
