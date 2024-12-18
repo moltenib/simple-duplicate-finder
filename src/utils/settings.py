@@ -26,7 +26,7 @@ class Settings:
         self.follow_symbolic_links = False
         self.read_dotted_directories = False
         self.read_dotted_files = False
-        self.limit = 50000.0
+        self.limit = 50000
 
     def find_settings_file(self):
         if os.name == 'nt':
