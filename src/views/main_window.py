@@ -478,7 +478,7 @@ class MainWindow(Gtk.Window):
 
         # The signals below have a lower priority
         # They will not be processed if the task has finished
-        if not (self.task is not None and self.task.get_completed()):
+        elif not (self.task is not None and self.task.get_completed()):
             if signal_name == 'started':
                 self.status_bar.push(1, _('Working...'))
 
