@@ -453,6 +453,7 @@ class MainWindow(Gtk.Window):
                     '{} repetitions found before cancelling; {} files processed; elapsed: {}').format(
                             total_iterations, total_files, elapsed_time)
 
+            # Remove all messages in the stack
             self.status_bar.remove_all(1)
             self.status_bar.push(1, message)
 
@@ -477,24 +478,22 @@ class MainWindow(Gtk.Window):
 
         # The signals below have a lower priority
         # They will not be processed if the task has finished
-        if self.task is not None and self.task.get_completed():
-            return
+        if not (self.task is not None and self.task.get_completed()):
+            if signal_name == 'started':
+                self.status_bar.push(1, _('Working...'))
 
-        if signal_name == 'started':
-            self.status_bar.push(1, _('Working...'))
+            elif signal_name == 'append-parent':
+                # This signal expects three arguments
+                code, file_1, file_2 = args
 
-        elif signal_name == 'append-parent':
-            # This signal expects three arguments
-            code, file_1, file_2 = args
+                self.hash_tree_model.add_parent(code)
+                self.hash_tree_model.add_child(code, file_1)
+                self.hash_tree_model.add_child(code, file_2)
 
-            self.hash_tree_model.add_parent(code)
-            self.hash_tree_model.add_child(code, file_1)
-            self.hash_tree_model.add_child(code, file_2)
+            elif signal_name == 'append-child':
+                code, file_ = args
 
-        elif signal_name == 'append-child':
-            code, file_ = args
-
-            self.hash_tree_model.add_child(code, file_)
+                self.hash_tree_model.add_child(code, file_)
 
         # Disabled until a better way to display skipped directories is found
         #elif signal_name == 'insufficient-permissions':
