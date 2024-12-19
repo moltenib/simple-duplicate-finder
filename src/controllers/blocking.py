@@ -38,11 +38,15 @@ def blocking(task, settings, callback):
             # List the directory contents
             dir_listing = os_functions.list_dir(item_dirname)
 
-        except PermissionError:
-            # This appears to flood the interface with events
-            #GLib.idle_add(
-            #        callback, 'insufficient-permissions', item_dirname, '')
+        except:
+            # Ignore all errors
             continue
+
+        #except PermissionError:
+        #    # This appears to flood the interface with events
+        #    GLib.idle_add(
+        #            callback, 'insufficient-permissions', item_dirname, '')
+        #    continue
 
         for item_basename in dir_listing:
             # Check for cancellation during iteration
@@ -89,18 +93,22 @@ def blocking(task, settings, callback):
                    elif settings.method == 3:
                        code = item_basename
 
-                except OSError:
-                    # This occurs with system files on Windows
+                except:
+                    # Ignore all errors
                     continue
 
-                except PermissionError:
-                    # This appears to flood the interface with events
-                    #GLib.idle_add(
-                    #        callback,
-                    #        'insufficient-permissions',
-                    #        item_dirname,
-                    #        item_basename)
-                    continue
+                #except OSError:
+                #    # This occurs with system files on Windows
+                #    continue
+
+                #except PermissionError:
+                #    # This appears to flood the interface with events
+                #    GLib.idle_add(
+                #            callback,
+                #            'insufficient-permissions',
+                #            item_dirname,
+                #            item_basename)
+                #    continue
 
                 # Only look up the item once
                 current_hash_dict_item = hash_dict[code]
