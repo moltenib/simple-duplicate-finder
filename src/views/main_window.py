@@ -446,26 +446,7 @@ class MainWindow(Gtk.Window):
             self.cancellable.cancel()
 
     def handle_signal(self, signal_name, *args):
-        if self.task is not None and self.task.get_completed():
-            return
-
-        if signal_name == 'started':
-            self.status_bar.push(1, _('Working...'))
-
-        elif signal_name == 'append-parent':
-            # This signal expects three arguments
-            code, file_1, file_2 = args
-
-            self.hash_tree_model.add_parent(code)
-            self.hash_tree_model.add_child(code, file_1)
-            self.hash_tree_model.add_child(code, file_2)
-
-        elif signal_name == 'append-child':
-            code, file_ = args
-
-            self.hash_tree_model.add_child(code, file_)
-
-        elif signal_name == 'cancelled':
+        if signal_name == 'cancelled':
             total_iterations, total_files, elapsed_time = args
 
             message = _(
@@ -494,12 +475,34 @@ class MainWindow(Gtk.Window):
             self.status_bar.remove_all(1)
             self.status_bar.push(1, message)
 
-        elif signal_name == 'insufficient-permissions':
-            item_dirname, item_basename = args
+        # The signals below have a lower priority
+        # They will not be processed if the task has finished
+        if self.task is not None and self.task.get_completed():
+            return
 
-            message = _('Not enough permissions to open \'{}\'').format(
-                    os.path.join(item_dirname, item_basename))
-            self.status_bar.push(1, message)
+        if signal_name == 'started':
+            self.status_bar.push(1, _('Working...'))
+
+        elif signal_name == 'append-parent':
+            # This signal expects three arguments
+            code, file_1, file_2 = args
+
+            self.hash_tree_model.add_parent(code)
+            self.hash_tree_model.add_child(code, file_1)
+            self.hash_tree_model.add_child(code, file_2)
+
+        elif signal_name == 'append-child':
+            code, file_ = args
+
+            self.hash_tree_model.add_child(code, file_)
+
+        # Disabled until a better way to display skipped directories is found
+        #elif signal_name == 'insufficient-permissions':
+        #    item_dirname, item_basename = args
+        # 
+        #    message = _('Not enough permissions to open \'{}\'').format(
+        #            os.path.join(item_dirname, item_basename))
+        #    self.status_bar.push(1, message)
 
         # Cancel the idle_add call
         return False
