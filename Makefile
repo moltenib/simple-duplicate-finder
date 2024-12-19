@@ -12,7 +12,7 @@ translations: resources/locales/*/LC_MESSAGES/messages.po
 
 windows:
 ifeq ($(findstring MINGW,$(OS)),)
-	@echo 'Skipping Windows compilation.'
+	@echo 'Windows not detected; skipping Windows compilation.'
 else
 	time pyinstaller --onefile --name simple-duplicate-finder \
 		--add-data "resources/icons;resources/icons" \
