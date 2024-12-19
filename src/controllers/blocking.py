@@ -89,6 +89,10 @@ def blocking(task, settings, callback):
                    elif settings.method == 3:
                        code = item_basename
 
+                except OSError:
+                    # This occurs with system files on Windows
+                    continue
+
                 except PermissionError:
                     # This appears to flood the interface with events
                     #GLib.idle_add(
