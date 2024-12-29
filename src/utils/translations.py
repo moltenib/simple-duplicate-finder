@@ -51,15 +51,11 @@ def set_up_translations():
                 localedir=locale_path,
                 languages=[language])
 
+        translation.install()
+
         if os.name == 'nt':
             # Manipulate '_'
             builtins._ = translation.gettext
-
-            # This affects the About dialog, and other built-in things
-            translation.install()
-            
-        else:
-            translation.install()
 
     except FileNotFoundError:
         # Default
