@@ -252,8 +252,6 @@ class MainWindow(Gtk.Window):
         self.started = True
 
     def on_task_finished(self, *args):
-        self.started = False
-
         self.cancellable = None
         self.task = None
 
@@ -266,6 +264,8 @@ class MainWindow(Gtk.Window):
             self.export_button.set_sensitive(True)
 
         self.start_button.grab_focus()
+
+        self.started = False
 
     def on_key_press(self, window, ev):
         # Escape
