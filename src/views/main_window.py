@@ -396,8 +396,13 @@ class MainWindow(Gtk.Window):
     def on_row_inserted(self, model, path, iter_):
         if settings.expand_one_row_at_once:
             self.hash_tree_view.collapse_all()
-        if settings.expand_rows_as_inserted:
+
+            if settings.expand_rows_as_inserted:
+                self.hash_tree_view.expand_to_path(model.get_path(iter_))
+
+        elif settings.expand_rows_as_inserted:
             self.hash_tree_view.expand_to_path(path)
+
         if settings.scroll_to_inserted_rows:
             self.hash_tree_view.scroll_to_cell(
                     path, None, False, 0.0, 0.0)
