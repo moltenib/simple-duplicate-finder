@@ -52,11 +52,11 @@ def set_up_translations():
                 languages=[language])
 
         if os.name == 'nt':
-            # Manipulate '_'
-            builtins._ = translation.gettext
-
             # This affect the about dialog and other built-in things
             translation.install()
+
+            # Manipulate '_'
+            builtins._ = translation.gettext
         else:
             translation.install()
 
