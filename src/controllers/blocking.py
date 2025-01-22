@@ -42,12 +42,6 @@ def blocking(task, settings, callback):
             # Ignore all errors
             continue
 
-        #except PermissionError:
-        #    # This appears to flood the interface with events
-        #    GLib.idle_add(
-        #            callback, 'insufficient-permissions', item_dirname, '')
-        #    continue
-
         for item_basename in dir_listing:
             # Check for cancellation during iteration
             if cancellable.is_cancelled():
@@ -96,19 +90,6 @@ def blocking(task, settings, callback):
                 except:
                     # Ignore all errors
                     continue
-
-                #except OSError:
-                #    # This occurs with system files on Windows
-                #    continue
-
-                #except PermissionError:
-                #    # This appears to flood the interface with events
-                #    GLib.idle_add(
-                #            callback,
-                #            'insufficient-permissions',
-                #            item_dirname,
-                #            item_basename)
-                #    continue
 
                 # Only look up the item once
                 current_hash_dict_item = hash_dict[code]
