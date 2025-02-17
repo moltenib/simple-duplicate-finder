@@ -28,9 +28,29 @@ class FolderButton(Gtk.FileChooserButton):
                 action=Gtk.FileChooserAction.SELECT_FOLDER,
                 title=_('Choose path'))
 
-        self.set_filename(settings.path)
+        self.set_filename(settings.paths[0])
 
         self.set_tooltip_text(_('Starting path'))
+
+class SecondFolderButton(Gtk.FileChooserButton):
+    def __init__(self):
+        Gtk.FileChooserButton.__init__(
+                self,
+                action=Gtk.FileChooserAction.SELECT_FOLDER,
+                title=_('Choose path'))
+
+        none_button = Gtk.Button(label=_('(None)')
+
+        self.set_extra_widget(none_button))
+
+        self.set_filename(settings.paths[0])
+
+        self.set_tooltip_text(_('Starting path'))
+
+        none_button.connect('clicked', self.on_none_button_clicked)
+
+    def on_none_button_clicked(self, button):
+        self.set_filename(None)
 
 class SettingsButton(Gtk.Button):
     def __init__(self):

@@ -162,3 +162,6 @@ msgstr "Alles erweitern"
 msgid "Collapse all"
 msgstr "Alles einklappen"
 
+msgid "(None)"
+msgstr "(Keiner)"
+

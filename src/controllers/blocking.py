@@ -16,8 +16,11 @@ def blocking(task, settings, callback):
 
     time_started = datetime.now()
 
+    # If there is a None value on the list, remove it
+    settings.paths = [item for item in settings.paths if item is not None]
+
     # Use a queue for breadth-first search
-    directory_queue = deque([settings.path])
+    directory_queue = deque(settings.paths)
 
     # Use GObject threading techniques
     cancellable = task.get_cancellable()

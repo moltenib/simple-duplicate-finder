@@ -52,6 +52,7 @@ class MainWindow(Gtk.Window):
         self.method_combo = MethodCombo()
 
         self.folder_button = FolderButton()
+        self.second_folder_button = SecondFolderButton()
 
         self.settings_button = SettingsButton()
 
@@ -86,6 +87,8 @@ class MainWindow(Gtk.Window):
                 self.method_combo, False, True, 0)
         top_hbox.pack_start(
                 self.folder_button, True, True, 0)
+        top_hbox.pack_start(
+                self.second_folder_button, True, True, 0)
         top_hbox.pack_start(
                 self.settings_button, False, True, 0)
         top_hbox.pack_end(
@@ -122,7 +125,9 @@ class MainWindow(Gtk.Window):
         self.method_combo.connect(
                 'changed', self.on_method_changed)
         self.folder_button.connect(
-                'file-set', self.on_folder_set)
+                'file-set', self.on_folder_button_set)
+        self.second_folder_button.connect(
+                'file-set', self.on_second_folder_button_set)
         self.settings_button.connect(
                 'clicked', self.on_settings_button_clicked)
         self.start_button.connect(
@@ -163,8 +168,11 @@ class MainWindow(Gtk.Window):
     def on_method_changed(self, combo):
         settings.method = combo.get_active()
 
-    def on_folder_set(self, folder_button):
-        settings.path = folder_button.get_filename()
+    def on_folder_button_set(self, folder_button):
+        settings.paths[0] = folder_button.get_filename()
+
+    def on_second_folder_button_set(self, folder_button):
+        settings.paths[0] = folder_button.get_filename()
 
     def on_settings_button_clicked(self, button):
         SettingsWindow(self).show_all()

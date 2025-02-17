@@ -15,7 +15,7 @@ class Settings:
 
     def load_default(self):
         self.method = 0
-        self.path = os.path.expanduser('~')
+        self.paths = [os.path.expanduser('~'), None]
         self.font = ''
         self.theme = 'light'
         self.expand_one_row_at_once = False
@@ -52,7 +52,8 @@ class Settings:
 
             for key, value in settings.items():
                 attr_name = key.replace('-', '_')
-                setattr(self, attr_name, value)
+                if hasattr(self, attr_name):
+                    setattr(self, attr_name, value)
         else:
             settings_dir = os.path.dirname(self.file)
 

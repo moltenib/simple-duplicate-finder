@@ -153,3 +153,6 @@ msgstr "Expandir todo"
 msgid "Collapse all"
 msgstr "Contraer todo"
 
+msgid "(None)"
+msgstr "(Ninguno)"
+

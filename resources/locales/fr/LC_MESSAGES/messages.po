@@ -162,3 +162,6 @@ msgstr "Tout déplier"
 msgid "Collapse all"
 msgstr "Tout replier"
 
+msgid "(None)"
+msgstr "(Aucun)"
+

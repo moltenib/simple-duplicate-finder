@@ -162,3 +162,6 @@ msgstr "Expandir tudo"
 msgid "Collapse all"
 msgstr "Recolher tudo"
 
+msgid "(None)"
+msgstr "(Nenhum)"
+
