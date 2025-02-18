@@ -35,7 +35,7 @@ class FolderButton(Gtk.FileChooserButton):
         # This avoids unnecessary space when loading it the first time
         self.show_all()
 
-class SecondFolderButton(Gtk.FileChooserButton):
+class SecondFolderButton(Gtk.):
     def __init__(self):
         Gtk.FileChooserButton.__init__(
                 self,
@@ -46,7 +46,7 @@ class SecondFolderButton(Gtk.FileChooserButton):
 
         self.set_extra_widget(none_button)
 
-        self.set_filename(settings.paths[0])
+        self.set_filename(settings.paths[1])
 
         self.set_tooltip_text(_('Starting path'))
 
