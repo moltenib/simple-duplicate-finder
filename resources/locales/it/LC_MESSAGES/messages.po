@@ -165,3 +165,9 @@ msgstr "Comprimi tutto"
 msgid "(None)"
 msgstr "(Nessuno)"
 
+msgid "Optional second path"
+msgstr "Secondo percorso opzionale"
+
+msgid "Remove second path"
+msgstr "Rimuovi secondo percorso"
+

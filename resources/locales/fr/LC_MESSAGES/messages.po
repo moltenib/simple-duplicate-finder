@@ -165,3 +165,9 @@ msgstr "Tout replier"
 msgid "(None)"
 msgstr "(Aucun)"
 
+msgid "Optional second path"
+msgstr "Deuxième chemin facultatif"
+
+msgid "Remove second path"
+msgstr "Supprimer le deuxième chemin"
+
