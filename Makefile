@@ -20,6 +20,7 @@ else
 		--distpath=../repo/dist \
 		--icon=resources/icons/app_icon.ico \
 		--version-file=resources/version.txt \
+#		--splash resources/icons/app_icon.png
 		src/main.pyw
 endif
 
