@@ -183,6 +183,7 @@ class MainWindow(Gtk.Window):
 
     def on_remove_button_clicked(self, button):
         self.second_folder_button.set_none()
+        settings.paths[1] = None
         button.set_sensitive(False)
 
     def on_settings_button_clicked(self, button):
