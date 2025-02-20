@@ -175,9 +175,23 @@ class MainWindow(Gtk.Window):
         settings.method = combo.get_active()
 
     def on_folder_button_set(self, folder_button):
-        settings.paths[0] = folder_button.get_filename()
+        filename_1 = folder_button.get_filename()
+        filename_2 = self.second_folder_button.get_filename()
+        contained = None
+
+        if filename_1.startswith(filename_2):
+            message = _('<b>{}</b>\nis already contained in\n<b>{}</b>').format(
+                filename_2, filename_1)
+
+        settings.paths[0] = filename
+        # TODO
 
     def on_second_folder_button_set(self, folder_button):
+        filename_1 = self.folder_button.get_filename()
+        filename_2 = folder_button.get_filename()
+
+        if filename_1 in filename_2 or filename_2 in filename_1:
+
         settings.paths[1] = folder_button.get_filename()
         self.remove_button.set_sensitive(settings.paths[1] is not None)
 
