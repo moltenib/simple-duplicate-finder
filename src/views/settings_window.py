@@ -177,7 +177,7 @@ class SettingsWindow(Gtk.Window):
         self.expand_one_row_at_once_button.set_active(
                 settings.expand_one_row_at_once)
         self.theme_combo.set_active(
-                settings.theme == 'dark' and 1 or 0)
+                settings.theme == 1 if 'dark' else 0)
         self.ask_file_one.set_active(
                 settings.ask_before_deleting_one)
         self.ask_file_many.set_active(
@@ -244,7 +244,7 @@ class SettingsWindow(Gtk.Window):
                 'gtk-application-prefer-dark-theme',
                 dark)
 
-        settings.theme = dark if 'dark' else 'light'
+        settings.theme = 'dark' if dark else 'light'
 
     def on_file_limit_toggled(self, button):
         if button.get_active():
