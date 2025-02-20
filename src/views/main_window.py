@@ -281,7 +281,10 @@ class MainWindow(Gtk.Window):
         self.method_combo.set_sensitive(True)
         self.folder_button.set_sensitive(True)
         self.second_folder_button.set_sensitive(True)
-        self.remove_button.set_sensitive(True)
+
+        if settings.paths[1]:
+            self.remove_button.set_sensitive(True)
+
         self.settings_button.set_sensitive(True)
         self.start_button.set_label(_('Start'))
         self.start_button.set_sensitive(True)
