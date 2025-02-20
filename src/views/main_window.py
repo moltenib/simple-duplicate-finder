@@ -194,6 +194,7 @@ class MainWindow(Gtk.Window):
             self.start()
         else:
             self.cancellable.cancel()
+            button.set_sensitive(False)
 
     def on_hash_tree_view_button_pressed(self, tree_view, ev):
         if ev.button == 3:
@@ -255,6 +256,8 @@ class MainWindow(Gtk.Window):
         # GUI
         self.method_combo.set_sensitive(False)
         self.folder_button.set_sensitive(False)
+        self.second_folder_button.set_sensitive(False)
+        self.remove_button.set_sensitive(False)
         self.settings_button.set_sensitive(False)
         self.export_button.set_sensitive(False)
         self.hash_tree_model.clear_all()
@@ -277,8 +280,11 @@ class MainWindow(Gtk.Window):
 
         self.method_combo.set_sensitive(True)
         self.folder_button.set_sensitive(True)
+        self.second_folder_button.set_sensitive(True)
+        self.remove_button.set_sensitive(True)
         self.settings_button.set_sensitive(True)
         self.start_button.set_label(_('Start'))
+        self.start_button.set_sensitive(True)
 
         if self.hash_tree_model.get_iter_first():
             self.export_button.set_sensitive(True)
@@ -292,6 +298,7 @@ class MainWindow(Gtk.Window):
         if ev.keyval == 65307:
             if self.started:
                 self.cancellable.cancel()
+                self.start_button.set_sensitive(False)
 
             else:
                 self.hash_tree_view.get_selection().unselect_all()
