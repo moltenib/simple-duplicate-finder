@@ -83,3 +83,4 @@ class TreeView(Gtk.TreeView):
         else:
             # Choose the default font for file rows
             cell.set_property('font', settings.font)
+

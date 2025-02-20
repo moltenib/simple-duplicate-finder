@@ -153,3 +153,12 @@ msgstr "Expandir todo"
 msgid "Collapse all"
 msgstr "Contraer todo"
 
+msgid "(None)"
+msgstr "(Ninguno)"
+
+msgid "Optional second path"
+msgstr "Segunda ruta opcional"
+
+msgid "Remove second path"
+msgstr "Eliminar segunda ruta"
+

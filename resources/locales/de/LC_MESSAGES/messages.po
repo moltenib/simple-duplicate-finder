@@ -162,3 +162,12 @@ msgstr "Alles erweitern"
 msgid "Collapse all"
 msgstr "Alles einklappen"
 
+msgid "(None)"
+msgstr "(Keiner)"
+
+msgid "Optional second path"
+msgstr "Optionaler zweiter Pfad"
+
+msgid "Remove second path"
+msgstr "Zweiter Pfad entfernen"
+

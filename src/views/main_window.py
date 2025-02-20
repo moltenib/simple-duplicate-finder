@@ -52,6 +52,9 @@ class MainWindow(Gtk.Window):
         self.method_combo = MethodCombo()
 
         self.folder_button = FolderButton()
+        self.second_folder_button = SecondFolderButton()
+
+        self.remove_button = RemoveButton()
 
         self.settings_button = SettingsButton()
 
@@ -86,6 +89,10 @@ class MainWindow(Gtk.Window):
                 self.method_combo, False, True, 0)
         top_hbox.pack_start(
                 self.folder_button, True, True, 0)
+        top_hbox.pack_start(
+                self.second_folder_button, True, True, 0)
+        top_hbox.pack_start(
+                self.remove_button, False, True, 0)
         top_hbox.pack_start(
                 self.settings_button, False, True, 0)
         top_hbox.pack_end(
@@ -122,7 +129,11 @@ class MainWindow(Gtk.Window):
         self.method_combo.connect(
                 'changed', self.on_method_changed)
         self.folder_button.connect(
-                'file-set', self.on_folder_set)
+                'file-set', self.on_folder_button_set)
+        self.second_folder_button.connect(
+                'file-set', self.on_second_folder_button_set)
+        self.remove_button.connect(
+                'clicked', self.on_remove_button_clicked)
         self.settings_button.connect(
                 'clicked', self.on_settings_button_clicked)
         self.start_button.connect(
@@ -163,8 +174,17 @@ class MainWindow(Gtk.Window):
     def on_method_changed(self, combo):
         settings.method = combo.get_active()
 
-    def on_folder_set(self, folder_button):
-        settings.path = folder_button.get_filename()
+    def on_folder_button_set(self, folder_button):
+        settings.paths[0] = folder_button.get_filename()
+
+    def on_second_folder_button_set(self, folder_button):
+        settings.paths[1] = folder_button.get_filename()
+        self.remove_button.set_sensitive(settings.paths[1] is not None)
+
+    def on_remove_button_clicked(self, button):
+        self.second_folder_button.set_none()
+        settings.paths[1] = None
+        button.set_sensitive(False)
 
     def on_settings_button_clicked(self, button):
         SettingsWindow(self).show_all()

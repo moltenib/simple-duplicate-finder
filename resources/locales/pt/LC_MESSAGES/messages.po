@@ -162,3 +162,12 @@ msgstr "Expandir tudo"
 msgid "Collapse all"
 msgstr "Recolher tudo"
 
+msgid "(None)"
+msgstr "(Nenhum)"
+
+msgid "Optional second path"
+msgstr "Segundo caminho opcional"
+
+msgid "Remove second path"
+msgstr "Remover segundo caminho"
+

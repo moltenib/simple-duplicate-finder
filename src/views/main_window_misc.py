@@ -5,6 +5,7 @@ from gi.repository import Gtk
 from utils.settings import settings
 
 from datetime import datetime
+from os.path import basename
 
 class MethodCombo(Gtk.ComboBoxText):
     def __init__(self):
@@ -28,9 +29,53 @@ class FolderButton(Gtk.FileChooserButton):
                 action=Gtk.FileChooserAction.SELECT_FOLDER,
                 title=_('Choose path'))
 
-        self.set_filename(settings.path)
+        self.set_filename(settings.paths[0])
 
         self.set_tooltip_text(_('Starting path'))
+
+        # This avoids unnecessary space when loading it the first time
+        self.show_all()
+
+class SecondFolderButton(Gtk.FileChooserButton):
+    def __init__(self):
+        Gtk.FileChooserButton.__init__(
+                self,
+                action=Gtk.FileChooserAction.SELECT_FOLDER,
+                title=_('Choose path'))
+
+        # self.set_filename does not accept None
+        if settings.paths[1] is not None:
+            self.set_filename(settings.paths[1])
+
+        self.set_tooltip_text(_('Optional second path'))
+
+        self.show_all()
+
+    # Overload the original method (workaround)
+    def get_filename(self):
+        filename = super().get_filename()
+
+        if basename(filename) == _('(None)'):
+            return None
+        else:
+            return filename
+
+    def set_none(self):
+        self.set_filename(_('(None)'))
+
+class RemoveButton(Gtk.Button):
+    def __init__(self):
+        image = Gtk.Image(
+                pixbuf=Gtk.IconTheme.get_default().load_icon(
+                    'edit-delete-remove', 16,
+                    Gtk.IconLookupFlags.FORCE_SIZE))
+
+        Gtk.Button.__init__(self, image=image)
+
+        self.set_tooltip_text(_('Remove second path'))
+
+        if settings.paths[1] is None:
+            self.set_sensitive(False)
 
 class SettingsButton(Gtk.Button):
     def __init__(self):
