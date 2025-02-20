@@ -202,8 +202,14 @@ class SettingsWindow(Gtk.Window):
                 settings.method)
         self.parent.folder_button.set_filename(
                 settings.paths[0])
-        self.parent.second_folder_button.set_filename(
-                settings.paths[1])
+
+        if settings.paths[1] is None:
+            self.parent.second_folder_button.set_none()
+            self.parent.remove_button.set_sensitive(False)
+
+        else:
+            self.parent.folder_button.set_filename(
+                    settings.paths[1])
 
     def on_expand_one_row_at_once_toggled(self, button):
         settings.expand_one_row_at_once = button.get_active()
