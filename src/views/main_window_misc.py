@@ -67,7 +67,7 @@ class RemoveButton(Gtk.Button):
     def __init__(self):
         image = Gtk.Image(
                 pixbuf=Gtk.IconTheme.get_default().load_icon(
-                    'edit-delete-remove', 16,
+                    'list-remove', 16,
                     Gtk.IconLookupFlags.FORCE_SIZE))
 
         Gtk.Button.__init__(self, image=image)
