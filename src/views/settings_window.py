@@ -244,7 +244,7 @@ class SettingsWindow(Gtk.Window):
                 'gtk-application-prefer-dark-theme',
                 dark)
 
-        settings.theme = dark and 'dark' or 'light'
+        settings.theme = dark if 'dark' else 'light'
 
     def on_file_limit_toggled(self, button):
         if button.get_active():
