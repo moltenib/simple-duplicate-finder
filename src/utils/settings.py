@@ -1,6 +1,23 @@
 import json, os
 
-_file = None
+def find_settings_file():
+    if os.name == 'nt':
+        settings_dir = os.path.join(
+            os.environ.get('LOCALAPPDATA'),
+            'simple-duplicate-finder')
+
+    elif os.name == 'posix':
+        settings_dir = os.path.expanduser(
+                '~/.config/simple-duplicate-finder')
+
+    else:
+        settings_dir = os.path.expanduser('~')
+
+    return os.path.join(
+            settings_dir,
+            'settings.json')
+
+_file = find_settings_file()
 
 class SettingsCopy:
     def __init__(self, dict_):
@@ -10,8 +27,6 @@ class SettingsCopy:
 class Settings:
     def __init__(self):
         self.load_default()
-
-        _file = self.find_settings_file()
 
         self.load()
 
@@ -29,23 +44,6 @@ class Settings:
         self.read_dotted_directories = False
         self.read_dotted_files = False
         self.limit = 50000
-
-    def find_settings_file(self):
-        if os.name == 'nt':
-            settings_dir = os.path.join(
-                os.environ.get('LOCALAPPDATA'),
-                'simple-duplicate-finder')
-
-        elif os.name == 'posix':
-            settings_dir = os.path.expanduser(
-                    '~/.config/simple-duplicate-finder')
-
-        else:
-            settings_dir = os.path.expanduser('~')
-
-        return os.path.join(
-                settings_dir,
-                'settings.json')
 
     def load(self):
         if os.path.exists(_file):
