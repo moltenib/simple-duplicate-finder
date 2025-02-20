@@ -1,5 +1,7 @@
 import json, os
 
+_file = None
+
 class SettingsCopy:
     def __init__(self, dict_):
         for key, value in dict_.items():
@@ -9,7 +11,7 @@ class Settings:
     def __init__(self):
         self.load_default()
 
-        self.file = self.find_settings_file()
+        _file = self.find_settings_file()
 
         self.load()
 
@@ -46,8 +48,8 @@ class Settings:
                 'settings.json')
 
     def load(self):
-        if os.path.exists(self.file):
-            with open(self.file, 'r') as f:
+        if os.path.exists(_file):
+            with open(_file, 'r') as f:
                 settings = json.load(f)
 
             for key, value in settings.items():
@@ -55,13 +57,13 @@ class Settings:
                 if hasattr(self, attr_name):
                     setattr(self, attr_name, value)
         else:
-            settings_dir = os.path.dirname(self.file)
+            settings_dir = os.path.dirname(_file)
 
             if not os.path.isdir(settings_dir):
                 os.makedirs(settings_dir)
 
     def save(self):
-        with open(self.file, 'w') as f:
+        with open(_file, 'w') as f:
             json.dump(self.__dict__, f, indent=4)
 
     def copy(self):
