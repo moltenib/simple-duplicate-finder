@@ -130,7 +130,7 @@ msgid "Read dotted files"
 msgstr "Leer archivos ocultos"
 
 msgid "Stop when a file limit is reached"
-msgstr "Detener al alcanzar el límite de archivos"
+msgstr "Detenerse al alcanzar el límite de archivos"
 
 msgid "Behaviour"
 msgstr "Comportamiento"
