@@ -11,8 +11,8 @@ This program can find and display files that share one of these features:
 
 Choosing SHA-1 and Adler-32 will open all files in the file system under the chosen directory, altering their access dates, but checking the modification time or file name will only use a file's metadata, which is much faster to retrieve. Other considerations:
 
-- SHA-1 was originally intended as a cryptographic hashing algorithm and is the only method that should always and only return duplicates. It is also the slowest.
-- Adler-32 was made for data compression rather than hashing, and is particularly not reliable with small files.
+- SHA-1 was originally intended as a cryptographic hashing algorithm and is the only method that should always and only return duplicates. It is also the slowest of all methods.
+- Adler-32 was made for data compression rather than hashing, and it is particularly not reliable with small files.
 - A modification date shared by two or more files is no guarantee that the files are the same. For instance, they could have been decompressed at the same time.
 - If two files share the name, it is all that is meant. This option does not check for anything else.
 
@@ -25,12 +25,12 @@ Choosing SHA-1 and Adler-32 will open all files in the file system under the cho
 ### Coming soon
 
 - Context menu on right click with the options:
-  - _Open the containing directory_ (with one file only)
-  - _Rename_ (id.)
-  - _Swap file names_ (with two files only)
-  - _Move..._ (one to multiple files
-  - _Delete selected_ (one to multiple files)
-  - _Keep the oldest_ (with two to multiple files)
+  - _Open the containing directory_ (with one file only);
+  - _Rename_ (id.);
+  - _Swap file names_ (with two files only);
+  - _Move..._ (one to multiple files);
+  - _Delete selected_ (one to multiple files);
+  - _Keep the oldest_ (with two to multiple files),
   - _Bulk rename..._ (id.)
 
 ## Installation
