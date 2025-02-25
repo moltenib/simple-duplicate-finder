@@ -182,7 +182,7 @@ class MainWindow(Gtk.Window):
         self.remove_button.set_sensitive(settings.paths[1] is not None)
 
     def on_remove_button_clicked(self, button):
-        self.second_folder_button.set_none()
+        self.second_folder_button.set_filename(None)
         settings.paths[1] = None
         button.set_sensitive(False)
 
@@ -395,7 +395,7 @@ class MainWindow(Gtk.Window):
             self.status_bar.push(
                     1, _('Selection cleared').format(len(rows)))
 
-        elif len(rows) == 1:
+        elif len(rows) == 1 and not self.started:
             # If it is a file
             row_content = model[rows[0]][0]
 
@@ -419,9 +419,10 @@ class MainWindow(Gtk.Window):
                 if row.get_depth() == 1:
                     hash_tree_selection.unselect_path(row)
 
-                self.status_bar.push(
-                        1, _('{} rows selected').format(
-                            hash_tree_selection.count_selected_rows()))
+                if not self.started:
+                    self.status_bar.push(
+                            1, _('{} rows selected').format(
+                                hash_tree_selection.count_selected_rows()))
 
     def on_row_inserted(self, model, path, iter_):
         if settings.expand_one_row_at_once:

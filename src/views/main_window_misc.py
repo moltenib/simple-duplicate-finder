@@ -43,9 +43,7 @@ class SecondFolderButton(Gtk.FileChooserButton):
                 action=Gtk.FileChooserAction.SELECT_FOLDER,
                 title=_('Choose path'))
 
-        # self.set_filename does not accept None
-        if settings.paths[1] is not None:
-            self.set_filename(settings.paths[1])
+        self.set_filename(settings.paths[1])
 
         self.set_tooltip_text(_('Optional second path'))
 
@@ -55,13 +53,16 @@ class SecondFolderButton(Gtk.FileChooserButton):
     def get_filename(self):
         filename = super().get_filename()
 
-        if basename(filename) == _('(None)'):
+        # Workaround: Look for a folder name that is
+        # not accepted by any file system
+        if basename(filename) == '/\\':
             return None
         else:
             return filename
 
-    def set_none(self):
-        self.set_filename(_('(None)'))
+    def set_filename(self, filename):
+        # super().set_filename does not accept None
+        super().set_filename('/\\' if filename is None else filename)
 
 class RemoveButton(Gtk.Button):
     def __init__(self):

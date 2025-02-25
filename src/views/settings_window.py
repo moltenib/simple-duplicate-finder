@@ -204,7 +204,7 @@ class SettingsWindow(Gtk.Window):
                 settings.paths[0])
 
         if settings.paths[1] is None:
-            self.parent.second_folder_button.set_none()
+            self.parent.second_folder_button.set_filename(None)
             self.parent.remove_button.set_sensitive(False)
 
         else:
