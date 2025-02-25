@@ -31,7 +31,7 @@ VSVersionInfo(
         '040904E4',
         [
             StringStruct('ProductName', 'Simple Duplicate Finder'),
-            StringStruct('FileDescription', 'A program to find duplicates.'),
+            StringStruct('FileDescription', 'Simple Duplicate Finder'),
             StringStruct('FileVersion', 'beta')])
       ])
   ]
