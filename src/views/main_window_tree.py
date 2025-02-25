@@ -12,9 +12,8 @@ class TreeModel(Gtk.TreeStore):
         self.hash_to_iter = {}
 
     def add_parent(self, hash_):
-        if not self.hash_to_iter.__contains__(hash_):
-            iter_ = self.append(None, [hash_])
-            self.hash_to_iter[hash_] = iter_
+        iter_ = self.append(None, [hash_])
+        self.hash_to_iter[hash_] = iter_
 
     def add_child(self, hash_, file_):
         self.insert_after(
