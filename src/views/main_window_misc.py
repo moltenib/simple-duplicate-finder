@@ -91,7 +91,7 @@ class SettingsButton(Gtk.Button):
 class StartButton(Gtk.Button):
     def __init__(self):
         Gtk.Button.__init__(self, label=_('Start'))
-        self.set_size_request(75, 0)
+        self.set_size_request(120, 0)
 
 class ExportButton(Gtk.Button):
     def __init__(self):
