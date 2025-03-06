@@ -7,6 +7,8 @@ from utils.settings import settings
 from datetime import datetime
 from os.path import basename
 
+NONE_VALUE = '51d8633dac9f71f97d31102322e6938f914b354c06e474f66667f9cfc20eb8bc14745ff66eebe80197f8b6e2e0b06d759e0debc1ac0159a6e6048c25168af402'
+
 class MethodCombo(Gtk.ComboBoxText):
     def __init__(self):
         Gtk.ComboBoxText.__init__(self)
@@ -55,14 +57,15 @@ class SecondFolderButton(Gtk.FileChooserButton):
 
         # Workaround: Look for a folder name that is
         # not accepted by any file system
-        if basename(filename) == '/\\':
+        if basename(filename) == NONE_VALUE:
             return None
         else:
             return filename
 
     def set_filename(self, filename):
         # super().set_filename does not accept None
-        super().set_filename('/\\' if filename is None else filename)
+        super().set_filename(
+                NONE_VALUE if filename is None else filename)
 
 class RemoveButton(Gtk.Button):
     def __init__(self):
