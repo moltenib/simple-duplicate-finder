@@ -46,6 +46,9 @@ make translations # for German, Italian, Spanish and Portuguese
 src/main.pyw
 ```
 
+####### Arch Linux
+The latest Git version can be installed with the AUR package `simple-duplicate-finder-git`.
+
 ### Windows
 
 An [executable file](https://github.com/moltenib/repo/raw/refs/heads/master/dist/simple-duplicate-finder.exe) is included for convenience. It was made with PyInstaller and may take a few seconds to start.
