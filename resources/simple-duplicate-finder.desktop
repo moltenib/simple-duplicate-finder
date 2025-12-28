@@ -1,11 +1,39 @@
 [Desktop Entry]
-Version=1.0
 Type=Application
+Version=1.0
+
 Name=Simple Duplicate Finder
-Comment=A program to help you find duplicates
-Exec=sh -c 'cd "$(dirname "$(realpath %k)")/.."; ./main.pyw'
-Icon=/home/bruno/Desktop/simple-duplicate-finder/resources/icons/app_icon.png
+Name[de]=Einfacher Duplikatfinder
+Name[es]=Buscador Simple de Duplicados
+Name[fr]=Détecteur simple de doublons
+Name[it]=Semplice Trova Duplicati
+Name[pt]=Localizador simples de duplicados
+
+GenericName=Duplicate File Finder
+GenericName[de]=Duplikat-Dateisuche
+GenericName[es]=Buscador de archivos duplicados
+GenericName[fr]=Détecteur de fichiers en double
+GenericName[it]=Ricerca di file duplicati
+GenericName[pt]=Localizador de ficheiros duplicados
+
+Comment=Find and remove duplicate files
+Comment[de]=Doppelte Dateien finden und entfernen
+Comment[es]=Encuentra y elimina archivos duplicados
+Comment[fr]=Trouver et supprimer les fichiers en double
+Comment[it]=Trova e rimuove i file duplicati
+Comment[pt]=Encontrar e remover ficheiros duplicados
+
+Exec=simple-duplicate-finder
+Icon=simple-duplicate-finder
 Terminal=false
-StartupNotify=false
-Path=
+StartupNotify=true
+
+Categories=Utility;FileTools;GTK;
+
+Keywords=duplicate;duplicates;file;cleanup;disk;storage;
+Keywords[de]=duplikat;duplikate;datei;bereinigen;festplatte;speicher;
+Keywords[es]=duplicado;duplicados;archivo;limpiar;disco;almacenamiento;
+Keywords[fr]=doublon;doublons;fichier;nettoyage;disque;stockage;
+Keywords[it]=duplicato;duplicati;file;pulizia;disco;archiviazione;
+Keywords[pt]=duplicado;duplicados;ficheiro;limpeza;disco;armazenamento;
 

@@ -79,7 +79,7 @@ msgid "Files have been deleted"
 msgstr "Les fichiers ont été supprimés"
 
 msgid "Simple Duplicate Finder"
-msgstr "Simple Recherche de Duplicatas"
+msgstr "Détecteur simple de doublons"
 
 msgid "A program to find duplicates."
 msgstr "Un programme simple pour vous aider à trouver des doublons."
